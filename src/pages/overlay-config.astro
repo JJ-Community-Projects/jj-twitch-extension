@@ -1,0 +1,32 @@
+---
+import {OverlayConfigRoot} from "../components/config/overlay/OverlayConfigRoot";
+---
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="description" content=""/>
+    <title>Jingle Jam Twitch Extension</title>
+    <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="generator" content={Astro.generator}/>
+</head>
+<style>
+
+    .schedule-controls-link {
+        @apply hover:border-accent-500 hover:bg-accent-500 flex flex-1 flex-col items-center justify-center p-1 transition-all hover:scale-110 hover:text-white;
+    }
+
+    .tooltip {
+        @apply invisible absolute;
+    }
+
+    .has-tooltip:hover .tooltip {
+        @apply visible z-50;
+    }
+
+</style>
+<body>
+<OverlayConfigRoot client:only="solid-js"/>
+</body>
+</html>
