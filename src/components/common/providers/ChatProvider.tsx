@@ -121,7 +121,7 @@ const useTwitchChatHook = (callback: (command: TwitchOverlayChatCommand) => void
 }
 
 
-const useChatHook = () => {
+const useChatHook = (initCauseId?: number) => {
   const {donation} = useData()
   const causes = donation.causes
 
@@ -130,6 +130,10 @@ const useChatHook = () => {
   const [timeoutRef, setTimeoutRef] = createSignal<NodeJS.Timeout | undefined>(undefined);
 
   const [causeId, setCauseId] = createSignal<number>()
+
+  if (initCauseId) {
+    setCauseId(initCauseId)
+  }
 
   const findCause = (command: TwitchOverlayChatCommand) => {
     return causes.find((cause) => cause.id === command.tiltifyId)
@@ -146,7 +150,7 @@ const useChatHook = () => {
   }
 
   const shouldShowCommand = () => {
-    return diff().as('seconds') > 5
+    return diff().as('seconds') > 15
   }
 
   useTwitchChatHook((command) => {
@@ -170,8 +174,8 @@ const useChatHook = () => {
 
 const ChatContext = createContext<ReturnType<typeof useChatHook>>();
 
-export const ChatProvider: ParentComponent = (props) => {
-  const hook = useChatHook()
+export const ChatProvider: ParentComponent<{initCauseId?: number}> = (props) => {
+  const hook = useChatHook(props.initCauseId)
   return (
     <ChatContext.Provider value={hook}>
       {props.children}

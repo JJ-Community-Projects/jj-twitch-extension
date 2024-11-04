@@ -2,10 +2,7 @@ import {type Component, For, Show} from "solid-js";
 import {createModalSignal} from "../../../lib/createModalSignal.ts";
 import {TextField} from "@kobalte/core/text-field";
 import {Button} from "@kobalte/core/button";
-import {
-  useTwitchOverlayConfig,
-  useTwitchOverlayConfigEdit
-} from "../../common/providers/OverlayConfigProvider.tsx";
+import {useTwitchOverlayConfig, useTwitchOverlayConfigEdit} from "../../common/providers/OverlayConfigProvider.tsx";
 import {OverlayThemeSelection} from "./OverlayThemeSelection.tsx";
 import {Checkbox} from "@kobalte/core/checkbox";
 import {FaSolidCheck} from "solid-icons/fa";
@@ -22,8 +19,9 @@ import {OverlaySideNav} from "../../overlay/OverlaySideNav.tsx";
 import {OverlayBody} from "../../overlay/OverlayBody.tsx";
 import {Select} from "@kobalte/core/select";
 import {AiOutlineCheck} from "solid-icons/ai";
-import {ChatDemo} from "../../overlay/OverlayCharityBanner.tsx";
-import {ChatSideDemo} from "../../overlay/OverlayCharitySideBanner.tsx";
+import {OverlayCharityBanner} from "../../overlay/OverlayCharityBanner.tsx";
+import {OverlayCharitySideBanner} from "../../overlay/OverlayCharitySideBanner.tsx";
+import {ChatProvider} from "../../common/providers/ChatProvider.tsx";
 
 
 export const OverlayConfigMain: Component = () => {
@@ -60,49 +58,51 @@ export const OverlayConfigMain: Component = () => {
 const Preview = () => {
   const twitchConfig = useTwitchOverlayConfig()
   return (
-    <div class={'aspect-video bg-gray-700 py-[5rem] pr-[7rmm]'}>
-      <div class={'w-full h-full'}>
-        <LocalStorageProvider>
-          <SleepProvider>
-            <OverlayProvider>
-              <div class={'h-full w-full relative'}>
-                <div
-                  class={twMerge(
-                    'h-full w-full absolute top-0 left-0',
-                  )}
-                >
-                  <div class={'h-full flex flex-row pl-2 pr-28'}>
-                    <OverlaySideNav/>
-                    <OverlayBody/>
+    <ChatProvider initCauseId={582}>
+      <div class={'aspect-video bg-gray-700 py-[5rem] pr-[7rmm]'}>
+        <div class={'w-full h-full'}>
+          <LocalStorageProvider>
+            <SleepProvider>
+              <OverlayProvider>
+                <div class={'h-full w-full relative'}>
+                  <div
+                    class={twMerge(
+                      'h-full w-full absolute top-0 left-0',
+                    )}
+                  >
+                    <div class={'h-full flex flex-row pl-2 pr-28'}>
+                      <OverlaySideNav/>
+                      <OverlayBody/>
+                    </div>
                   </div>
+
+                  <Show when={twitchConfig.chat.enabled}>
+                    <Show when={twitchConfig.chat.position === 'top'}>
+                      <div class={'pl-20 pr-[7rem] pb-2 absolute top-0 right-0 px-2 w-full h-16'}>
+                        <OverlayCharityBanner/>
+                      </div>
+                    </Show>
+
+                    <Show when={twitchConfig.chat.position === 'bottom'}>
+                      <div class={'pl-20 pr-[7rem] pb-2 absolute bottom-0 right-0 px-2 w-full h-16'}>
+                        <OverlayCharityBanner/>
+                      </div>
+                    </Show>
+
+                    <Show when={twitchConfig.chat.position === 'right'}>
+                      <div class={'h-full absolute top-0 right-0 pr-[7rem]'}>
+                        <OverlayCharitySideBanner/>
+                      </div>
+                    </Show>
+                  </Show>
+
                 </div>
-
-                <Show when={twitchConfig.chat.enabled}>
-                  <Show when={twitchConfig.chat.position === 'top'}>
-                    <div class={'pl-20 pr-[7rem] pb-2 absolute top-0 right-0 px-2 w-full h-16'}>
-                      <ChatDemo/>
-                    </div>
-                  </Show>
-
-                  <Show when={twitchConfig.chat.position === 'bottom'}>
-                    <div class={'pl-20 pr-[7rem] pb-2 absolute bottom-0 right-0 px-2 w-full h-16'}>
-                      <ChatDemo/>
-                    </div>
-                  </Show>
-
-                  <Show when={twitchConfig.chat.position === 'right'}>
-                    <div class={'h-full absolute top-0 right-0 pr-[7rem]'}>
-                      <ChatSideDemo/>
-                    </div>
-                  </Show>
-                </Show>
-
-              </div>
-            </OverlayProvider>
-          </SleepProvider>
-        </LocalStorageProvider>
+              </OverlayProvider>
+            </SleepProvider>
+          </LocalStorageProvider>
+        </div>
       </div>
-    </div>
+    </ChatProvider>
   )
 }
 

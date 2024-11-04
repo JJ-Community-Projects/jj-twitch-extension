@@ -1,10 +1,34 @@
-import type {Component} from "solid-js";
+import {type Component, For} from "solid-js";
 import type {Cause} from "../../lib/model/jjData/JJData.ts";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {GlobeIcon, TiltifyIcon} from "../common/icons/JJIcons.tsx";
 import {useData} from "../common/providers/DataProvider.tsx";
 import {Numeric} from "solid-i18n";
+import {useChat} from "../common/providers/ChatProvider.tsx";
+import {twMerge} from "tailwind-merge";
 
+export const OverlayCharitySideBanner: Component = () => {
+  const {causes, causeId} = useChat()
+
+  return (
+    <div class={'relative w-48 h-full flex flex-col justify-center items-center'}>
+      <For each={causes}>
+        {
+          cause => {
+            return (
+              <div class={twMerge(
+                'absolute w-full transition-all duration-500',
+                cause.id === causeId() ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              )}>
+                <CauseViewSide cause={cause}/>
+              </div>
+            )
+          }
+        }
+      </For>
+    </div>
+  );
+}
 const CauseViewSide: Component<{ cause: Cause }> = (props) => {
   const cause = props.cause
   const {donation} = useData()
@@ -33,10 +57,10 @@ const CauseViewSide: Component<{ cause: Cause }> = (props) => {
 
 
   return (
-    <div class={'w-full h-[50%] flex flex-col items-center p-4 gap-4 bg-white rounded-2xl shadow'}>
+    <div class={'w-full h-full flex flex-col items-center p-4 gap-4 bg-white rounded-2xl shadow'}>
       <div class={'flex flex-col items-center justify-center gap-2'}>
         <img class={'h-12 w-12'} src={cause.logo} alt={cause.name}/>
-        <p class={'text-xl'}>{cause.name}</p>
+        <p class={'text-xl text-center'}>{cause.name}</p>
       </div>
       <div class={'flex flex-col items-center justify-center gap-1'}>
         <p class={'text-primary-500'}>
@@ -68,13 +92,4 @@ export const ChatSideDemo = () => {
       <CauseViewSide cause={donation.causes[0]}/>
     </div>
   )
-}
-
-
-export const OverlayCharitySideCard: Component = (props) => {
-  return (
-    <div class={'w-48 h-full bg-purple-500 flex flex-col justify-center items-center'}>
-      <p>test</p>
-    </div>
-  );
 }

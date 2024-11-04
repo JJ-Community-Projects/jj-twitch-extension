@@ -5,6 +5,7 @@ import {useLocalStorage} from "../common/providers/LocalStorageProvider.tsx";
 import {useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
+import {GithubIcon} from "../common/icons/JJIcons.tsx";
 
 
 export const AboutOverlayExtension: Component = () => {
@@ -30,6 +31,13 @@ export const AboutOverlayExtension: Component = () => {
         <p>If you have suggestions or concerns contact @Ostof on Twitch or Discord</p>
       </span>
       <ChatSettings/>
+      <a
+        class={'text-xs flex flex-row gap-1 justify-center items-center'}
+        href={'https://github.com/orgs/JJ-Community-Projects/repositories'}
+        target={'_blank'}
+      >
+        Contribute on Github <GithubIcon/>
+      </a>
     </div>
   );
 }
@@ -57,7 +65,7 @@ const ChatSettings: Component = () => {
           </Checkbox.Indicator>
         </Checkbox.Control>
         <Checkbox.Label class={'cursor-pointer'}>
-          Show Mod-triggered Charity popups at the bottom of the stream player
+          Show Mod-triggered Charity popups
         </Checkbox.Label>
       </Checkbox>
     </Show>

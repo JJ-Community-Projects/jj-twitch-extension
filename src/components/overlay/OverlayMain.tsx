@@ -7,6 +7,7 @@ import {OverlayBody} from "./OverlayBody.tsx";
 import {OverlayCharityBanner} from "./OverlayCharityBanner.tsx";
 import {ChatProvider} from "../common/providers/ChatProvider.tsx";
 import {useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
+import {OverlayCharitySideBanner} from "./OverlayCharitySideBanner.tsx";
 
 const timeout = 5_000;
 
@@ -44,25 +45,49 @@ export const OverlayMain: Component = () => {
   }
 
   return (
-    <div class={'h-full w-full'}>
-
-      <div
-        class={twMerge(
-          'h-full w-full opacity-100 transition-all duration-500',
-          isHiding() && 'opacity-0 cursor-none'
-        )}
-        onMouseEnter={interacted}
-        onMouseMove={interacted}
-        onWheel={interacted}
-        onTouchMove={interacted}
-        onKeyDown={interacted}
-        onMouseLeave={sleep}
-      >
-        <div class={'h-full flex flex-row pl-2 pr-28'}>
-          <OverlaySideNav/>
-          <OverlayBody/>
+    <ChatProvider>
+      <div class={'h-full w-full'}>
+        <div
+          class={twMerge(
+            'h-full w-full opacity-100 transition-all duration-500',
+            isHiding() && 'opacity-0 cursor-none'
+          )}
+          onMouseEnter={interacted}
+          onMouseMove={interacted}
+          onWheel={interacted}
+          onTouchMove={interacted}
+          onKeyDown={interacted}
+          onMouseLeave={sleep}
+        >
+          <div class={'h-full flex flex-row pl-2 pr-28'}>
+            <OverlaySideNav/>
+            <OverlayBody/>
+          </div>
         </div>
+
+        <Show when={twitchConfig.chat.enabled}>
+          <Show when={twitchConfig.chat.position === 'top'}>
+            <div class={'pl-20 pr-[7rem] pb-2 absolute top-0 right-0 px-2 w-full h-16'}>
+              <OverlayCharityBanner/>
+            </div>
+          </Show>
+          <Show when={twitchConfig.chat.position === 'bottom'}>
+            <div class={'pl-20 pr-[7rem] pb-2 absolute bottom-0 right-0 px-2 w-full h-16'}>
+              <OverlayCharityBanner/>
+            </div>
+          </Show>
+          <Show when={twitchConfig.chat.position === 'right'}>
+            <div class={'h-full absolute top-0 right-0 pr-[2rem]'}>
+              <OverlayCharitySideBanner/>
+            </div>
+          </Show>
+        </Show>
       </div>
+    </ChatProvider>
+  );
+}
+
+/*
 
       <Show when={twitchConfig.chat.enabled}>
         <Show when={twitchConfig.chat.position === 'top'}>
@@ -87,6 +112,4 @@ export const OverlayMain: Component = () => {
           </div>
         </Show>
       </Show>
-    </div>
-  );
-}
+ */
