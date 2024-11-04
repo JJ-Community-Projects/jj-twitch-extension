@@ -12,4 +12,9 @@ If you would like to contribute to this project you can do so in the following w
 
 ## Run the project
 
-There is currently no easy way to run this project without having access to the google/firebase backend
+- You need node 20+
+- Install Astro
+- Run `npm install`
+- Run `npm run gen-env` to generate demo data
+- Run `npm run dev` to start the project
+- Open http://localhost:4321/
