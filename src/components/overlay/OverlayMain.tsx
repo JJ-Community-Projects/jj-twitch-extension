@@ -67,12 +67,12 @@ export const OverlayMain: Component = () => {
 
         <Show when={twitchConfig.chat.enabled}>
           <Show when={twitchConfig.chat.position === 'top'}>
-            <div class={'pl-20 pr-[7rem] pb-2 absolute top-0 right-0 px-2 w-full h-16'}>
+            <div class={'pl-20 pr-[7rem] pb-4 absolute top-0 right-0 px-2 w-full h-16'}>
               <OverlayCharityBanner/>
             </div>
           </Show>
           <Show when={twitchConfig.chat.position === 'bottom'}>
-            <div class={'pl-20 pr-[7rem] pb-2 absolute bottom-0 right-0 px-2 w-full h-16'}>
+            <div class={'pl-20 pr-[7rem] pb-4 absolute bottom-0 right-0 px-2 w-full h-16'}>
               <OverlayCharityBanner/>
             </div>
           </Show>
