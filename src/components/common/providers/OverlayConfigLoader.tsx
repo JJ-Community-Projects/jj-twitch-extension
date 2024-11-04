@@ -6,9 +6,16 @@ import {useFirestoreDoc} from "../../../lib/useFirestoreDoc.ts";
 import { OverlayConfigProvider } from "./OverlayConfigProvider.tsx";
 
 function loadConfig() {
+  const demo = import.meta.env.PUBLIC_DEMO_OVERLAY_CONFIG
+  if (demo) {
+    return {
+      data: JSON.parse(demo) as OverlayConfig,
+      loading: false,
+      error: null
+    }
+  }
   const fs = useFirestore()
   const collectionRef = collection(fs, 'Config') as CollectionReference<OverlayConfig>
-
   const ref = doc(collectionRef,
     "TwitchOverlayExtension"
   )

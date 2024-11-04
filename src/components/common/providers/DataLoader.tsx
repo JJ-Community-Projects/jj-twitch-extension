@@ -1,4 +1,4 @@
-import {createEffect, Match, type ParentComponent, Switch} from "solid-js";
+import {Match, type ParentComponent, Switch} from "solid-js";
 import {collection, type CollectionReference, doc} from "firebase/firestore";
 import type {TwitchExtensionSchedule} from "../../../lib/model/TwitchExtensionSchedule.ts";
 import {useFirestore} from "./FirestoreProvider.tsx";
@@ -10,6 +10,15 @@ import {usePanelConfig} from "./PanelConfigProvider.tsx";
 
 
 function loadSchedule() {
+  const demo = import.meta.env.PUBLIC_DEMO_SCHEDULE
+  console.log(import.meta.env)
+  if (demo) {
+    return {
+      data: JSON.parse(demo) as TwitchExtensionSchedule,
+      loading: false,
+      error: null
+    }
+  }
   const config = usePanelConfig()
   const db = useFirestore();
   const collectionRef = collection(db, 'ExtensionSchedules') as CollectionReference<TwitchExtensionSchedule>
@@ -20,6 +29,15 @@ function loadSchedule() {
 }
 
 function loadJJDonationTracker() {
+  const demo = import.meta.env.PUBLIC_DEMO_DONATION_TRACKER
+  if (demo) {
+    return {
+      data: JSON.parse(demo) as JJData,
+      loading: false,
+      error: null
+    }
+  }
+
   const config = usePanelConfig()
   const db = useFirestore()
   const coll = collection(db, 'JJDonationTracker') as CollectionReference<JJData>
@@ -28,6 +46,14 @@ function loadJJDonationTracker() {
 }
 
 function loadFundraiser() {
+  const demo = import.meta.env.PUBLIC_DEMO_FUNDRAISER
+  if (demo) {
+    return {
+      data: JSON.parse(demo) as JJCommunityFundraiser,
+      loading: false,
+      error: null
+    }
+  }
   const config = usePanelConfig()
   const db = useFirestore()
   const coll = collection(db, 'Fundraiser') as CollectionReference<JJCommunityFundraiser>
@@ -39,7 +65,6 @@ export const DataLoader: ParentComponent = (props) => {
   const schedule = loadSchedule();
   const jjDonationTracker = loadJJDonationTracker();
   const fundraiser = loadFundraiser();
-
 
   const isLoading = () => {
     return schedule.loading && jjDonationTracker.loading && fundraiser.loading;

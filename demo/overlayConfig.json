@@ -1,0 +1,17 @@
+{
+  "showCharities": true,
+  "donationLink": {
+    "overrideCustomLink": false,
+    "allowCustomLinks": true,
+    "visible": true,
+    "url": "https://jinglejam.tiltify.com",
+    "text": "Donate"
+  },
+  "year": "2024",
+  "showYogsSchedule": true,
+  "showFundraiser": true,
+  "chat": {
+    "commands": [],
+    "enabled": true
+  }
+}

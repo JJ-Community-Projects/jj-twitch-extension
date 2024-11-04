@@ -1,0 +1,10 @@
+{
+  "showFundraiser": true,
+  "donationLink": {
+    "visible": true,
+    "url": "https://jinglejam.tiltify.com"
+  },
+  "showCharities": true,
+  "showSchedule": true,
+  "year": "2024"
+}

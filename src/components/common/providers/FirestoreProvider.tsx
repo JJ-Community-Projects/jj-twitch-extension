@@ -3,7 +3,11 @@ import {initializeApp} from "firebase/app";
 import {getFirestore} from "firebase/firestore";
 
 const useFirestoreHook = () => {
-  const firebaseConfig = JSON.parse(import.meta.env.PUBLIC_FIREBASE_CONFIG)
+  const configStr = import.meta.env.PUBLIC_FIREBASE_CONFIG
+  if (!configStr) {
+    return null
+  }
+  const firebaseConfig = JSON.parse(configStr)
   const app = initializeApp(firebaseConfig);
   return getFirestore(app)
 }

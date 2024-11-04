@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "gen-env": "node genEnv.js",
     "start": "astro dev",
     "publish": "npm run build && npm run after && npm run zip",
     "build": "npm run delete-dist && astro check && astro build",

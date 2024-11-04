@@ -1,0 +1,118 @@
+{
+  "raised": {
+    "yogscast": 0,
+    "fundraisers": 0
+  },
+  "donations": {
+    "count": 64406
+  },
+  "date": "2024-10-21T15:30:33.136Z",
+  "collections": {
+    "total": 100000,
+    "redeemed": 0
+  },
+  "event": {
+    "year": 2024,
+    "start": "2024-12-01T17:00:00.000Z",
+    "end": "2024-12-15T00:00:00.000Z"
+  },
+  "avgConversionRate": 1.33,
+  "causes": [
+    {
+      "id": 582,
+      "url": "https://www.autistica.org.uk/",
+      "donateUrl": "https://jinglejam.tiltify.com/campaigns?regionId=582",
+      "logo": "https://assets.jinglejam.no1mann.com/jingle-jam-2024/causes/autistica.png",
+      "raised": {
+        "yogscast": 0,
+        "fundraisers": 0
+      },
+      "description": "Building evidence-based solutions for young autistic people to make society more inclusive by 2030.",
+      "name": "Autistica"
+    },
+    {
+      "description": "Running a life-saving suicide prevention helpline and providing mental health resources for all who need them.",
+      "url": "https://www.thecalmzone.net/",
+      "id": 575,
+      "name": "CALM",
+      "raised": {
+        "yogscast": 0,
+        "fundraisers": 0
+      },
+      "donateUrl": "https://jinglejam.tiltify.com/campaigns?regionId=575",
+      "logo": "https://assets.jinglejam.no1mann.com/jingle-jam-2024/causes/calm.png"
+    },
+    {
+      "name": "Cool Earth",
+      "donateUrl": "https://jinglejam.tiltify.com/campaigns?regionId=1227",
+      "logo": "https://assets.jinglejam.no1mann.com/jingle-jam-2024/causes/cool-earth.png",
+      "url": "https://www.coolearth.org/",
+      "id": 1227,
+      "raised": {
+        "yogscast": 0,
+        "fundraisers": 0
+      },
+      "description": "A new approach to fighting climate change - back Indigenous peoples and protect the rainforest."
+    },
+    {
+      "raised": {
+        "yogscast": 0,
+        "fundraisers": 0
+      },
+      "url": "https://sarcoma.org.uk/",
+      "description": "Funding research, supporting those affected by sarcoma cancer, and campaigning for better treatments.",
+      "name": "Sarcoma UK",
+      "logo": "https://assets.jinglejam.no1mann.com/jingle-jam-2024/causes/sarcoma-uk.png",
+      "id": 1228,
+      "donateUrl": "https://jinglejam.tiltify.com/campaigns?regionId=1228"
+    },
+    {
+      "description": "Working to end suicide among LGBTQ+ young people through suicide prevention and crisis intervention.",
+      "logo": "https://assets.jinglejam.no1mann.com/jingle-jam-2024/causes/the-trevor-project.png",
+      "url": "https://www.thetrevorproject.org/",
+      "name": "The Trevor Project",
+      "id": 1229,
+      "donateUrl": "https://jinglejam.tiltify.com/campaigns?regionId=1229",
+      "raised": {
+        "yogscast": 0,
+        "fundraisers": 0
+      }
+    },
+    {
+      "description": "Creating the 'Jingle Jam Building', a unique facility that will help sick children and their families at Bristol Children's Hospital.",
+      "raised": {
+        "fundraisers": 0,
+        "yogscast": 0
+      },
+      "id": 565,
+      "donateUrl": "https://jinglejam.tiltify.com/campaigns?regionId=565",
+      "logo": "https://assets.jinglejam.no1mann.com/jingle-jam-2024/causes/the-grand-appeal.png",
+      "name": "Wallace & Gromit's Grand Appeal",
+      "url": "https://www.grandappeal.org.uk/"
+    },
+    {
+      "name": "War Child",
+      "id": 588,
+      "url": "https://www.warchild.org.uk/",
+      "logo": "https://assets.jinglejam.no1mann.com/jingle-jam-2024/causes/war-child.png",
+      "donateUrl": "https://jinglejam.tiltify.com/campaigns?regionId=588",
+      "raised": {
+        "fundraisers": 0,
+        "yogscast": 0
+      },
+      "description": "Protecting, educating, and advocating for the rights of children impacted by the ongoing conflicts in Gaza and worldwide."
+    },
+    {
+      "logo": "https://assets.jinglejam.no1mann.com/jingle-jam-2024/causes/wdc.png",
+      "donateUrl": "https://jinglejam.tiltify.com/campaigns?regionId=574",
+      "url": "https://uk.whales.org/",
+      "name": "Whale and Dolphin Conservation",
+      "id": 574,
+      "raised": {
+        "fundraisers": 0,
+        "yogscast": 0
+      },
+      "description": "Helping to protect the endangered Amazon River dolphin, and launching a global education programme for schools."
+    }
+  ]
+}

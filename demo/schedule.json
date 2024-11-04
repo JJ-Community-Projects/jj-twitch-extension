@@ -1,0 +1,2560 @@
+{
+  "updatedAt": "2024-10-26T21:03:04.590+01:00",
+  "title": "Yogscast Jingle Jam 2024",
+  "days": [
+    {
+      "date": "2024-12-01",
+      "streams": [
+        {
+          "start": "2024-12-01T11:00:00Z",
+          "title": "Office Cam",
+          "subtitle": "Tree Decorating",
+          "end": "2024-12-01T14:00:00Z",
+          "description": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#00bbe0ff",
+                "#009fd4ff"
+              ]
+            }
+          },
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1991996876",
+              "label": "Twitch Vods"
+            }
+          ],
+          "creators": []
+        },
+        {
+          "creators": [
+            {
+              "label": "Ben",
+              "url": "http://twitch.tv/bedgars",
+              "id": "ben"
+            },
+            {
+              "label": "Tom",
+              "url": "http://twitch.tv/angory_tom",
+              "id": "tom"
+            }
+          ],
+          "subtitle": "Tom & Ben",
+          "style": {
+            "background": {
+              "colors": [
+                "#009fd4ff",
+                "#0081c7ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "description": "",
+          "end": "2024-12-01T17:00:00Z",
+          "twitchVods": [
+            {
+              "label": "Twitch Vods",
+              "url": "https://www.twitch.tv/videos/1991996876?t=3h1m55s"
+            }
+          ],
+          "title": "Jingle Jam Hype Stream",
+          "start": "2024-12-01T14:00:00Z"
+        },
+        {
+          "creators": [
+            {
+              "id": "lewis",
+              "url": "http://twitch.tv/yogscast",
+              "label": "Lewis"
+            },
+            {
+              "id": "simon",
+              "label": "Simon",
+              "url": "http://twitch.tv/simonhoneydew"
+            }
+          ],
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1991996876?t=6h1m43s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "end": "2024-12-01T20:00:00Z",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#0081c7ff",
+                "#0069baff"
+              ]
+            }
+          },
+          "subtitle": "Lewis & Simon",
+          "title": "Jingle Cats",
+          "description": "",
+          "start": "2024-12-01T17:00:00Z"
+        },
+        {
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#0069baff",
+                "#0054adff"
+              ]
+            }
+          },
+          "end": "2024-12-01T23:00:00Z",
+          "description": "",
+          "title": "Christmas Trains",
+          "creators": [
+            {
+              "url": "http://twitch.tv/daltos",
+              "label": "Daltos",
+              "id": "daltos"
+            },
+            {
+              "label": "Duncan",
+              "url": "http://twitch.tv/lalna",
+              "id": "duncan"
+            },
+            {
+              "id": "lewis",
+              "url": "http://twitch.tv/yogscast",
+              "label": "Lewis"
+            },
+            {
+              "label": "Rythian",
+              "id": "rythian",
+              "url": "http://twitch.tv/rythian"
+            },
+            {
+              "id": "alex_the_rambler",
+              "label": "Alex the Rambler",
+              "url": "http://twitch.tv/therambler146"
+            },
+            {
+              "label": "potatomcwhiskey",
+              "url": "http://twitch.tv/potatomcwhiskey",
+              "id": "potatomcwhisky"
+            },
+            {
+              "id": "mango",
+              "url": "http://twitch.tv/m4ng0",
+              "label": "Mango"
+            }
+          ],
+          "start": "2024-12-01T20:00:00Z",
+          "subtitle": "Spiff Lewis & Friends",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1991996876?t=9h14m18s",
+              "label": "Twitch Vod"
+            },
+            {
+              "label": "Classic Duncan",
+              "url": "https://www.twitch.tv/yogscast/clip/UninterestedDirtyPineappleHeyGuys-ZqEQXI3KhzlZZEOG"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2024-12-02",
+      "streams": [
+        {
+          "description": "",
+          "title": "Point & Click",
+          "style": {
+            "background": {
+              "colors": [
+                "#ffd900ff",
+                "#ffcc00ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "end": "2024-12-02T14:00:00Z",
+          "creators": [
+            {
+              "label": "Bouphe",
+              "id": "bouphe",
+              "url": "http://twitch.tv/bouphe"
+            },
+            {
+              "url": "http://twitch.tv/osie",
+              "id": "osie",
+              "label": "Osie"
+            }
+          ],
+          "start": "2024-12-02T11:00:00Z",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1992930553?t=0h10m30s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "subtitle": "Bouphe & Osie"
+        },
+        {
+          "end": "2024-12-02T17:00:00Z",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ffcc00ff",
+                "#ffbf00ff"
+              ]
+            }
+          },
+          "creators": [
+            {
+              "id": "lydia",
+              "url": "http://twitch.tv/squidgame",
+              "label": "Lydia"
+            },
+            {
+              "url": "http://twitch.tv/shadowatnoon",
+              "id": "shadowatnoon",
+              "label": "Shadow"
+            },
+            {
+              "label": "Pedguin",
+              "url": "http://twitch.tv/pedguin",
+              "id": "pedguin"
+            },
+            {
+              "label": "Ravs",
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs"
+            },
+            {
+              "id": "boba",
+              "label": "Boba",
+              "url": "http://twitch.tv/boba"
+            },
+            {
+              "id": "breeh",
+              "url": "http://twitch.tv/breeh",
+              "label": "Breeh"
+            },
+            {
+              "url": "http://twitch.tv/therambler146",
+              "id": "alex_the_rambler",
+              "label": "Alex the Rambler"
+            }
+          ],
+          "start": "2024-12-02T14:00:00Z",
+          "title": "Multi-Game Bingo",
+          "subtitle": "Hosted by Lydia & Shadow",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1992930553?t=3h0m29s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "description": ""
+        },
+        {
+          "end": "2024-12-02T20:00:00Z",
+          "creators": [
+            {
+              "url": "http://twitch.tv/lalna",
+              "id": "duncan",
+              "label": "Duncan"
+            },
+            {
+              "label": "Ravs",
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs"
+            },
+            {
+              "id": "ben",
+              "label": "Ben",
+              "url": "http://twitch.tv/bedgars"
+            }
+          ],
+          "title": "Feed A Cow for X-Mas",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ffbf00ff",
+                "#ffb300ff"
+              ]
+            }
+          },
+          "start": "2024-12-02T17:00:00Z",
+          "description": "",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1992930553?t=6h1m3s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "subtitle": "Duncan & Chums"
+        },
+        {
+          "end": "2024-12-02T23:40:00",
+          "start": "2024-12-02T20:00:00Z",
+          "description": "",
+          "subtitle": "Nilesy Zylus & Panda",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ffb300ff",
+                "#ffa600ff"
+              ]
+            }
+          },
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1993399627"
+            }
+          ],
+          "creators": [
+            {
+              "url": "http://twitch.tv/nilesy",
+              "id": "nilesy",
+              "label": "Nilesy"
+            },
+            {
+              "label": "Zylus",
+              "id": "zylus",
+              "url": "http://twitch.tv/zylush"
+            },
+            {
+              "id": "breeh",
+              "url": "http://twitch.tv/breeh",
+              "label": "Breeh"
+            },
+            {
+              "label": "Rythian",
+              "id": "rythian",
+              "url": "http://twitch.tv/rythian"
+            }
+          ],
+          "title": "Protessional Strem"
+        }
+      ]
+    },
+    {
+      "date": "2024-12-03",
+      "streams": [
+        {
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1993995199?t=0h17m2s"
+            }
+          ],
+          "title": "Scream Queens",
+          "end": "2024-12-03T14:00:00Z",
+          "start": "2024-12-03T11:00:00Z",
+          "style": {
+            "background": {
+              "colors": [
+                "#a7cc00ff",
+                "#81bd00ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "description": "",
+          "creators": [
+            {
+              "id": "bouphe",
+              "label": "Bouphe",
+              "url": "http://twitch.tv/bouphe"
+            },
+            {
+              "url": "http://twitch.tv/boba",
+              "label": "Boba",
+              "id": "boba"
+            },
+            {
+              "label": "Gee",
+              "url": "http://twitch.tv/geestargames",
+              "id": "gee"
+            }
+          ],
+          "subtitle": "Bouphe Boba Gee"
+        },
+        {
+          "description": "",
+          "end": "2024-12-03T17:00:00Z",
+          "creators": [
+            {
+              "url": "http://twitch.tv/yogscast",
+              "id": "lewis",
+              "label": "Lewis"
+            },
+            {
+              "id": "tom",
+              "url": "http://twitch.tv/angory_tom",
+              "label": "Tom"
+            },
+            {
+              "url": "http://twitch.tv/squidgame",
+              "label": "Lydia",
+              "id": "lydia"
+            },
+            {
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs",
+              "label": "Ravs"
+            },
+            {
+              "id": "bouphe",
+              "label": "Bouphe",
+              "url": "http://twitch.tv/bouphe"
+            },
+            {
+              "label": "Osie",
+              "url": "http://twitch.tv/osie",
+              "id": "osie"
+            }
+          ],
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#81bd00ff",
+                "#62ad00ff"
+              ]
+            }
+          },
+          "start": "2024-12-03T14:00:00Z",
+          "subtitle": "Tom & Wheelboy",
+          "title": "Tabs",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1993995199?t=3h11m4s"
+            }
+          ]
+        },
+        {
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#62ad00ff",
+                "#479e00ff"
+              ]
+            }
+          },
+          "subtitle": "Gee & Simon",
+          "start": "2024-12-03T17:00:00Z",
+          "description": "",
+          "title": "Cursedcraft",
+          "creators": [
+            {
+              "url": "http://twitch.tv/geestargames",
+              "id": "gee",
+              "label": "Gee"
+            },
+            {
+              "url": "http://twitch.tv/simonhoneydew",
+              "label": "Simon",
+              "id": "simon"
+            },
+            {
+              "url": "http://twitch.tv/bouphe",
+              "id": "bouphe",
+              "label": "Bouphe"
+            }
+          ],
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1993995199?t=6h18m17s"
+            }
+          ],
+          "end": "2024-12-03T20:00:00Z"
+        },
+        {
+          "description": "",
+          "start": "2024-12-03T20:00:00Z",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1993995199?t=9h12m34s"
+            }
+          ],
+          "creators": [
+            {
+              "label": "Briony",
+              "url": "http://twitch.tv/brionykay",
+              "id": "briony"
+            },
+            {
+              "id": "kirsty",
+              "url": "http://twitch.tv/kirsty",
+              "label": "Kirsty"
+            },
+            {
+              "url": "http://twitch.tv/rythian",
+              "label": "Rythian",
+              "id": "rythian"
+            }
+          ],
+          "end": "2024-12-03T23:00:00Z",
+          "subtitle": "Rythian Kirsty & Briony",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#479e00ff",
+                "#308f00ff"
+              ]
+            }
+          },
+          "title": "Kirbycraft Christmas"
+        }
+      ]
+    },
+    {
+      "date": "2024-12-04",
+      "streams": [
+        {
+          "start": "2024-12-04T11:00:00Z",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1994927543?t=0h5m28s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "title": "PlateUp Modded Madness",
+          "subtitle": "Ben Boba Ped Sips",
+          "description": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#fc7600ff",
+                "#f76300ff"
+              ]
+            }
+          },
+          "creators": [
+            {
+              "id": "boba",
+              "label": "Boba",
+              "url": "http://twitch.tv/boba"
+            },
+            {
+              "url": "http://twitch.tv/pedguin",
+              "label": "Pedguin",
+              "id": "pedguin"
+            },
+            {
+              "label": "Sips",
+              "id": "sips",
+              "url": "http://twitch.tv/sips_"
+            },
+            {
+              "label": "Ben",
+              "id": "ben",
+              "url": "http://twitch.tv/bedgars"
+            }
+          ],
+          "end": "2024-12-04T14:00:00Z"
+        },
+        {
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1994927543?t=3h8m49s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "style": {
+            "background": {
+              "colors": [
+                "#f76300ff",
+                "#f25100ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "start": "2024-12-04T14:00:00Z",
+          "end": "2024-12-04T17:00:00Z",
+          "description": "",
+          "creators": [
+            {
+              "label": "Briony",
+              "id": "briony",
+              "url": "http://twitch.tv/brionykay"
+            },
+            {
+              "id": "gee",
+              "url": "http://twitch.tv/geestargames",
+              "label": "Gee"
+            },
+            {
+              "url": "http://twitch.tv/lolipopgi",
+              "id": "lolipopgi",
+              "label": "Lolip"
+            },
+            {
+              "label": "Breeh",
+              "id": "breeh",
+              "url": "http://twitch.tv/breeh"
+            }
+          ],
+          "subtitle": "Gee Briony Lolip & Breeh",
+          "title": "4-Player Collection Games"
+        },
+        {
+          "description": "",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1994927543?t=6h7m24s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "title": "Collection Games",
+          "end": "2024-12-04T20:00:00Z",
+          "subtitle": "Mousie & Ben",
+          "start": "2024-12-04T17:00:00Z",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#f25100ff",
+                "#ed3b00ff"
+              ]
+            }
+          },
+          "creators": [
+            {
+              "id": "ben",
+              "label": "Ben",
+              "url": "http://twitch.tv/bedgars"
+            },
+            {
+              "label": "Mousie",
+              "id": "mousie",
+              "url": "http://twitch.tv/mousie"
+            }
+          ]
+        },
+        {
+          "title": "The Longest Johns",
+          "end": "2024-12-05T00:00:00Z",
+          "start": "2024-12-04T20:00:00Z",
+          "subtitle": "",
+          "style": {
+            "background": {
+              "colors": [
+                "#ed3b00ff",
+                "#e82b00ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "description": "",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1994927543?t=9h24m10s"
+            }
+          ],
+          "creators": [
+            {
+              "id": "briony",
+              "url": "http://twitch.tv/brionykay",
+              "label": "Briony"
+            },
+            {
+              "id": "simon_clark",
+              "url": "http://twitch.tv/drsimonclark",
+              "label": "Dr. Simon Clark"
+            },
+            {
+              "label": "Ravs",
+              "id": "ravs",
+              "url": "http://twitch.tv/ravs_"
+            },
+            {
+              "url": "http://twitch.tv/osie",
+              "id": "osie",
+              "label": "Osie"
+            },
+            {
+              "url": "http://twitch.tv/breeh",
+              "label": "Breeh",
+              "id": "breeh"
+            },
+            {
+              "label": "Lolip",
+              "url": "http://twitch.tv/lolipopgi",
+              "id": "lolipopgi"
+            },
+            {
+              "url": "http://twitch.tv/dafnotdaff",
+              "label": "Daf",
+              "id": "daf"
+            },
+            {
+              "label": "Mousie",
+              "url": "http://twitch.tv/mousie",
+              "id": "mousie"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2024-12-05",
+      "streams": [
+        {
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1995775421?t=0h5m46s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "end": "2024-12-05T14:00:00Z",
+          "title": "Chunklock Minecraft",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#00e8c5ff",
+                "#00deb1ff"
+              ]
+            }
+          },
+          "subtitle": "Martyn Solidarity Sparkles",
+          "description": "",
+          "start": "2024-12-05T11:00:00Z",
+          "creators": [
+            {
+              "label": "Martyn",
+              "url": "http://twitch.tv/inthelittlewood",
+              "id": "martyn"
+            }
+          ]
+        },
+        {
+          "creators": [
+            {
+              "label": "Gee",
+              "url": "http://twitch.tv/geestargames",
+              "id": "gee"
+            },
+            {
+              "label": "Harry",
+              "id": "harry",
+              "url": "http://twitch.tv/hrry"
+            },
+            {
+              "label": "Simon",
+              "url": "http://twitch.tv/simonhoneydew",
+              "id": "simon"
+            },
+            {
+              "label": "Tom",
+              "url": "http://twitch.tv/angory_tom",
+              "id": "tom"
+            }
+          ],
+          "end": "2024-12-05T17:00:00Z",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1995775421?t=3h11m50s"
+            }
+          ],
+          "style": {
+            "background": {
+              "colors": [
+                "#00deb1ff",
+                "#00d49bff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "subtitle": "Simon Gee Tom Harry Sarah",
+          "title": "Simon's Important Videos",
+          "start": "2024-12-05T14:00:00Z",
+          "description": ""
+        },
+        {
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#00d49bff",
+                "#00c98aff"
+              ]
+            }
+          },
+          "description": "",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1995775421?t=6h22m30s"
+            }
+          ],
+          "start": "2024-12-05T17:00:00Z",
+          "subtitle": "",
+          "title": "Civ 5 on the 5th",
+          "creators": [
+            {
+              "label": "Ben",
+              "url": "http://twitch.tv/bedgars",
+              "id": "ben"
+            },
+            {
+              "id": "daltos",
+              "url": "http://twitch.tv/daltos",
+              "label": "Daltos"
+            },
+            {
+              "label": "Duncan",
+              "url": "http://twitch.tv/lalna",
+              "id": "duncan"
+            },
+            {
+              "id": "lewis",
+              "url": "http://twitch.tv/yogscast",
+              "label": "Lewis"
+            },
+            {
+              "url": "http://twitch.tv/potatomcwhiskey",
+              "label": "potatomcwhiskey",
+              "id": "potatomcwhisky"
+            },
+            {
+              "id": "rythian",
+              "label": "Rythian",
+              "url": "http://twitch.tv/rythian"
+            },
+            {
+              "url": "http://twitch.tv/therambler146",
+              "id": "alex_the_rambler",
+              "label": "Alex the Rambler"
+            }
+          ],
+          "end": "2024-12-06T02:00:00Z"
+        }
+      ]
+    },
+    {
+      "date": "2024-12-06",
+      "streams": [
+        {
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1996634381?t=0h9m33s"
+            }
+          ],
+          "subtitle": "Fionn & Lolip",
+          "creators": [
+            {
+              "url": "http://twitch.tv/fionn",
+              "id": "fionn",
+              "label": "Fionn"
+            },
+            {
+              "url": "http://twitch.tv/lolipopgi",
+              "id": "lolipopgi",
+              "label": "Lolip"
+            }
+          ],
+          "title": "2-Player Coop",
+          "style": {
+            "background": {
+              "colors": [
+                "#f74accff",
+                "#ed39b7ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "end": "2024-12-06T14:00:00Z",
+          "start": "2024-12-06T11:00:00Z",
+          "description": ""
+        },
+        {
+          "end": "2024-12-06T17:00:00Z",
+          "subtitle": "",
+          "start": "2024-12-06T14:00:00Z",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1996634381?t=3h5m34s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "style": {
+            "background": {
+              "colors": [
+                "#ed39b7ff",
+                "#e329a2ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "title": "Civ 6 on the 6th",
+          "creators": [
+            {
+              "id": "daltos",
+              "label": "Daltos",
+              "url": "http://twitch.tv/daltos"
+            },
+            {
+              "url": "http://twitch.tv/potatomcwhiskey",
+              "id": "potatomcwhisky",
+              "label": "potatomcwhiskey"
+            }
+          ],
+          "description": ""
+        },
+        {
+          "style": {
+            "background": {
+              "colors": [
+                "#e329a2ff",
+                "#d91a89ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "subtitle": "Hosted by Simon Clark",
+          "start": "2024-12-06T17:00:00Z",
+          "title": "Who wants to be a Millionaire",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1996634381?t=6h44m52s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "end": "2024-12-06T21:30:00",
+          "description": "",
+          "creators": [
+            {
+              "label": "Dr. Simon Clark",
+              "id": "simon_clark",
+              "url": "http://twitch.tv/drsimonclark"
+            },
+            {
+              "label": "Shadow",
+              "id": "shadowatnoon",
+              "url": "http://twitch.tv/shadowatnoon"
+            },
+            {
+              "label": "Lydia",
+              "id": "lydia",
+              "url": "http://twitch.tv/squidgame"
+            },
+            {
+              "label": "Martyn",
+              "url": "http://twitch.tv/inthelittlewood",
+              "id": "martyn"
+            },
+            {
+              "label": "Kirsty",
+              "url": "http://twitch.tv/kirsty",
+              "id": "kirsty"
+            },
+            {
+              "id": "lewis",
+              "url": "http://twitch.tv/yogscast",
+              "label": "Lewis"
+            },
+            {
+              "url": "http://twitch.tv/osie",
+              "label": "Osie",
+              "id": "osie"
+            },
+            {
+              "label": "Mousie",
+              "id": "mousie",
+              "url": "http://twitch.tv/mousie"
+            },
+            {
+              "id": "sherlock_hulmes",
+              "url": "http://twitch.tv/sherlockhulmes_",
+              "label": "Mark"
+            }
+          ]
+        },
+        {
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#d91a89ff",
+                "#cf0c74ff"
+              ]
+            }
+          },
+          "start": "2024-12-06T21:30:00",
+          "subtitle": "Rythian & Nilesy",
+          "creators": [
+            {
+              "label": "Rythian",
+              "url": "http://twitch.tv/rythian",
+              "id": "rythian"
+            },
+            {
+              "url": "http://twitch.tv/nilesy",
+              "id": "nilesy",
+              "label": "Nilesy"
+            }
+          ],
+          "title": "Cats & more",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1996634381?t=10h37m54s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "description": "",
+          "end": "2024-12-07T00:30:00"
+        }
+      ]
+    },
+    {
+      "streams": [
+        {
+          "style": {
+            "background": {
+              "colors": [
+                "#ffa600ff",
+                "#ff8400ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "creators": [
+            {
+              "id": "lewis",
+              "label": "Lewis",
+              "url": "http://twitch.tv/yogscast"
+            },
+            {
+              "label": "Sips",
+              "id": "sips",
+              "url": "http://twitch.tv/sips_"
+            }
+          ],
+          "start": "2024-12-07T11:00:00Z",
+          "description": "",
+          "end": "2024-12-07T14:00:00Z",
+          "title": "Your Dads",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1997524809?t=0h14m32s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "subtitle": "Lewis & Sips"
+        },
+        {
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ff8400ff",
+                "#ff6600ff"
+              ]
+            }
+          },
+          "end": "2024-12-07T17:00:00Z",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1997524809?t=3h18m3s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "description": "",
+          "start": "2024-12-07T14:00:00Z",
+          "title": "Mario Kart Mayham",
+          "creators": [
+            {
+              "id": "lydia",
+              "label": "Lydia",
+              "url": "http://twitch.tv/squidgame"
+            },
+            {
+              "id": "ravs",
+              "label": "Ravs",
+              "url": "http://twitch.tv/ravs_"
+            },
+            {
+              "url": "http://twitch.tv/shadowatnoon",
+              "label": "Shadow",
+              "id": "shadowatnoon"
+            },
+            {
+              "id": "zylus",
+              "label": "Zylus",
+              "url": "http://twitch.tv/zylush"
+            },
+            {
+              "url": "http://twitch.tv/inthelittlewood",
+              "id": "martyn",
+              "label": "Martyn"
+            },
+            {
+              "label": "RTGame",
+              "id": "rtgame",
+              "url": "http://twitch.tv/rtgame"
+            },
+            {
+              "id": "duncan",
+              "label": "Duncan",
+              "url": "http://twitch.tv/lalna"
+            },
+            {
+              "id": "osie",
+              "label": "Osie",
+              "url": "http://twitch.tv/osie"
+            }
+          ],
+          "subtitle": ""
+        },
+        {
+          "subtitle": "Hosted by Craig",
+          "creators": [
+            {
+              "url": "http://twitch.tv/hatfilms",
+              "label": "Hat Films",
+              "id": "hat_films"
+            },
+            {
+              "url": "http://twitch.tv/squidgame",
+              "label": "Lydia",
+              "id": "lydia"
+            },
+            {
+              "label": "Ravs",
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs"
+            }
+          ],
+          "start": "2024-12-07T17:00:00Z",
+          "title": "Hat Films Gameshow",
+          "style": {
+            "background": {
+              "colors": [
+                "#ff6600ff",
+                "#ff4400ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "end": "2024-12-07T20:00:00Z",
+          "description": "",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1997524809?t=6h25m53s",
+              "label": "Twitch Vod"
+            }
+          ]
+        },
+        {
+          "title": "Dead by Daylight",
+          "description": "",
+          "start": "2024-12-07T20:00:00Z",
+          "subtitle": "Hosted By Mousie",
+          "creators": [
+            {
+              "label": "Mousie",
+              "id": "mousie",
+              "url": "http://twitch.tv/mousie"
+            },
+            {
+              "id": "nilesy",
+              "url": "http://twitch.tv/nilesy",
+              "label": "Nilesy"
+            },
+            {
+              "id": "briony",
+              "url": "http://twitch.tv/brionykay",
+              "label": "Briony"
+            },
+            {
+              "label": "Daltos",
+              "url": "http://twitch.tv/daltos",
+              "id": "daltos"
+            },
+            {
+              "url": "http://twitch.tv/breeh",
+              "id": "breeh",
+              "label": "Breeh"
+            },
+            {
+              "url": "http://twitch.tv/kirsty",
+              "label": "Kirsty",
+              "id": "kirsty"
+            },
+            {
+              "label": "Rythian",
+              "id": "rythian",
+              "url": "http://twitch.tv/rythian"
+            },
+            {
+              "label": "Zylus",
+              "url": "http://twitch.tv/zylush",
+              "id": "zylus"
+            }
+          ],
+          "end": "2024-12-08T00:00:00Z",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1997524809?t=9h40m22s"
+            },
+            {
+              "url": "https://www.twitch.tv/mousie",
+              "label": "Mousie"
+            },
+            {
+              "url": "https://www.twitch.tv/breeh",
+              "label": "Breeh"
+            },
+            {
+              "label": "Melon",
+              "url": "https://www.twitch.tv/meloncolliee"
+            },
+            {
+              "url": "https://www.twitch.tv/brionykay",
+              "label": "Briony"
+            },
+            {
+              "label": "Kirsty",
+              "url": "https://www.twitch.tv/Kirsty"
+            },
+            {
+              "url": "https://www.twitch.tv/nilesy",
+              "label": "Nilesy"
+            },
+            {
+              "url": "https://www.twitch.tv/bepis",
+              "label": "Bepis"
+            },
+            {
+              "url": "https://www.twitch.tv/daltos",
+              "label": "Daltos"
+            },
+            {
+              "url": "https://www.twitch.tv/giddawid",
+              "label": "Giddawid"
+            },
+            {
+              "label": "Pasta",
+              "url": "https://www.twitch.tv/pastaroniravioli"
+            },
+            {
+              "url": "https://www.twitch.tv/justbeeingsam",
+              "label": "justbeeingsam"
+            },
+            {
+              "url": "https://www.twitch.tv/rythian",
+              "label": "Rythian"
+            },
+            {
+              "label": "Zylus",
+              "url": "https://www.twitch.tv/zylush"
+            },
+            {
+              "label": "ImSeanBean",
+              "url": "https://www.twitch.tv/ImSeanBean"
+            },
+            {
+              "url": "https://www.twitch.tv/symmetrikal",
+              "label": "Symmetrikal"
+            },
+            {
+              "label": "KessieBear",
+              "url": "https://www.twitch.tv/kessiebear"
+            }
+          ],
+          "style": {
+            "background": {
+              "colors": [
+                "#ff4400ff",
+                "#ff2200ff"
+              ],
+              "orientation": "TD"
+            }
+          }
+        }
+      ],
+      "date": "2024-12-07"
+    },
+    {
+      "date": "2024-12-08",
+      "streams": [
+        {
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#00bbe0ff",
+                "#009fd4ff"
+              ]
+            }
+          },
+          "start": "2024-12-08T11:00:00Z",
+          "subtitle": "Duncan & Osie",
+          "creators": [
+            {
+              "url": "http://twitch.tv/lalna",
+              "label": "Duncan",
+              "id": "duncan"
+            },
+            {
+              "id": "osie",
+              "label": "Osie",
+              "url": "http://twitch.tv/osie"
+            }
+          ],
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1998414316?t=0h10m51s"
+            }
+          ],
+          "end": "2024-12-08T14:00:00Z",
+          "description": "",
+          "title": "Creature Collector"
+        },
+        {
+          "style": {
+            "background": {
+              "colors": [
+                "#009fd4ff",
+                "#0081c7ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "description": "",
+          "creators": [
+            {
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs",
+              "label": "Ravs"
+            },
+            {
+              "label": "Boba",
+              "id": "boba",
+              "url": "http://twitch.tv/boba"
+            },
+            {
+              "id": "harry",
+              "label": "Harry",
+              "url": "http://twitch.tv/hrry"
+            },
+            {
+              "id": "shadowatnoon",
+              "label": "Shadow",
+              "url": "http://twitch.tv/shadowatnoon"
+            },
+            {
+              "id": "martyn",
+              "label": "Martyn",
+              "url": "http://twitch.tv/inthelittlewood"
+            },
+            {
+              "url": "http://twitch.tv/lalna",
+              "id": "duncan",
+              "label": "Duncan"
+            },
+            {
+              "label": "Kirsty",
+              "id": "kirsty",
+              "url": "http://twitch.tv/kirsty"
+            },
+            {
+              "label": "Osie",
+              "id": "osie",
+              "url": "http://twitch.tv/osie"
+            }
+          ],
+          "title": "MCC Island Bingo",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1998414316?t=3h12m37s"
+            },
+            {
+              "label": "Seapeekay",
+              "url": "https://www.twitch.tv/seapeekay"
+            },
+            {
+              "url": "https://www.twitch.tv/krtzyy",
+              "label": "Krtzyy"
+            },
+            {
+              "url": "https://www.twitch.tv/soupforeloise",
+              "label": "soupforeloise"
+            },
+            {
+              "label": "OwengeJuiceTV",
+              "url": "https://www.twitch.tv/OwengeJuiceTV"
+            }
+          ],
+          "end": "2024-12-08T17:00:00Z",
+          "start": "2024-12-08T14:00:00Z",
+          "subtitle": "Minecraft Tournament"
+        },
+        {
+          "twitchVods": [],
+          "subtitle": "Modded Karaoke",
+          "end": "2024-12-08T21:00:00Z",
+          "creators": [
+            {
+              "id": "lydia",
+              "label": "Lydia",
+              "url": "http://twitch.tv/squidgame"
+            },
+            {
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs",
+              "label": "Ravs"
+            },
+            {
+              "url": "http://twitch.tv/lolipopgi",
+              "id": "lolipopgi",
+              "label": "Lolip"
+            },
+            {
+              "label": "Breeh",
+              "id": "breeh",
+              "url": "http://twitch.tv/breeh"
+            },
+            {
+              "label": "Mango",
+              "id": "mango",
+              "url": "http://twitch.tv/m4ng0"
+            },
+            {
+              "url": "http://twitch.tv/brionykay",
+              "id": "briony",
+              "label": "Briony"
+            },
+            {
+              "label": "Joe",
+              "id": "joe",
+              "url": "http://twitch.tv/joehickson"
+            },
+            {
+              "id": "sherlock_hulmes",
+              "url": "http://twitch.tv/sherlockhulmes_",
+              "label": "Mark"
+            },
+            {
+              "label": "RTGame",
+              "id": "rtgame",
+              "url": "http://twitch.tv/rtgame"
+            },
+            {
+              "url": "http://twitch.tv/zylush",
+              "id": "zylus",
+              "label": "Zylus"
+            },
+            {
+              "url": "http://twitch.tv/dafnotdaff",
+              "id": "daf",
+              "label": "Daf"
+            },
+            {
+              "id": "osie",
+              "url": "http://twitch.tv/osie",
+              "label": "Osie"
+            }
+          ],
+          "description": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#0081c7ff",
+                "#0069baff"
+              ]
+            }
+          },
+          "title": "Maraoke",
+          "start": "2024-12-08T17:00:00Z"
+        },
+        {
+          "style": {
+            "background": {
+              "colors": [
+                "#0069baff",
+                "#0054adff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "twitchVods": [],
+          "subtitle": "",
+          "title": "The Longest Johns",
+          "end": "2024-12-08T23:00:00Z",
+          "start": "2024-12-08T21:00:00Z",
+          "creators": [],
+          "description": ""
+        }
+      ]
+    },
+    {
+      "streams": [
+        {
+          "subtitle": "Lewis & Mousie",
+          "description": "",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1999352755?t=0h2m27s"
+            }
+          ],
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ffd900ff",
+                "#ffcc00ff"
+              ]
+            }
+          },
+          "start": "2024-12-09T11:00:00Z",
+          "title": "Games for Ukraine",
+          "creators": [
+            {
+              "label": "Mousie",
+              "id": "mousie",
+              "url": "http://twitch.tv/mousie"
+            },
+            {
+              "label": "Lewis",
+              "url": "http://twitch.tv/yogscast",
+              "id": "lewis"
+            }
+          ],
+          "end": "2024-12-09T14:00:00Z"
+        },
+        {
+          "end": "2024-12-09T17:00:00Z",
+          "description": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ffcc00ff",
+                "#ffbf00ff"
+              ]
+            }
+          },
+          "title": "Aardman Christmas Crafts",
+          "subtitle": "Lots of Yogs",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1999352755?t=3h25m34s"
+            }
+          ],
+          "start": "2024-12-09T14:00:00Z",
+          "creators": [
+            {
+              "label": "Lolip",
+              "url": "http://twitch.tv/lolipopgi",
+              "id": "lolipopgi"
+            },
+            {
+              "url": "http://twitch.tv/bekkiboom",
+              "label": "Bekkiboom",
+              "id": "bekkiboom"
+            },
+            {
+              "label": "Briony",
+              "id": "briony",
+              "url": "http://twitch.tv/brionykay"
+            },
+            {
+              "url": "http://twitch.tv/m4ng0",
+              "id": "mango",
+              "label": "Mango"
+            },
+            {
+              "url": "http://twitch.tv/kirsty",
+              "id": "kirsty",
+              "label": "Kirsty"
+            }
+          ]
+        },
+        {
+          "start": "2024-12-09T17:00:00Z",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ffbf00ff",
+                "#ffb300ff"
+              ]
+            }
+          },
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/1999352755?t=6h14m29s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "creators": [
+            {
+              "url": "http://twitch.tv/m4ng0",
+              "id": "mango",
+              "label": "Mango"
+            },
+            {
+              "id": "rtgame",
+              "url": "http://twitch.tv/rtgame",
+              "label": "RTGame"
+            }
+          ],
+          "title": "Multiplayer Sillies",
+          "subtitle": "Spiff Mango RT & Kiwo",
+          "end": "2024-12-09T20:00:00Z",
+          "description": ""
+        },
+        {
+          "creators": [
+            {
+              "id": "pyrion",
+              "url": "http://twitch.tv/pyrionflax",
+              "label": "Pyrion"
+            },
+            {
+              "id": "ravs",
+              "label": "Ravs",
+              "url": "http://twitch.tv/ravs_"
+            },
+            {
+              "id": "lolipopgi",
+              "url": "http://twitch.tv/lolipopgi",
+              "label": "Lolip"
+            },
+            {
+              "label": "Mousie",
+              "id": "mousie",
+              "url": "http://twitch.tv/mousie"
+            },
+            {
+              "id": "lewis",
+              "url": "http://twitch.tv/yogscast",
+              "label": "Lewis"
+            },
+            {
+              "id": "simon",
+              "label": "Simon",
+              "url": "http://twitch.tv/simonhoneydew"
+            }
+          ],
+          "title": "Rust Roleplay",
+          "end": "2024-12-10T00:45:00",
+          "start": "2024-12-09T20:00:00Z",
+          "description": "",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/1999352755?t=9h19m22s"
+            }
+          ],
+          "subtitle": "Pyrion & Spiff",
+          "style": {
+            "background": {
+              "colors": [
+                "#ffb300ff",
+                "#ffa600ff"
+              ],
+              "orientation": "TD"
+            }
+          }
+        }
+      ],
+      "date": "2024-12-09"
+    },
+    {
+      "date": "2024-12-10",
+      "streams": [
+        {
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/2000317468?t=0h2m14s"
+            }
+          ],
+          "title": "Tryhard Games",
+          "subtitle": "Harry & Shadow",
+          "style": {
+            "background": {
+              "colors": [
+                "#a7cc00ff",
+                "#74b800ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "description": "",
+          "end": "2024-12-10T14:00:00Z",
+          "creators": [
+            {
+              "label": "Harry",
+              "id": "harry",
+              "url": "http://twitch.tv/hrry"
+            },
+            {
+              "id": "shadowatnoon",
+              "label": "Shadow",
+              "url": "http://twitch.tv/shadowatnoon"
+            }
+          ],
+          "start": "2024-12-10T11:00:00Z"
+        },
+        {
+          "subtitle": "Sarah Briony Boba & Ped",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#74b800ff",
+                "#49a300ff"
+              ]
+            }
+          },
+          "creators": [
+            {
+              "url": "http://twitch.tv/boba",
+              "id": "boba",
+              "label": "Boba"
+            },
+            {
+              "label": "Briony",
+              "id": "briony",
+              "url": "http://twitch.tv/brionykay"
+            },
+            {
+              "id": "pedguin",
+              "label": "Pedguin",
+              "url": "http://twitch.tv/pedguin"
+            }
+          ],
+          "end": "2024-12-10T17:00:00Z",
+          "description": "",
+          "start": "2024-12-10T14:00:00Z",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/2000317468?t=3h11m5s"
+            }
+          ],
+          "title": "Pre-Poker Party"
+        },
+        {
+          "description": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#49a300ff",
+                "#288f00ff"
+              ]
+            }
+          },
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2000317468?t=6h40m7s",
+              "label": "Twitch Vod 1"
+            },
+            {
+              "url": "https://www.twitch.tv/videos/2000779980?t=0h4m58s",
+              "label": "Twitch Vod 2"
+            },
+            {
+              "url": "https://www.twitch.tv/digbytathamwarter",
+              "label": "Digby"
+            },
+            {
+              "label": "Toastie",
+              "url": "https://www.twitch.tv/toastie"
+            },
+            {
+              "label": "RTGame",
+              "url": "https://www.twitch.tv/rtgame"
+            }
+          ],
+          "start": "2024-12-10T17:00:00Z",
+          "end": "2024-12-10T23:00:00Z",
+          "creators": [
+            {
+              "id": "pyrion",
+              "label": "Pyrion",
+              "url": "http://twitch.tv/pyrionflax"
+            },
+            {
+              "label": "Tom",
+              "id": "tom",
+              "url": "http://twitch.tv/angory_tom"
+            },
+            {
+              "url": "http://twitch.tv/breeh",
+              "label": "Breeh",
+              "id": "breeh"
+            },
+            {
+              "id": "kirsty",
+              "url": "http://twitch.tv/kirsty",
+              "label": "Kirsty"
+            },
+            {
+              "id": "lydia",
+              "label": "Lydia",
+              "url": "http://twitch.tv/squidgame"
+            },
+            {
+              "url": "http://twitch.tv/nilesy",
+              "label": "Nilesy",
+              "id": "nilesy"
+            },
+            {
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs",
+              "label": "Ravs"
+            },
+            {
+              "id": "ben",
+              "url": "http://twitch.tv/bedgars",
+              "label": "Ben"
+            },
+            {
+              "url": "http://twitch.tv/yogscast",
+              "id": "lewis",
+              "label": "Lewis"
+            },
+            {
+              "url": "http://twitch.tv/lolipopgi",
+              "label": "Lolip",
+              "id": "lolipopgi"
+            },
+            {
+              "id": "harry",
+              "label": "Harry",
+              "url": "http://twitch.tv/hrry"
+            },
+            {
+              "label": "Joe",
+              "id": "joe",
+              "url": "http://twitch.tv/joehickson"
+            },
+            {
+              "url": "http://twitch.tv/mousie",
+              "label": "Mousie",
+              "id": "mousie"
+            },
+            {
+              "label": "Duncan",
+              "url": "http://twitch.tv/lalna",
+              "id": "duncan"
+            },
+            {
+              "id": "osie",
+              "url": "http://twitch.tv/osie",
+              "label": "Osie"
+            },
+            {
+              "id": "mango",
+              "url": "http://twitch.tv/m4ng0",
+              "label": "Mango"
+            },
+            {
+              "id": "zylus",
+              "url": "http://twitch.tv/zylush",
+              "label": "Zylus"
+            },
+            {
+              "label": "RTGame",
+              "url": "http://twitch.tv/rtgame",
+              "id": "rtgame"
+            }
+          ],
+          "title": "Massive Poker",
+          "subtitle": "Hosted by Tom & Pyrion"
+        }
+      ]
+    },
+    {
+      "streams": [
+        {
+          "creators": [
+            {
+              "id": "boba",
+              "label": "Boba",
+              "url": "http://twitch.tv/boba"
+            },
+            {
+              "url": "http://twitch.tv/brionykay",
+              "id": "briony",
+              "label": "Briony"
+            }
+          ],
+          "style": {
+            "background": {
+              "colors": [
+                "#fc7600ff",
+                "#f76300ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "start": "2024-12-11T11:00:00Z",
+          "subtitle": "Briony & Boba",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/2001200272?t=0h7m10s"
+            }
+          ],
+          "description": "",
+          "end": "2024-12-11T14:00:00Z",
+          "title": "Cute Games"
+        },
+        {
+          "start": "2024-12-11T14:00:00Z",
+          "style": {
+            "background": {
+              "colors": [
+                "#f76300ff",
+                "#f25100ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/2001200272?t=3h10m20s"
+            }
+          ],
+          "title": "WII Shit",
+          "description": "",
+          "creators": [
+            {
+              "url": "http://twitch.tv/rtgame",
+              "id": "rtgame",
+              "label": "RTGame"
+            },
+            {
+              "url": "http://twitch.tv/yogscast",
+              "id": "lewis",
+              "label": "Lewis"
+            },
+            {
+              "url": "http://twitch.tv/brionykay",
+              "label": "Briony",
+              "id": "briony"
+            }
+          ],
+          "end": "2024-12-11T17:00:00Z",
+          "subtitle": "RTGame Lewis Sarah & Boba"
+        },
+        {
+          "title": "Titan Battle",
+          "end": "2024-12-11T20:00:00Z",
+          "description": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#f25100ff",
+                "#ed3b00ff"
+              ]
+            }
+          },
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2001200272?t=6h24m0s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "start": "2024-12-11T17:00:00Z",
+          "creators": [
+            {
+              "url": "http://twitch.tv/bedgars",
+              "id": "ben",
+              "label": "Ben"
+            },
+            {
+              "label": "Dr. Simon Clark",
+              "url": "http://twitch.tv/drsimonclark",
+              "id": "simon_clark"
+            }
+          ],
+          "subtitle": "Gamesnight vs Midwinterminis"
+        },
+        {
+          "subtitle": "Hosted by Spiff & Pyrion",
+          "title": "CS 1.6",
+          "creators": [
+            {
+              "label": "Pyrion",
+              "id": "pyrion",
+              "url": "http://twitch.tv/pyrionflax"
+            },
+            {
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs",
+              "label": "Ravs"
+            },
+            {
+              "id": "lolipopgi",
+              "label": "Lolip",
+              "url": "http://twitch.tv/lolipopgi"
+            }
+          ],
+          "style": {
+            "background": {
+              "colors": [
+                "#ed3b00ff",
+                "#e82b00ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "start": "2024-12-11T20:00:00Z",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2001200272?t=9h20m19s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "description": "",
+          "end": "2024-12-11T23:30:00"
+        }
+      ],
+      "date": "2024-12-11"
+    },
+    {
+      "streams": [
+        {
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2002052997?t=0h15m0s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#00e8c5ff",
+                "#00dbacff"
+              ]
+            }
+          },
+          "description": "",
+          "title": "Sweaty Shooters",
+          "start": "2024-12-12T11:00:00Z",
+          "creators": [
+            {
+              "label": "Gee",
+              "url": "http://twitch.tv/geestargames",
+              "id": "gee"
+            },
+            {
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs",
+              "label": "Ravs"
+            },
+            {
+              "label": "Rythian",
+              "url": "http://twitch.tv/rythian",
+              "id": "rythian"
+            },
+            {
+              "url": "http://twitch.tv/sips_",
+              "id": "sips",
+              "label": "Sips"
+            },
+            {
+              "id": "sherlock_hulmes",
+              "url": "http://twitch.tv/sherlockhulmes_",
+              "label": "Mark"
+            }
+          ],
+          "subtitle": "Ravs Sips Gee Rythian Mark",
+          "end": "2024-12-12T14:00:00Z"
+        },
+        {
+          "subtitle": "Lewis Simon & Friends",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2002052997?t=3h19m47s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#00dbacff",
+                "#00cf94ff"
+              ]
+            }
+          },
+          "end": "2024-12-12T17:00:00Z",
+          "description": "",
+          "start": "2024-12-12T14:00:00Z",
+          "creators": [
+            {
+              "id": "lewis",
+              "label": "Lewis",
+              "url": "http://twitch.tv/yogscast"
+            },
+            {
+              "id": "simon",
+              "url": "http://twitch.tv/simonhoneydew",
+              "label": "Simon"
+            },
+            {
+              "id": "lydia",
+              "label": "Lydia",
+              "url": "http://twitch.tv/squidgame"
+            }
+          ],
+          "title": "Pecular Portions"
+        },
+        {
+          "description": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#00cf94ff",
+                "#00c27eff"
+              ]
+            }
+          },
+          "creators": [
+            {
+              "id": "hat_films",
+              "label": "Hat Films",
+              "url": "http://twitch.tv/hatfilms"
+            }
+          ],
+          "end": "2024-12-13T00:00:00Z",
+          "start": "2024-12-12T17:00:00Z",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/2002052997?t=6h32m46s"
+            }
+          ],
+          "subtitle": "",
+          "title": "Hat Films Music Stream"
+        }
+      ],
+      "date": "2024-12-12"
+    },
+    {
+      "date": "2024-12-13",
+      "streams": [
+        {
+          "style": {
+            "background": {
+              "colors": [
+                "#f74accff",
+                "#eb36b1ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/2002917122?t=0h2m48s"
+            }
+          ],
+          "start": "2024-12-13T11:00:00Z",
+          "end": "2024-12-13T14:00:00Z",
+          "subtitle": "Boba & Ben",
+          "description": "",
+          "creators": [
+            {
+              "url": "http://twitch.tv/bedgars",
+              "id": "ben",
+              "label": "Ben"
+            },
+            {
+              "label": "Boba",
+              "url": "http://twitch.tv/boba",
+              "id": "boba"
+            }
+          ],
+          "title": "Save the World"
+        },
+        {
+          "description": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#eb36b1ff",
+                "#de2396ff"
+              ]
+            }
+          },
+          "subtitle": "Art & Auction",
+          "start": "2024-12-13T14:00:00Z",
+          "title": "Hat Films Pottery",
+          "creators": [
+            {
+              "url": "http://twitch.tv/hatfilms",
+              "label": "Hat Films",
+              "id": "hat_films"
+            },
+            {
+              "url": "http://twitch.tv/yogscast",
+              "id": "lewis",
+              "label": "Lewis"
+            },
+            {
+              "url": "http://twitch.tv/squidgame",
+              "id": "lydia",
+              "label": "Lydia"
+            },
+            {
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs",
+              "label": "Ravs"
+            },
+            {
+              "label": "Boba",
+              "url": "http://twitch.tv/boba",
+              "id": "boba"
+            },
+            {
+              "id": "pyrion",
+              "label": "Pyrion",
+              "url": "http://twitch.tv/pyrionflax"
+            }
+          ],
+          "end": "2024-12-13T20:00:00Z",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2002997743?t=0h27m27s",
+              "label": "Twitch Vod Part 1"
+            },
+            {
+              "url": "https://www.twitch.tv/videos/2002997743?t=2h22m2s",
+              "label": "Twitch Vod Part 2"
+            },
+            {
+              "label": "Twitch Vod Part 3",
+              "url": "https://www.twitch.tv/videos/2002997743?t=4h15m43s"
+            }
+          ]
+        },
+        {
+          "end": "2024-12-13T23:30:00",
+          "description": "",
+          "start": "2024-12-13T20:00:00Z",
+          "title": "A Night in With Pedguin",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2003253130?t=0h3m52s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "subtitle": "",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#de2396ff",
+                "#d1137bff"
+              ]
+            }
+          },
+          "creators": [
+            {
+              "label": "Pedguin",
+              "id": "pedguin",
+              "url": "http://twitch.tv/pedguin"
+            },
+            {
+              "id": "boba",
+              "url": "http://twitch.tv/boba",
+              "label": "Boba"
+            },
+            {
+              "url": "http://twitch.tv/bouphe",
+              "id": "bouphe",
+              "label": "Bouphe"
+            },
+            {
+              "url": "http://twitch.tv/mousie",
+              "label": "Mousie",
+              "id": "mousie"
+            },
+            {
+              "url": "http://twitch.tv/daltos",
+              "label": "Daltos",
+              "id": "daltos"
+            },
+            {
+              "label": "Gee",
+              "url": "http://twitch.tv/geestargames",
+              "id": "gee"
+            },
+            {
+              "url": "http://twitch.tv/osie",
+              "id": "osie",
+              "label": "Osie"
+            },
+            {
+              "url": "http://twitch.tv/rtgame",
+              "label": "RTGame",
+              "id": "rtgame"
+            },
+            {
+              "label": "Duncan",
+              "id": "duncan",
+              "url": "http://twitch.tv/lalna"
+            },
+            {
+              "label": "Breeh",
+              "id": "breeh",
+              "url": "http://twitch.tv/breeh"
+            },
+            {
+              "url": "http://twitch.tv/ravs_",
+              "label": "Ravs",
+              "id": "ravs"
+            },
+            {
+              "url": "http://twitch.tv/angory_tom",
+              "label": "Tom",
+              "id": "tom"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "date": "2024-12-14",
+      "streams": [
+        {
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ffa600ff",
+                "#ff8400ff"
+              ]
+            }
+          },
+          "creators": [
+            {
+              "url": "http://twitch.tv/bedgars",
+              "label": "Ben",
+              "id": "ben"
+            },
+            {
+              "label": "Daf",
+              "url": "http://twitch.tv/dafnotdaff",
+              "id": "daf"
+            }
+          ],
+          "title": "Gearbox Games",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2003783415?t=0h4m30s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "description": "",
+          "end": "2024-12-14T14:00:00Z",
+          "subtitle": "Ben & Daf",
+          "start": "2024-12-14T11:00:00Z"
+        },
+        {
+          "start": "2024-12-14T14:00:00Z",
+          "end": "2024-12-14T17:00:00Z",
+          "title": "Fighting Fantasy",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/2003783415?t=3h20m25s"
+            }
+          ],
+          "style": {
+            "background": {
+              "colors": [
+                "#ff8400ff",
+                "#ff6600ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "creators": [
+            {
+              "label": "Lewis",
+              "url": "http://twitch.tv/yogscast",
+              "id": "lewis"
+            },
+            {
+              "id": "simon",
+              "url": "http://twitch.tv/simonhoneydew",
+              "label": "Simon"
+            }
+          ],
+          "description": "",
+          "subtitle": "Lewis Simon Nina & Jack"
+        },
+        {
+          "start": "2024-12-14T17:00:00Z",
+          "end": "2024-12-14T20:00:00Z",
+          "twitchVods": [
+            {
+              "url": "https://www.twitch.tv/videos/2003783415?t=6h20m1s",
+              "label": "Twitch Vod"
+            }
+          ],
+          "style": {
+            "background": {
+              "colors": [
+                "#ff6600ff",
+                "#ff4400ff"
+              ],
+              "orientation": "TD"
+            }
+          },
+          "title": "Mystery Quest",
+          "creators": [
+            {
+              "id": "tom",
+              "label": "Tom",
+              "url": "http://twitch.tv/angory_tom"
+            },
+            {
+              "id": "lydia",
+              "label": "Lydia",
+              "url": "http://twitch.tv/squidgame"
+            },
+            {
+              "url": "http://twitch.tv/ravs_",
+              "id": "ravs",
+              "label": "Ravs"
+            },
+            {
+              "id": "simon",
+              "url": "http://twitch.tv/simonhoneydew",
+              "label": "Simon"
+            },
+            {
+              "label": "Pyrion",
+              "url": "http://twitch.tv/pyrionflax",
+              "id": "pyrion"
+            }
+          ],
+          "description": "",
+          "subtitle": "Hosted by Tom"
+        },
+        {
+          "subtitle": "Yogs Discord Gang",
+          "title": "Late Late Crew",
+          "style": {
+            "background": {
+              "orientation": "TD",
+              "colors": [
+                "#ff4400ff",
+                "#ff2200ff"
+              ]
+            }
+          },
+          "creators": [
+            {
+              "label": "Breeh",
+              "url": "http://twitch.tv/breeh",
+              "id": "breeh"
+            },
+            {
+              "id": "nilesy",
+              "label": "Nilesy",
+              "url": "http://twitch.tv/nilesy"
+            },
+            {
+              "label": "Kirsty",
+              "url": "http://twitch.tv/kirsty",
+              "id": "kirsty"
+            },
+            {
+              "id": "rythian",
+              "url": "http://twitch.tv/rythian",
+              "label": "Rythian"
+            },
+            {
+              "id": "zylus",
+              "url": "http://twitch.tv/zylush",
+              "label": "Zylus"
+            },
+            {
+              "id": "daltos",
+              "url": "http://twitch.tv/daltos",
+              "label": "Daltos"
+            },
+            {
+              "url": "http://twitch.tv/mousie",
+              "label": "Mousie",
+              "id": "mousie"
+            },
+            {
+              "label": "Briony",
+              "id": "briony",
+              "url": "http://twitch.tv/brionykay"
+            },
+            {
+              "url": "http://twitch.tv/pedguin",
+              "label": "Pedguin",
+              "id": "pedguin"
+            },
+            {
+              "label": "Bouphe",
+              "id": "bouphe",
+              "url": "http://twitch.tv/bouphe"
+            },
+            {
+              "url": "http://twitch.tv/m4ng0",
+              "label": "Mango",
+              "id": "mango"
+            },
+            {
+              "id": "boba",
+              "label": "Boba",
+              "url": "http://twitch.tv/boba"
+            }
+          ],
+          "description": "",
+          "twitchVods": [
+            {
+              "label": "Twitch Vod",
+              "url": "https://www.twitch.tv/videos/2004109373?t=0h1m51s"
+            }
+          ],
+          "start": "2024-12-14T20:00:00Z",
+          "end": "2024-12-15T00:10:00"
+        }
+      ]
+    }
+  ]
+}
