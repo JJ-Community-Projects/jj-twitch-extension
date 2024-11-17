@@ -6,6 +6,7 @@ import {ColoredScrollbar} from "../common/ColoredScrollbar.tsx";
 import {GlobeIcon, HeartIcon} from "../common/icons/JJIcons.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
+import {Numeric} from "solid-i18n";
 
 
 export const OverlayJJCharities: Component = () => {
@@ -60,11 +61,17 @@ export const OverlayJJCharities: Component = () => {
 
 const Item: Component<{ cause: Cause }> = (props) => {
   const {cause: charity} = props
+  const {donation} = useData()
+
+  const totalPounds = () => charity.raised.yogscast + charity.raised.fundraisers
+  const totalDollar = () => totalPounds() * donation.avgConversionRate
+
   return (
     <div
       class={twMerge('bg-white flex w-full flex-col items-center gap-2 rounded-2xl shadow-xl p-2')}
     >
       <div class={'w-full flex flex-row gap-2 items-center justify-around'}>
+
         <div class={'w-full flex flex-row gap-1 items-center'}>
           <img class={'~h-6/10 ~w-6/10 rounded-lg'} alt={charity.name} src={charity.logo} loading={'lazy'}/>
           <p class={'font-bold ~text-xs/base'}>{charity.name}</p>
@@ -87,7 +94,15 @@ const Item: Component<{ cause: Cause }> = (props) => {
           </a>
         </div>
       </div>
-      <p class={'w-full text-center ~text-xs/base'}>{charity.description}</p>
+      <p class={'w-full ~text-xs/base'}>{charity.description}</p>
+
+
+      <div class={'flex flex-row w-full items-start justify-start'}>
+        <p class={'text-primary-500 text-xs font-bold'}>
+          Raised <Numeric value={totalPounds()} numberStyle="currency" currency={'GBP'}/> / <Numeric value={totalDollar()} numberStyle="currency"
+                                                                                                     currency={'USD'}/>
+        </p>
+      </div>
     </div>
   )
 }
