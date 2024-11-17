@@ -1,4 +1,4 @@
-import {type Component, For} from "solid-js";
+import {type Component, createEffect, For, onMount, Show} from "solid-js";
 import type {Cause} from "../../lib/model/jjData/JJData.ts";
 import {GlobeIcon, TiltifyIcon} from "../common/icons/JJIcons.tsx";
 import {twMerge} from "tailwind-merge";
@@ -6,6 +6,7 @@ import {useChat} from "../common/providers/ChatProvider.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useData} from "../common/providers/DataProvider.tsx";
 import {Numeric} from "solid-i18n";
+import { Transition, TransitionGroup } from "solid-transition-group";
 
 export const OverlayCharityBanner: Component = () => {
   const {causes, causeId} = useChat()
@@ -14,13 +15,18 @@ export const OverlayCharityBanner: Component = () => {
       <For each={causes}>
         {
           cause => {
+            const show = () => causeId() === cause.id
             return (
-              <div class={twMerge(
-                'absolute inset-0 w-full h-full transition-all duration-500',
-                cause.id === causeId() ? 'opacity-100' : 'opacity-0 pointer-events-none'
-              )}>
-                <CauseView cause={cause}/>
-              </div>
+              <Transition>
+                <Show when={show()}>
+                  <div class={twMerge(
+                    'absolute inset-0 w-full h-full transition-all duration-500',
+                    cause.id === causeId() ? '' : 'pointer-events-none'
+                  )}>
+                    <CauseView cause={cause}/>
+                  </div>
+                </Show>
+              </Transition>
             )
           }
         }
@@ -44,10 +50,14 @@ export const ChatDemo = () => {
 }
 
 
-
 const CauseView: Component<{ cause: Cause }> = (props) => {
   const cause = props.cause
   const {donation} = useData()
+
+
+  const {commandTimeout, causeId, lastCauseId} = useChat()
+
+  const visible = () => causeId() === cause.id || lastCauseId() === cause.id
 
   const twitchConfig = useTwitchOverlayConfig()
   const config = useOverlayConfig()
@@ -78,7 +88,6 @@ const CauseView: Component<{ cause: Cause }> = (props) => {
       <div class={'h-full flex flex-row items-center p-4 gap-4 bg-white rounded-2xl shadow'}>
         <img class={'h-12 w-12'} src={cause.logo} alt={cause.name}/>
         <p class={'text-xl'}>{cause.name}</p>
-
         <div class={'flex flex-col items-start justify-center'}>
           <p class={'text-primary-500'}>
             Raised <Numeric value={totalPounds()} numberStyle="currency" currency={'GBP'}/>
