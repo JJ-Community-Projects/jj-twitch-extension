@@ -26,13 +26,12 @@ export const AboutOverlayExtension: Component = () => {
     <div class={twMerge('text-white flex flex-col rounded-2xl shadow-xl items-center gap-2 p-4', backgroundColor())}>
       <p class={'~text-xl/2xl text-center'}>About the overlay extension</p>
       <span class={' ~text-xs/base text-center'}>
-        <p>The Jingle Jam Community Extension with information about the charities and Yogscast Jingle Jam Streams.</p>
+        <p>The Jingle Jam Community Extension shows information about the Charities and Community Fundraisers.</p>
         <p>This is a community project and not affiliated with the Jingle Jam.</p>
-        <p>If you have suggestions or concerns contact @Ostof on Twitch or Discord</p>
       </span>
       <ChatSettings/>
       <a
-        class={'text-xs flex flex-row gap-1 justify-center items-center'}
+        class={'text-xs flex flex-row gap-1 justify-center items-center hover:scale-105 transition-all'}
         href={'https://github.com/orgs/JJ-Community-Projects/repositories'}
         target={'_blank'}
       >
