@@ -1,6 +1,14 @@
 import {type Component} from "solid-js";
 import {twMerge} from "tailwind-merge";
-import {DiscordIcon, GlobeIcon, InstagramIcon, TiktokIcon, TwitterIcon} from "../common/icons/JJIcons.tsx";
+import {
+  DiscordIcon,
+  GithubIcon,
+  GlobeIcon,
+  InstagramIcon,
+  TiktokIcon,
+  TwitchIcon,
+  TwitterIcon
+} from "../common/icons/JJIcons.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 
@@ -37,6 +45,13 @@ export const OverlayAboutJJ: Component = (props) => {
         target={'_blank'}
         href={url()}>Donate</a>
       <ExternalLinks/>
+      <a
+        class={'text-xs flex flex-row gap-1 justify-center items-center hover:scale-105 transition-all'}
+        href={'https://github.com/orgs/JJ-Community-Projects/repositories'}
+        target={'_blank'}
+      >
+        Contribute on Github <GithubIcon/>
+      </a>
     </div>
   );
 }
@@ -51,6 +66,13 @@ const ExternalLinks = () => {
         href={'https://jinglejam.co.uk'}
         aria-label={'Jingle Jam Website'}>
         <GlobeIcon class={'~w-4/8 ~h-4/8'}/>
+      </a>
+      <a
+        class={'hover:scale-110 transition-all'}
+        href={'https://twitch.tv/team/jinglejam'}
+        target={'_blank'}
+        aria-label={'Jingle Jam Stream Team'}>
+        <TwitchIcon class={'~w-4/8 ~h-4/6'}/>
       </a>
       <a
         class={'hover:scale-110 transition-all'}
