@@ -4,7 +4,7 @@ import {usePanelConfig, useTwitchPanelConfig} from "./providers/PanelConfigProvi
 import type {Theme} from "../../lib/model/TwitchConfig.ts";
 
 export const DonationButton: Component = () => {
-  const config  = useTwitchPanelConfig()
+  const config = useTwitchPanelConfig()
   const jjConfig = usePanelConfig()
 
   const theme = (): Theme => {
@@ -31,18 +31,16 @@ export const DonationButton: Component = () => {
   }
   return (
     <Show when={jjConfig.donationLink.visible}>
-      <div class={'px-2'}>
-        <a
-          class={twMerge(
-            'hover:scale-102 flex w-full flex-row items-center justify-center rounded-2xl p-0.5 text-center text-white shadow-xl transition-all hover:shadow-2xl hover:brightness-105',
-            gradient(),
-          )}
-          href={url()}
-          target={'_blank'}
-        >
-          {jjConfig.donationLink.text ?? 'Donate'}
-        </a>
-      </div>
+      <a
+        class={twMerge(
+          'hover:scale-102 flex flex-row items-center justify-center rounded-2xl p-1 text-center text-white shadow-xl transition-all hover:shadow-2xl hover:brightness-105',
+          gradient(),
+        )}
+        href={url()}
+        target={'_blank'}
+      >
+        {jjConfig.donationLink.text ?? 'Donate'}
+      </a>
     </Show>
   )
 }
