@@ -7,11 +7,18 @@ import {useOverlay} from "../common/providers/OverlayProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
+import {useChat} from "../common/providers/ChatProvider.tsx";
+import {Button} from "@kobalte/core/button";
+import {JJIcon} from "../common/icons/JJIcons.tsx";
+import {useTwitchAuth} from "../common/providers/TwitchAuthProvider.tsx";
 
 export const OverlaySideNav: Component = () => {
+
+  const {start} = useChat()
   const config = useOverlayConfig()
   const twitchConfig = useTwitchOverlayConfig()
   const {theme, tailwindBGPrimary} = useTheme()
+  const {auth, channelName} = useTwitchAuth()
   const {
     toggleAboutJJ,
     toggleCharities,
@@ -24,6 +31,10 @@ export const OverlaySideNav: Component = () => {
     schedule,
     about
   } = useOverlay()
+
+  const showYogsSchedule = () => {
+    return channelName()?.toLowerCase() === 'yogscast'
+  }
 
   const buttonColor = () => {
     switch (theme()) {
@@ -59,8 +70,15 @@ export const OverlaySideNav: Component = () => {
     }
   }
 
+  const isDev =  false
+
   return (
     <div class={'flex flex-col h-full w-12 py-20 gap-4 justify-center items-center'}>
+      <Show when={isDev}>
+        <Button class={'bg-red-500 text-white'} onClick={() => {
+          start(582)
+        }}>Test chat</Button>
+      </Show>
       <Tooltip placement={'right'}>
         <Tooltip.Trigger
           onClick={toggleAboutJJ}
@@ -71,7 +89,7 @@ export const OverlaySideNav: Component = () => {
               jj() ? buttonBorderHoverColor(): buttonBorderColor()
             )
           }>
-          <p class={'text-white text-xl italic'}>JJ</p>
+          <JJIcon class={'text-white'} size={24}/>
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
@@ -123,7 +141,7 @@ export const OverlaySideNav: Component = () => {
         </Tooltip>
 
       </Show>
-      <Show when={config.showYogsSchedule && twitchConfig.showYogsSchedule}>
+      <Show when={config.showYogsSchedule && twitchConfig.showYogsSchedule && showYogsSchedule()}>
         <Tooltip placement={'right'}>
           <Tooltip.Trigger
             onClick={toggleSchedule}
