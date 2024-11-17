@@ -1,17 +1,8 @@
 ---
 import {OverlayRoot} from '../components/overlay/OverlayRoot.tsx'
+import Layout from "../layouts/Layout.astro";
 ---
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="description" content=""/>
-    <title>Jingle Jam Twitch Extension</title>
-    <script is:inline src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="generator" content={Astro.generator}/>
-</head>
-<style>
+<style is:global>
 
     .schedule-controls-link {
         @apply hover:border-accent-500 hover:bg-accent-500 flex flex-1 flex-col items-center justify-center p-1 transition-all hover:scale-110 hover:text-white;
@@ -35,11 +26,28 @@ import {OverlayRoot} from '../components/overlay/OverlayRoot.tsx'
         width: 100vw;
         height: 100vh;
         overflow: hidden;
-        padding: var(--twitch-vertical-padding) var(--twitch-right-padding)
-            var(--twitch-vertical-padding) var(--twitch-left-padding);
+        padding: var(--twitch-vertical-padding) var(--twitch-right-padding) var(--twitch-vertical-padding) var(--twitch-left-padding);
     }
+
+    .progress-bar {
+        width: 0; /* Start with 0% width */
+        height: 100%; /* Full height of the container */
+        background-color: #BED9ED; /* Solid color for the progress bar */
+        animation: fillProgress 11s linear forwards; /* Animate width over 10 seconds */
+        border-radius: 16px; /* Match the rounded corners of the container */
+        z-index: 1; /* Place behind the content */
+    }
+
+    @keyframes fillProgress {
+        from {
+            width: 0; /* Start at 0% width */
+        }
+        to {
+            width: 100%; /* End at 100% width */
+        }
+    }
+
 </style>
-<body>
-<OverlayRoot client:only="solid-js"/>
-</body>
-</html>
+<Layout>
+    <OverlayRoot client:only="solid-js"/>
+</Layout>

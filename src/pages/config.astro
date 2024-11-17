@@ -1,16 +1,7 @@
 ---
 import {ConfigRoot} from "../components/config/panel/ConfigRoot";
+import Layout from "../layouts/Layout.astro";
 ---
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="description" content=""/>
-    <title>Jingle Jam Twitch Extension</title>
-    <script src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"></script>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="generator" content={Astro.generator}/>
-</head>
 <style>
 
     .schedule-controls-link {
@@ -26,7 +17,6 @@ import {ConfigRoot} from "../components/config/panel/ConfigRoot";
     }
 
 </style>
-<body>
-<ConfigRoot client:only="solid-js"/>
-</body>
-</html>
+<Layout>
+    <ConfigRoot client:only="solid-js"/>
+</Layout>
