@@ -12,7 +12,6 @@ if (fs.existsSync('./dist/index.html')) {
             .replaceAll('/assets/', './assets/')
             .replaceAll('component-url="./assets/', 'component-url="./')
             .replaceAll('renderer-url="./assets/', 'renderer-url="./')
-
         ),
     )
 }
@@ -135,4 +134,50 @@ async function removeInlineScriptAndStyle(directory) {
     }
 }
 
+// recursively replace all instances of "/assets/JingleJam with "./assets/JingleJam in all files
+function replaceAssetPath(directory) {
+    const files = fs.readdirSync(directory)
+    for (const file of files) {
+        const filePath = path.join(directory, file)
+        if (fs.statSync(filePath).isDirectory()) {
+            replaceAssetPath(filePath)
+        } else {
+            const content = fs.readFileSync(filePath, {encoding: 'utf-8'})
+            if (content.includes('/assets/JingleJam')) {
+                console.log(`Replacing Asset Path in ${filePath}`)
+            }
+            fs.writeFileSync(filePath, content.replaceAll('/assets/JingleJam', './assets/JingleJam'))
+        }
+    }
+}
+
+async function findJingleJamPng(directory) {
+    // find all png files that names contain "JingleJam"
+    const files = await glob('**/*.png', {
+        cwd: directory,
+        dot: true,
+        aboslute: true,
+        filesOnly: true,
+    });
+    const blackPath = files.filter(f => f.includes('Black')).at(0)
+    const bluePath = files.filter(f => f.includes('Blue')).at(0)
+    const redPath = files.filter(f => f.includes('Red')).at(0)
+    const redFileName = path.basename(redPath)
+    const blueFileName = path.basename(bluePath)
+    const blackFileName = path.basename(blackPath)
+    // delete files
+    fs.unlinkSync('./dist/' + blackPath)
+    fs.unlinkSync('./dist/' + bluePath)
+    fs.unlinkSync('./dist/' + redPath)
+    // copy the JingleJam files from ./src/assets to ./dist/assets and rename them
+    const newRed = './src/assets/JingleJam_Red.png'
+    const newBlue = './src/assets/JingleJam_Blue.png'
+    const newBlack = './src/assets/JingleJam_Black.png'
+    fs.copyFileSync(newRed, `./dist/assets/${redFileName}`)
+    fs.copyFileSync(newBlue, `./dist/assets/${blueFileName}`)
+    fs.copyFileSync(newBlack, `./dist/assets/${blackFileName}`)
+}
+
 removeInlineScriptAndStyle('./dist')
+replaceAssetPath('./dist')
+findJingleJamPng('./dist')
