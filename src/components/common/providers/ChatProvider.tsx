@@ -123,6 +123,8 @@ const useTwitchChatHook = (callback: (command: TwitchOverlayChatCommand) => void
 
 const useChatHook = (initCauseId?: number) => {
   const {donation} = useData()
+  const storage = useLocalStorage()
+  const isChatEnabled = () => storage.getBoolean("chat", true)
   const causes = donation.causes
 
   const [lastCommandShown, setLastCommandShown] = createSignal<DateTime>()
@@ -130,6 +132,7 @@ const useChatHook = (initCauseId?: number) => {
   const [timeoutRef, setTimeoutRef] = createSignal<NodeJS.Timeout | undefined>(undefined);
 
   const [causeId, setCauseId] = createSignal<number>()
+  const [lastCauseId, setLastCauseId] = createSignal<number>()
 
   if (initCauseId) {
     setCauseId(initCauseId)
@@ -153,28 +156,33 @@ const useChatHook = (initCauseId?: number) => {
     return diff().as('seconds') > 15
   }
 
+  const start = (causeId: number) => {
+    setLastCommandShown(DateTime.now())
+    setCauseId(causeId)
+    setTimeoutRef(setTimeout(() => {
+      setLastCauseId(causeId)
+      setCauseId(-1)
+      setTimeoutRef(undefined)
+      console.log("hide cause", causeId)
+    }, commandTimeout))
+  }
+
   useTwitchChatHook((command) => {
     console.log("Command received", command, 'show', shouldShowCommand(), 'last', lastCommandShown(), 'diff', diff().as('seconds'))
     const cause = findCause(command)
-    if (!timeoutRef() && cause && shouldShowCommand()) {
-      setLastCommandShown(DateTime.now())
-      setCauseId(cause.id)
-      setTimeoutRef(setTimeout(() => {
-        setCauseId(-1)
-        setTimeoutRef(undefined)
-        console.log("hide cause", command, 'show', shouldShowCommand(), 'last', lastCommandShown(), 'diff', diff().as('seconds'))
-      }, commandTimeout))
+    if (!timeoutRef() && cause && shouldShowCommand() && isChatEnabled()) {
+      start(cause.id)
     }
   })
 
   return {
-    causes, causeId
+    causes, causeId,lastCauseId, start, commandTimeout,
   }
 }
 
 const ChatContext = createContext<ReturnType<typeof useChatHook>>();
 
-export const ChatProvider: ParentComponent<{initCauseId?: number}> = (props) => {
+export const ChatProvider: ParentComponent<{ initCauseId?: number }> = (props) => {
   const hook = useChatHook(props.initCauseId)
   return (
     <ChatContext.Provider value={hook}>
