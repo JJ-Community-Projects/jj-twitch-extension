@@ -29,7 +29,9 @@ export type TESTwitchCreator = {
   id: string
   label: string
   url: string
+  color: string
 }
+
 export type TESTwitchLink = {
   label: string
   url: string
