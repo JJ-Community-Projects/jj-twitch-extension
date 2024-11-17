@@ -1,4 +1,4 @@
-import {type Component, For, Show} from "solid-js";
+import {type Component, For, Match, Show, Switch} from "solid-js";
 import {Dialog} from "@kobalte/core";
 import {AiOutlineClose} from "solid-icons/ai";
 import {DateTime} from "luxon";
@@ -6,6 +6,7 @@ import type {TESStream, TESTwitchCreator, TESTwitchLink} from "../../../lib/mode
 import {FaBrandsTwitch} from "solid-icons/fa";
 import {YogsStreamUtils} from "../../../lib/YogsStreamUtils.ts";
 import {useNow} from "../../../lib/useNow.ts";
+import {getTextColor} from "../../../lib/textColors.ts";
 
 interface YogsScheduleDetailDialogProps {
   stream: TESStream
@@ -140,15 +141,48 @@ interface CreatorComponentProps {
 }
 
 const CreatorComponent: Component<CreatorComponentProps> = (props) => {
+  const url = () => props.creator.url
+
+  const color = () => {
+    return props.creator.color
+  }
+
+  const hasUrl = () => {
+    return props.creator.url !== ''
+  }
+
+  const label = () => props.creator.label
+
   return (
-    <div class={'flex flex-row py-1'}>
-      <a
-        class={'hover:scale-102 text-xxs flex flex-row items-center p-2 rounded-2xl bg-twitch-500 text-white transition-all '}
-        target={'_blank'}
-        href={props.creator.url}
-      >
-        <FaBrandsTwitch/>/{props.creator.label}
-      </a>
-    </div>
+    <Switch>
+      <Match when={hasUrl()}>
+        <div class={'flex flex-row py-1'}>
+          <a
+            class={'hover:scale-102 text-xxs flex flex-row items-center p-2 rounded-2xl transition-all'}
+            style={{
+              background: color(),
+              color: getTextColor(color())
+            }}
+            target={'_blank'}
+            href={url()}
+          >
+            {label()}
+          </a>
+        </div>
+      </Match>
+      <Match when={!hasUrl()}>
+        <div class={'flex flex-row py-1'}>
+          <p
+            class={'text-xxs flex flex-row items-center p-2 rounded-2xl'}
+            style={{
+              background: color(),
+              color: getTextColor(color())
+            }}
+          >
+            {label()}
+          </p>
+        </div>
+      </Match>
+    </Switch>
   );
 }
