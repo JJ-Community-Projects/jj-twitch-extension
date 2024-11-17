@@ -25,57 +25,64 @@ export const OverlayCommunityFundraiser: Component = (props) => {
   }
 
   return (
-    <div class={
-      twMerge('h-full w-full overflow-hidden overscroll-none p-2 rounded-2xl shadow-xl',
-        backgroundColor()
-      )
-    }>
+    <div class={twMerge('h-full flex flex-col gap-2 p-2 rounded-2xl shadow-xl', backgroundColor())}>
+
+      <div class={'w-full px-2 flex flex-row'}>
+        <a
+          href={'https://twitch.tv/team/jinglejam'}
+          target={'_blank'}
+          class={'bg-twitch text-white p-2 rounded-2xl full text-center w-full transition-all hover:scale-105'}>
+          Stream Team</a>
+      </div>
       <Show when={fundraiser.campaigns.length === 0}>
         <div class={'h-full w-full flex items-center justify-center'}>
           <p class={'text-lg text-center text-black bg-white rounded-2xl p-2'}>No fundraisers found.</p>
         </div>
       </Show>
-      <ColoredScrollbar>
-        <div class={twMerge(
-          'h-full w-full gap-2',
-          'lg:grid lg:grid-cols-2',
-          'flex flex-col p-2'
-        )}>
-          <For each={fundraiser.campaigns}>
-            {(d, i) => {
-              const isTwitch = () => d.twitch_data && d.livestream.type === 'twitch'
-              const img = () => {
-                if (d.user.avatar === 'https://assets.tiltify.com/assets/default-avatar.png') {
-                  if (isTwitch()) {
-                    return d.twitch_data!.profile_image_url
+
+      <div class={'h-full w-full overflow-hidden overscroll-none'}>
+        <ColoredScrollbar>
+          <div class={twMerge(
+            'h-full w-full gap-2',
+            'lg:grid lg:grid-cols-2',
+            'flex flex-col p-2'
+          )}>
+            <For each={fundraiser.campaigns}>
+              {(d, i) => {
+                const isTwitch = () => d.twitch_data && d.livestream.type === 'twitch'
+                const img = () => {
+                  if (d.user.avatar === 'https://assets.tiltify.com/assets/default-avatar.png') {
+                    if (isTwitch()) {
+                      return d.twitch_data!.profile_image_url
+                    }
                   }
+                  return d.user.avatar
                 }
-                return d.user.avatar
-              }
 
-              const url = () => {
-                if (!d.twitch_data) {
-                  return undefined
+                const url = () => {
+                  if (!d.twitch_data) {
+                    return undefined
+                  }
+                  return `https://twitch.tv/${d.twitch_data.login}`
                 }
-                return `https://twitch.tv/${d.twitch_data.login}`
-              }
 
-              return (
-                <Child
-                  i={i()}
-                  img={img()}
-                  title={d?.twitch_data?.display_name ?? d.user.name}
-                  subtitle={d.name}
-                  desc={d.description}
-                  isLive={d.isLive!}
-                  raised={d.raised}
-                  url={url()}
-                />
-              )
-            }}
-          </For>
-        </div>
-      </ColoredScrollbar>
+                return (
+                  <Child
+                    i={i()}
+                    img={img()}
+                    title={d?.twitch_data?.display_name ?? d.user.name}
+                    subtitle={d.name}
+                    desc={d.description}
+                    isLive={d.isLive!}
+                    raised={d.raised}
+                    url={url()}
+                  />
+                )
+              }}
+            </For>
+          </div>
+        </ColoredScrollbar>
+      </div>
     </div>
   );
 }
@@ -84,7 +91,7 @@ export const OverlayCommunityFundraiser: Component = (props) => {
 const Live = () => {
   return (
     <div class={'relative flex h-3 items-center justify-center'}>
-      <p class={'bg-twitch-500 rounded p-0.5 text-[6px] text-white'}>LIVE</p>
+      <p class={'bg-twitch-500 rounded p-0.5 text-[8px] text-white'}>LIVE</p>
     </div>
   )
 }
@@ -112,11 +119,11 @@ const Child: Component<{
 
   return (
     <ChildBody url={props.url} i={props.i}>
-      <div class={'flex h-full w-full flex-row items-center gap-2 p-1.5'}>
-        <div class={'flex h-full flex-1 flex-col gap-1 overflow-hidden'}>
+      <div class={'flex w-full flex-row items-center gap-2 p-1.5'}>
+        <div class={'flex flex-1 flex-col gap-1 overflow-hidden'}>
           <div class={'flex flex-row gap-1'}>
             <img class={'h-8 w-8 rounded-lg'} alt={props.title} src={props.img} loading={'lazy'}/>
-            <div class={'flex h-full flex-col justify-between overflow-hidden'}>
+            <div class={'flex flex-col justify-between overflow-hidden'}>
               <div class={'flex max-h-[14px] flex-row items-center gap-1 overflow-hidden'}>
                 <Show when={props.isLive && props.url}>
                   <Live/>
