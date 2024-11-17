@@ -6,6 +6,10 @@ export default {
     theme: {
         screens,
         extend: {
+            fontFamily: {
+                poppins: ['Poppins'],
+                babas: ['Bebas'],
+            },
             fontSize: {
                 xxs: [
                     '0.625rem;',
