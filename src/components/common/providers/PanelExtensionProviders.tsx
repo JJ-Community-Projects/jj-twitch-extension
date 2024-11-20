@@ -8,7 +8,7 @@ import {ThemeProvider} from "./ThemeProvider.tsx";
 import {PanelConfigLoader} from "./PanelConfigLoader.tsx";
 import {TabsProvider} from "../TabsProvider.tsx";
 import {TwitchPanelConfigProvider} from "./PanelConfigProvider.tsx";
-
+import {AnalyticsProvider} from "./AnalyticsProvider.tsx";
 
 export const PanelExtensionProviders: ParentComponent = (props) => {
   const i18n = createI18n({language: useLocale().locale()})
@@ -16,17 +16,19 @@ export const PanelExtensionProviders: ParentComponent = (props) => {
     <I18nProvider i18n={i18n}>
       <TwitchAuthProvider>
         <TwitchPanelConfigProvider>
-          <FirestoreProvider>
-            <PanelConfigLoader>
-              <DataLoader>
-                <ThemeProvider>
-                  <TabsProvider>
-                    {props.children}
-                  </TabsProvider>
-                </ThemeProvider>
-              </DataLoader>
-            </PanelConfigLoader>
-          </FirestoreProvider>
+          <AnalyticsProvider>
+            <FirestoreProvider>
+              <PanelConfigLoader>
+                <DataLoader>
+                  <ThemeProvider>
+                    <TabsProvider>
+                      {props.children}
+                    </TabsProvider>
+                  </ThemeProvider>
+                </DataLoader>
+              </PanelConfigLoader>
+            </FirestoreProvider>
+          </AnalyticsProvider>
         </TwitchPanelConfigProvider>
       </TwitchAuthProvider>
     </I18nProvider>

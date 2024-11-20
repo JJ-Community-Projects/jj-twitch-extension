@@ -8,7 +8,7 @@ import {TwitchOverlayConfigProvider} from "./OverlayConfigProvider.tsx";
 import {OverlayConfigLoader} from "./OverlayConfigLoader.tsx";
 import {OverlayDataLoader} from "./OverlayDataLoader.tsx";
 import {LocalStorageProvider} from "./LocalStorageProvider.tsx";
-
+import {AnalyticsProvider} from "./AnalyticsProvider.tsx";
 
 export const OverlayExtensionProviders: ParentComponent = (props) => {
   const i18n = createI18n({language: useLocale().locale()})
@@ -17,15 +17,17 @@ export const OverlayExtensionProviders: ParentComponent = (props) => {
       <I18nProvider i18n={i18n}>
         <TwitchAuthProvider>
           <TwitchOverlayConfigProvider>
-            <FirestoreProvider>
-              <OverlayConfigLoader>
-                <OverlayDataLoader>
-                  <OverlayThemeProvider>
-                    {props.children}
-                  </OverlayThemeProvider>
-                </OverlayDataLoader>
-              </OverlayConfigLoader>
-            </FirestoreProvider>
+            <AnalyticsProvider>
+              <FirestoreProvider>
+                <OverlayConfigLoader>
+                  <OverlayDataLoader>
+                    <OverlayThemeProvider>
+                      {props.children}
+                    </OverlayThemeProvider>
+                  </OverlayDataLoader>
+                </OverlayConfigLoader>
+              </FirestoreProvider>
+            </AnalyticsProvider>
           </TwitchOverlayConfigProvider>
         </TwitchAuthProvider>
       </I18nProvider>
