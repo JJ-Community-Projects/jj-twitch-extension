@@ -1,10 +1,12 @@
-import { Dialog, ToggleButton } from "@kobalte/core";
+import {Dialog, ToggleButton} from "@kobalte/core";
 import type {ModalSignal} from "../../lib/createModalSignal.ts";
 import {type Component, createSignal, For, Match, Show, Switch} from "solid-js";
 import {useCreatorFilter} from "./providers/CreatorFilterProvider.tsx";
 import {CgClose} from "solid-icons/cg";
 import {twMerge} from "tailwind-merge";
 import {FaRegularSquare, FaSolidSquareCheck} from "solid-icons/fa";
+import {useAnalytics} from "./providers/AnalyticsProvider.tsx";
+import {useData} from "./providers/DataProvider.tsx";
 
 interface FilterDialogProps {
   modalSignal: ModalSignal
@@ -33,6 +35,8 @@ interface FilterDialogBodyProps {
 
 const FilterDialogBody: Component<FilterDialogBodyProps> = props => {
   const {onClose} = props
+  const {log} = useAnalytics()
+  const {schedule} = useData()
   const {creators, toggle, reset, filter, filteredStreams, appearanceCount, includes, sortByName} =
     useCreatorFilter()
   const [search, setSearch] = createSignal('')
@@ -138,6 +142,10 @@ const FilterDialogBody: Component<FilterDialogBodyProps> = props => {
           class={'bg-primary rounded-xl p-2 text-white'}
           onclick={() => {
             onClose()
+            log('schedule_filter', {
+              filter: filter().join(','),
+              schedule: schedule.title,
+            })
           }}
         >
           Done
@@ -146,7 +154,6 @@ const FilterDialogBody: Component<FilterDialogBodyProps> = props => {
     </div>
   )
 }
-
 
 
 const SortToggle = () => {

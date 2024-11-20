@@ -6,6 +6,7 @@ import {getTextColor} from "../../../lib/textColors.ts";
 import {YogsStreamUtils} from "../../../lib/YogsStreamUtils.ts";
 import {createModalSignal} from "../../../lib/createModalSignal.ts";
 import {StreamDialog} from "./StreamDialog.tsx";
+import {useAnalytics} from '../providers/AnalyticsProvider.tsx';
 
 interface SlotCardProps {
   stream: TESStream
@@ -15,6 +16,7 @@ interface SlotCardProps {
 
 export const StreamCard: Component<SlotCardProps> = props => {
   const now = useNow()
+  const {logSlotClick} = useAnalytics()
   const stream = props.stream
   const style = stream.style
   const orientation = style.background.orientation
@@ -98,7 +100,10 @@ export const StreamCard: Component<SlotCardProps> = props => {
           'background-image': gradient,
           color: getTextColor(colors[0]),
         }}
-        onclick={modalSignal.toggle}
+        onclick={() => {
+          modalSignal.toggle()
+          logSlotClick(stream)
+        }}
       >
         <div class={'absolute top-0 flex h-full w-full flex-col items-center justify-center px-4 py-2'}>
           <Show when={!hasSubtitle()}>

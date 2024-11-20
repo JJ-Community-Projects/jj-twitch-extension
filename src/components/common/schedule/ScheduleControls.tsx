@@ -27,7 +27,6 @@ export const ScheduleControls: Component = () => {
   const now = useNow()
 
   const isJJ = () => {
-
     return now() >= start && now() <= end
   }
 

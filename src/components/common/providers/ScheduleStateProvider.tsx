@@ -1,12 +1,13 @@
 import {createContext, createSignal, onMount, type ParentComponent, useContext} from "solid-js";
 import {DateTime} from "luxon";
 import {useData} from "./DataProvider.tsx";
-import type {TESTwitchCreator, TESTwitchLink} from "../../../lib/model/TwitchExtensionSchedule.ts";
+import {useAnalytics} from "./AnalyticsProvider.tsx";
 
 const useScheduleStateHook = () => {
   const {schedule} = useData()
   const days = schedule.days
   const dayCount = days.length
+  const {log} = useAnalytics()
 
   const streams = schedule.days.map(day => day.streams).flat()
 
@@ -40,10 +41,18 @@ const useScheduleStateHook = () => {
   })
 
   const nextDay = () => {
-    setDayIndex((dayIndex() + 1) % dayCount)
+    const next = (dayIndex() + 1) % dayCount
+    setDayIndex(next)
+    log('schedule_next', {
+      day: next,
+    })
   }
   const previousDay = () => {
-    setDayIndex((dayIndex() - 1 + dayCount) % dayCount)
+    const next = (dayIndex() - 1 + dayCount) % dayCount
+    setDayIndex(next)
+    log('schedule_prev', {
+      day: next,
+    })
   }
 
   const day = () => days[dayIndex()]
@@ -67,7 +76,7 @@ const useScheduleStateHook = () => {
     streams,
     day,
     nextDay,
-    previousDay,switchToToday
+    previousDay, switchToToday
   }
 }
 
