@@ -41,7 +41,7 @@ export const YogsTab: Component = (props) => {
         </div>
       </Show>
       <Show when={!config.showSchedule}>
-        <InvisibleBody text={'The Yogscast Jingle Jam Schedule show soon after it was published.'}></InvisibleBody>
+        <InvisibleBody text={'The Yogscast Jingle Jam Schedule will be shown soon after it was published.'}></InvisibleBody>
       </Show>
     </>
   );

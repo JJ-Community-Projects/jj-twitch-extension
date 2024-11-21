@@ -32,7 +32,7 @@ export const CommunityTab: Component = () => {
         </div>
       </Show>
       <Show when={!config.showFundraiser}>
-        <InvisibleBody text={'The Community Fundraisers will shown soon after the Jingle Jam has started'} />
+        <InvisibleBody text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'} />
       </Show>
     </>
   );
