@@ -1,4 +1,4 @@
-import {Match, type ParentComponent, Switch} from "solid-js";
+import {createEffect, Match, type ParentComponent, Switch} from "solid-js";
 import {useFirestore} from "./FirestoreProvider.tsx";
 import type {OverlayConfig} from "../../../lib/model/Config.ts";
 import {collection, type CollectionReference, doc} from "firebase/firestore";
@@ -25,6 +25,11 @@ function loadConfig() {
 
 export const OverlayConfigLoader: ParentComponent = (props) => {
   const config = loadConfig()
+  createEffect(() => {
+    if (config.data) {
+      console.log('remote config loaded', config.data)
+    }
+  })
   return (
     <Switch>
       <Match when={config.data}>

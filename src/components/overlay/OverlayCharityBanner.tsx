@@ -1,4 +1,4 @@
-import {type Component, createEffect, For, onMount, Show} from "solid-js";
+import {type Component, For, Show} from "solid-js";
 import type {Cause} from "../../lib/model/jjData/JJData.ts";
 import {GlobeIcon, TiltifyIcon} from "../common/icons/JJIcons.tsx";
 import {twMerge} from "tailwind-merge";
@@ -6,27 +6,22 @@ import {useChat} from "../common/providers/ChatProvider.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useData} from "../common/providers/DataProvider.tsx";
 import {Numeric} from "solid-i18n";
-import { Transition, TransitionGroup } from "solid-transition-group";
 
 export const OverlayCharityBanner: Component = () => {
   const {causes, causeId} = useChat()
+
   return (
     <div class={'relative w-full h-full'}>
       <For each={causes}>
         {
           cause => {
-            const show = () => causeId() === cause.id
             return (
-              <Transition>
-                <Show when={show()}>
-                  <div class={twMerge(
-                    'absolute inset-0 w-full h-full transition-all duration-500',
-                    cause.id === causeId() ? '' : 'pointer-events-none'
-                  )}>
-                    <CauseView cause={cause}/>
-                  </div>
-                </Show>
-              </Transition>
+                <div class={twMerge(
+                  'absolute inset-0 w-full h-full transition-all duration-500',
+                  cause.id === causeId() ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                )}>
+                  <CauseView cause={cause}/>
+                </div>
             )
           }
         }
@@ -62,26 +57,12 @@ const CauseView: Component<{ cause: Cause }> = (props) => {
   const twitchConfig = useTwitchOverlayConfig()
   const config = useOverlayConfig()
 
-  const streamerDonationUrl = () => {
-    const url = twitchConfig.donationUrl
-    if (!url || url === '') {
-      return config.donationLink.url
-    }
-    return url
-  }
-
-  const useStreamerDonationLink = () => twitchConfig.chat.useDonationLink
-
   const donationUrl = () => {
-    if (useStreamerDonationLink()) {
-      return streamerDonationUrl()
-    }
     return cause.donateUrl
   }
 
   const totalPounds = () => cause.raised.yogscast + cause.raised.fundraisers
   const totalDollar = () => totalPounds() * donation.avgConversionRate
-
 
   return (
     <div class={'h-full w-full flex flex-row items-center justify-center'}>

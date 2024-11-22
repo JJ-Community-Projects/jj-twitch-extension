@@ -220,18 +220,6 @@ const ViewsSelection: Component = () => {
         </Checkbox.Control>
         <Checkbox.Label>Show Community Fundraiser</Checkbox.Label>
       </Checkbox>
-
-      <Checkbox class={'flex flex-row items-center gap-2'} checked={twitchConfig.showYogsSchedule} onChange={(v) => {
-        setTwitchOverlayConfiguration({showYogsSchedule: v})
-      }}>
-        <Checkbox.Input/>
-        <Checkbox.Control class={'w-6 h-6 border-2 rounded border-white p-2 flex items-center justify-center'}>
-          <Checkbox.Indicator>
-            <FaSolidCheck size={18}/>
-          </Checkbox.Indicator>
-        </Checkbox.Control>
-        <Checkbox.Label>Show Yogs Schedule</Checkbox.Label>
-      </Checkbox>
     </div>
   );
 }
