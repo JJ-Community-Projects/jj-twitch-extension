@@ -1,4 +1,4 @@
-import {type Component, Show} from "solid-js";
+import {type Component, createEffect, Show} from "solid-js";
 import {FaSolidHeart, FaSolidInfo, FaSolidPeopleGroup} from "solid-icons/fa";
 import {YogsIcon} from "../common/icons/YogsIcon.tsx";
 import {Tooltip} from "@kobalte/core/tooltip";
@@ -19,6 +19,9 @@ export const OverlaySideNav: Component = () => {
   const twitchConfig = useTwitchOverlayConfig()
   const {theme, tailwindBGPrimary} = useTheme()
   const {auth, channelName} = useTwitchAuth()
+  createEffect(() => {
+    console.log('OverlaySideNav', channelName())
+  })
   const {
     toggleAboutJJ,
     toggleCharities,
@@ -33,7 +36,13 @@ export const OverlaySideNav: Component = () => {
   } = useOverlay()
 
   const showYogsSchedule = () => {
-    return channelName()?.toLowerCase() === 'yogscast'
+    if (import.meta.env.DEV) {
+      return true
+    }
+    if (!config.yogsScheduleChannel) {
+      return false
+    }
+    return config.yogsScheduleChannel.includes(channelName()?.toLowerCase() ?? '')
   }
 
   const buttonColor = () => {
@@ -70,7 +79,7 @@ export const OverlaySideNav: Component = () => {
     }
   }
 
-  const isDev =  false
+  const isDev = import.meta.env.DEV
 
   return (
     <div class={'flex flex-col h-full w-12 py-20 gap-4 justify-center items-center'}>
@@ -86,7 +95,7 @@ export const OverlaySideNav: Component = () => {
             twMerge('hover:scale-105 border-4 transition-all aspect-square rounded-2xl shadow-xl p-2 items-center justify-center flex flex-col',
               buttonColor(),
               jj() ? 'scale-105' : '',
-              jj() ? buttonBorderHoverColor(): buttonBorderColor()
+              jj() ? buttonBorderHoverColor() : buttonBorderColor()
             )
           }>
           <JJIcon class={'text-white'} size={24}/>
@@ -106,7 +115,7 @@ export const OverlaySideNav: Component = () => {
             twMerge('hover:scale-105 border-4 transition-all aspect-square rounded-2xl shadow-xl p-2 items-center justify-center flex flex-col',
               buttonColor(),
               charities() ? 'scale-105' : '',
-              charities() ? buttonBorderHoverColor(): buttonBorderColor()
+              charities() ? buttonBorderHoverColor() : buttonBorderColor()
             )
           }>
           <FaSolidHeart class={'text-white'} size={24}/>
@@ -127,7 +136,7 @@ export const OverlaySideNav: Component = () => {
               twMerge('hover:scale-105 border-4 transition-all aspect-square rounded-2xl shadow-xl p-2 items-center justify-center flex flex-col',
                 buttonColor(),
                 community() ? 'scale-105' : '',
-                community() ? buttonBorderHoverColor(): buttonBorderColor()
+                community() ? buttonBorderHoverColor() : buttonBorderColor()
               )
             }>
             <FaSolidPeopleGroup class={'text-white'} size={24}/>
@@ -141,7 +150,7 @@ export const OverlaySideNav: Component = () => {
         </Tooltip>
 
       </Show>
-      <Show when={config.showYogsSchedule && twitchConfig.showYogsSchedule && showYogsSchedule()}>
+      <Show when={showYogsSchedule()}>
         <Tooltip placement={'right'}>
           <Tooltip.Trigger
             onClick={toggleSchedule}
@@ -149,7 +158,7 @@ export const OverlaySideNav: Component = () => {
               twMerge('hover:scale-105 border-4 transition-all aspect-square rounded-2xl shadow-xl p-2 items-center justify-center flex flex-col',
                 buttonColor(),
                 schedule() ? 'scale-105' : '',
-                schedule() ? buttonBorderHoverColor(): buttonBorderColor()
+                schedule() ? buttonBorderHoverColor() : buttonBorderColor()
               )
             }
           >
@@ -172,7 +181,7 @@ export const OverlaySideNav: Component = () => {
             twMerge('w-10 h-10 hover:scale-105 border-4 transition-all aspect-square rounded-2xl shadow-xl p-2 items-center justify-center flex flex-col',
               buttonColor(),
               about() ? 'scale-105' : '',
-              about() ? buttonBorderHoverColor(): buttonBorderColor()
+              about() ? buttonBorderHoverColor() : buttonBorderColor()
             )
           }>
           <FaSolidInfo class={'text-white'} size={18}/>

@@ -23,4 +23,5 @@ export type OverlayConfig = {
   showFundraiser: boolean,
   year: string
   donationLink: DonationLink
+  yogsScheduleChannel: string[]
 }
