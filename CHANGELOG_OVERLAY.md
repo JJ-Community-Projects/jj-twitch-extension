@@ -15,3 +15,11 @@ The Overlay also allows streamers to define commands which their mods can use to
 This feature can be turned off by the streamer and by each user.
 
 For demo purposes, so of the data is from last year.
+
+For the review The channel is going to be live on the following dates:
+Friday 22nd November, 10am-12am PT
+Saturday 23rd November, 10am-12am PT
+Monday 25th November, 10am-12am PT
+Tuesday 26th November, 10am-12am PT
+Wednesday 27th November, 10am-12am PT
+Friday 29th November, 10am-12am PT
