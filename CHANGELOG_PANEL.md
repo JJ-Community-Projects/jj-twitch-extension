@@ -1,3 +1,6 @@
+Review Feedback 24.10.2024, 22:03 CET
+Added Privacy Policy: https://jj.ostof.dev/twitch-extension/privacy
+
 2.0.0
 - Last year was supposed to be 1.0.0, but I set the wrong version number...
 - Updated Backend endpoints
