@@ -5,11 +5,15 @@ const useOverlayHook = () => {
   const [window, setWindow] = createSignal<string>('none')
   const [stream, setStream] = createSignal<TESStream | undefined>(undefined)
 
+  const showAboutJJ = () => {
+    setWindow('jj')
+  }
 
   const toggleAboutJJ = () => {
     if (window() === 'jj') {
       setWindow('none')
     } else {
+      setStream(undefined)
       setWindow('jj')
     }
   }
@@ -18,6 +22,7 @@ const useOverlayHook = () => {
     if (window() === 'charities') {
       setWindow('none')
     } else {
+      setStream(undefined)
       setWindow('charities')
     }
   }
@@ -26,6 +31,7 @@ const useOverlayHook = () => {
     if (window() === 'community') {
       setWindow('none')
     } else {
+      setStream(undefined)
       setWindow('community')
     }
   }
@@ -34,6 +40,7 @@ const useOverlayHook = () => {
     if (window() === 'yogs_schedule') {
       setWindow('none')
     } else {
+      setStream(undefined)
       setWindow('yogs_schedule')
     }
   }
@@ -42,6 +49,7 @@ const useOverlayHook = () => {
     if (window() === 'about') {
       setWindow('none')
     } else {
+      setStream(undefined)
       setWindow('about')
     }
   }
@@ -68,6 +76,7 @@ const useOverlayHook = () => {
 
 
   return {
+    showAboutJJ,
     toggleAboutJJ,
     toggleCharities,
     toggleCommunity,

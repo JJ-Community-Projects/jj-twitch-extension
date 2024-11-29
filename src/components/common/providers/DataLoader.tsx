@@ -11,7 +11,6 @@ import {usePanelConfig} from "./PanelConfigProvider.tsx";
 
 function loadSchedule() {
   const demo = import.meta.env.PUBLIC_DEMO_SCHEDULE
-  console.log(import.meta.env)
   if (demo) {
     return {
       data: JSON.parse(demo) as TwitchExtensionSchedule,

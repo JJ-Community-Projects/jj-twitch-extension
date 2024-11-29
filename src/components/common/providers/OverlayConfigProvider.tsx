@@ -32,7 +32,6 @@ const useTwitchOverlayConfigHook = () => {
     if (twitch.configuration.broadcaster) {
       try {
         const config = JSON.parse(twitch.configuration.broadcaster.content)
-        console.log('config', config)
         if (typeof config === 'object') {
           console.log('setting config', config)
           setConfig({...config})
@@ -56,9 +55,6 @@ const useTwitchOverlayConfigHook = () => {
       setConfig(defaultOverlayConfig)
       return
     }
-    console.log('twitch', twitch)
-    console.log('twitch.configuration', twitch.configuration)
-    console.log('twitch.configuration.broadcaster', twitch.configuration.broadcaster)
     if (!twitch.configuration.broadcaster) {
       console.log('loading config', 'no broadcaster', 'default')
       setConfig(defaultOverlayConfig)
@@ -71,7 +67,6 @@ const useTwitchOverlayConfigHook = () => {
   }
 
   onMount(() => {
-    console.log('OverlayConfigProvider', twitch)
     if (auth) {
       setChannelId(auth.channelId)
     }

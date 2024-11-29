@@ -3,10 +3,11 @@ import {useData} from "../common/providers/DataProvider.tsx";
 import type {Cause} from "../../lib/model/jjData/JJData.ts";
 import {twMerge} from "tailwind-merge";
 import {ColoredScrollbar} from "../common/ColoredScrollbar.tsx";
-import {GlobeIcon, HeartIcon} from "../common/icons/JJIcons.tsx";
+import {GlobeIcon, HeartIcon, TiltifyRoundIcon} from "../common/icons/JJIcons.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {Numeric} from "solid-i18n";
+import {OverlayHeader} from "./OverlayHeader.tsx";
 
 
 export const OverlayJJCharities: Component = () => {
@@ -37,10 +38,7 @@ export const OverlayJJCharities: Component = () => {
   }
   return (
     <div class={twMerge('h-full flex flex-col gap-2 p-2 rounded-2xl shadow-xl', backgroundColor())}>
-      <a
-        class={'bg-gradient-to-br from-accent-400 to-accent-500 hover:scale-102 flex w-full flex-row items-center justify-center rounded-2xl p-0.5 text-center text-white shadow-xl transition-all hover:shadow-2xl hover:brightness-105'}
-        target={'_blank'}
-        href={url()}>Donate</a>
+      <OverlayHeader/>
       <div class={'h-full w-full overflow-hidden overscroll-none'}>
         <ColoredScrollbar>
           <div class={twMerge(
@@ -88,9 +86,9 @@ const Item: Component<{ cause: Cause }> = (props) => {
           <a
             target={'_blank'}
             href={charity.donateUrl}
-            class={'hover:scale-110 text-primary-500 transition-all'}
+            class={'hover:scale-110 bg-[#133DF4] rounded-full transition-all'}
           >
-            <HeartIcon class={'~w-4/6 ~h-4/6'}/>
+            <TiltifyRoundIcon class={'~w-4/6 ~h-4/6'}/>
           </a>
         </div>
       </div>

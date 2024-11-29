@@ -47,7 +47,6 @@ const useTwitchAuthHook = () => {
   const [channelName, setChannelName] = createSignal<string>();
   const twitch = window?.Twitch?.ext;
   onMount(() => {
-    console.log("Twitch Auth Hook Mounted", twitch)
     if (twitch) {
       twitch.onAuthorized((auth) => {
         setAuth(auth);

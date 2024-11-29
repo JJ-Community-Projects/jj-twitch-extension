@@ -3,7 +3,6 @@ import {Dialog} from "@kobalte/core";
 import {AiOutlineClose} from "solid-icons/ai";
 import {DateTime} from "luxon";
 import type {TESStream, TESTwitchCreator, TESTwitchLink} from "../../../lib/model/TwitchExtensionSchedule.ts";
-import {FaBrandsTwitch} from "solid-icons/fa";
 import {YogsStreamUtils} from "../../../lib/YogsStreamUtils.ts";
 import {useNow} from "../../../lib/useNow.ts";
 import {getTextColor} from "../../../lib/textColors.ts";
@@ -71,8 +70,8 @@ const Body: Component<BodyProps> = (props) => {
 
   return (
     <div class={'overflow-auto h-full w-full bg-white flex flex-col gap-2 p-2 rounded-b-2xl'}>
-      <Show when={props.stream.subtitle}>
-        <Dialog.Description class="mb-6">{props.stream.subtitle}</Dialog.Description>
+      <Show when={props.stream.description}>
+        <Dialog.Description class="mb-6">{props.stream.description}</Dialog.Description>
       </Show>
       <div>
         <p>{DateTime.fromISO(props.stream.start).toLocaleString({
@@ -156,22 +155,35 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
   return (
     <Switch>
       <Match when={hasUrl()}>
-        <div class={'flex flex-row py-1'}>
-          <a
-            class={'hover:scale-102 text-xxs flex flex-row items-center p-2 rounded-2xl transition-all'}
-            style={{
-              background: color(),
-              color: getTextColor(color())
-            }}
-            target={'_blank'}
-            href={url()}
-          >
-            {label()}
-          </a>
-        </div>
+        <a
+          class={'hover:scale-102 text-xs flex flex-row items-center p-2 rounded-2xl transition-all gap-1'}
+          style={{
+            background: color(),
+            color: getTextColor(color())
+          }}
+          target={'_blank'}
+          href={url()}
+        ><Show when={props.creator.imageUrl}>
+          <img
+            src={props.creator.imageUrl}
+            alt={label()}
+            height="24" width="24"
+            class="rounded-full size-6"
+          />
+        </Show>
+          <span>{label()}</span>
+        </a>
       </Match>
       <Match when={!hasUrl()}>
-        <div class={'flex flex-row py-1'}>
+        <div class={'text-xs flex flex-row py-1 gap-1'}>
+          <Show when={props.creator.imageUrl}>
+            <img
+              src={props.creator.imageUrl}
+              alt={label()}
+              height="24" width="24"
+              class="rounded-full size-6"
+            />
+          </Show>
           <p
             class={'text-xxs flex flex-row items-center p-2 rounded-2xl'}
             style={{

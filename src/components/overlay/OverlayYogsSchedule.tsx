@@ -11,6 +11,7 @@ import {ColoredScrollbar} from "../common/ColoredScrollbar.tsx";
 import {FiExternalLink} from "solid-icons/fi";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
+import {OverlayHeader} from "./OverlayHeader.tsx";
 
 export const OverlayYogsSchedule: Component = () => {
 
@@ -30,9 +31,10 @@ export const OverlayYogsSchedule: Component = () => {
 
   return (
     <div class={twMerge('h-full w-full flex flex-col gap-2 p-2 rounded-2xl overflow-hidden overscroll-none', backgroundColor())}>
+      <OverlayHeader/>
       <Header/>
       <ColoredScrollbar>
-        <div class={'flex flex-col gap-2 p-2'}>
+        <div class={'flex flex-col gap-2 px-2'}>
           <CurrentStream/>
           <UpcomingStream/>
         </div>
@@ -46,15 +48,17 @@ export const OverlayYogsSchedule: Component = () => {
 const Header: Component = () => {
   const {schedule} = useData()
   return (
-    <div class={'bg-white rounded-2xl p-2 text-center flex flex-row items-center justify-between'}>
-      <h1 class={'~text-base/xl'}>{schedule.title}</h1>
-      <a
-        class={'hover:scale-105 hover:bg-text-500 transition-all'}
-        target={'_blank'}
-        href={'https://jinglejam.ostof.dev/yogs'}
-      >
-        <FiExternalLink class={'~text-base/xl'}/>
-      </a>
+    <div class={'w-full px-2'}>
+      <div class={'bg-white rounded-2xl p-2 text-center flex flex-row items-center justify-between'}>
+        <h1 class={'~text-base/xl'}>{schedule.title}</h1>
+        <a
+          class={'hover:scale-105 hover:bg-text-500 transition-all'}
+          target={'_blank'}
+          href={'https://jinglejam.ostof.dev/yogs'}
+        >
+          <FiExternalLink class={'~text-base/xl'}/>
+        </a>
+      </div>
     </div>
   );
 }
@@ -81,7 +85,7 @@ const CurrentStream: Component = () => {
   return (
     <Show when={stream()}>
       <div class={'flex flex-col gap-1'}>
-        <div class={'bg-white rounded-2xl ~p-1/2 text-center'}>
+        <div class={'bg-white rounded-2xl px-2 text-center'}>
           <h2 class={'~text-base/xl'}>Current Streams</h2>
         </div>
         <SingleStreamCard stream={stream()!}/>

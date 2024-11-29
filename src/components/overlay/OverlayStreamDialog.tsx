@@ -1,7 +1,6 @@
 import type {TESTwitchCreator, TESTwitchLink} from "../../lib/model/TwitchExtensionSchedule.ts";
 import {type Component, For, Match, Show, Switch} from "solid-js";
 import {DateTime} from "luxon";
-import {FaBrandsTwitch} from "solid-icons/fa";
 import {useOverlay} from "../common/providers/OverlayProvider.tsx";
 import {AiOutlineClose} from "solid-icons/ai";
 import {YogsStreamUtils} from "../../lib/YogsStreamUtils.ts";
@@ -55,8 +54,8 @@ export const OverlayStreamDialog: Component = (props) => {
       </div>
       <Show when={stream()}>
         <div class={'p-2'}>
-          <Show when={stream()!.subtitle}>
-            <p class="mb-6">{stream()!.subtitle}</p>
+          <Show when={stream()!.description}>
+            <p class="mb-6">{stream()!.description}</p>
           </Show>
           <p>{DateTime.fromISO(stream()!.start).toLocaleString({
             weekday: 'short',
@@ -69,6 +68,20 @@ export const OverlayStreamDialog: Component = (props) => {
           <Show when={isBefore()}>
             <p>{countdownFormat()}</p>
           </Show>
+          <div>
+            <Show when={stream()!.twitchVods}>
+              <Show when={stream()!.twitchVods!.length > 0}>
+                <p>Twitch Vods</p>
+                <div class={'flex flex-wrap gap-2'}>
+                  <For each={stream()!.twitchVods}>
+                    {
+                      vod => (<VodComponent vod={vod}/>)
+                    }
+                  </For>
+                </div>
+              </Show>
+            </Show>
+          </div>
           <Show when={(stream()!.creators?.length ?? 0) > 0}>
             <p>Creators</p>
             <div class={'flex flex-wrap gap-2'}>
@@ -125,22 +138,35 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
   return (
     <Switch>
       <Match when={hasUrl()}>
-        <div class={'flex flex-row py-1'}>
-          <a
-            class={'hover:scale-102 text-xxs flex flex-row items-center p-2 rounded-2xl transition-all'}
-            style={{
-              background: color(),
-              color: getTextColor(color())
-            }}
-            target={'_blank'}
-            href={url()}
-          >
-            {label()}
-          </a>
-        </div>
+        <a
+          class={'hover:scale-102 text-xs flex flex-row items-center p-2 rounded-2xl transition-all gap-1'}
+          style={{
+            background: color(),
+            color: getTextColor(color())
+          }}
+          target={'_blank'}
+          href={url()}
+        ><Show when={props.creator.imageUrl}>
+          <img
+            src={props.creator.imageUrl}
+            alt={label()}
+            height="24" width="24"
+            class="rounded-full size-6"
+          />
+        </Show>
+          <span>{label()}</span>
+        </a>
       </Match>
       <Match when={!hasUrl()}>
-        <div class={'flex flex-row py-1'}>
+        <div class={'text-xs flex flex-row py-1 gap-1'}>
+          <Show when={props.creator.imageUrl}>
+            <img
+              src={props.creator.imageUrl}
+              alt={label()}
+              height="24" width="24"
+              class="rounded-full size-6"
+            />
+          </Show>
           <p
             class={'text-xxs flex flex-row items-center p-2 rounded-2xl'}
             style={{

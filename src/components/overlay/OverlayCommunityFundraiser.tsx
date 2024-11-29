@@ -5,6 +5,7 @@ import {useData} from "../common/providers/DataProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {Numeric} from "solid-i18n";
 import {FiExternalLink} from "solid-icons/fi";
+import {OverlayHeader} from "./OverlayHeader.tsx";
 
 
 export const OverlayCommunityFundraiser: Component = (props) => {
@@ -27,12 +28,13 @@ export const OverlayCommunityFundraiser: Component = (props) => {
   return (
     <div class={twMerge('h-full flex flex-col gap-2 p-2 rounded-2xl shadow-xl', backgroundColor())}>
 
+      <OverlayHeader/>
       <div class={'w-full px-2 flex flex-row'}>
         <a
           href={'https://twitch.tv/team/jinglejam'}
           target={'_blank'}
-          class={'bg-twitch text-white p-2 rounded-2xl full text-center w-full transition-all hover:scale-105'}>
-          Stream Team</a>
+          class={'flex flex-row justify-between items-center gap-1 bg-twitch text-white p-2 rounded-2xl full text-center w-full transition-all hover:scale-102'}>
+          Jingle Jam Stream Team <FiExternalLink/></a>
       </div>
       <Show when={fundraiser.campaigns.length === 0}>
         <div class={'h-full w-full flex items-center justify-center'}>

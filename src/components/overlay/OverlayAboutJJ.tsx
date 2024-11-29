@@ -5,7 +5,7 @@ import {
   GithubIcon,
   GlobeIcon,
   InstagramIcon,
-  TiktokIcon,
+  TiktokIcon, TiltifyRoundIcon,
   TwitchIcon,
   TwitterIcon
 } from "../common/icons/JJIcons.tsx";
@@ -40,10 +40,6 @@ export const OverlayAboutJJ: Component = (props) => {
           Jingle Jam to raise funds
           for our charity partners.</p>
       </span>
-      <a
-        class={'~text-xs/base bg-gradient-to-br from-accent-400 to-accent-500 hover:scale-102 flex w-full flex-row items-center justify-center rounded-2xl p-0.5 text-center text-white shadow-xl transition-all hover:shadow-2xl hover:brightness-105'}
-        target={'_blank'}
-        href={url()}>Donate</a>
       <ExternalLinks/>
       <a
         class={'text-xs flex flex-row gap-1 justify-center items-center hover:scale-105 transition-all'}
@@ -58,6 +54,18 @@ export const OverlayAboutJJ: Component = (props) => {
 
 
 const ExternalLinks = () => {
+  const config = useOverlayConfig()
+  const twitchConfig = useTwitchOverlayConfig()
+  const {theme, tailwindBGPrimary} = useTheme()
+
+
+  const url = () => {
+    if (!twitchConfig.donationUrl || twitchConfig.donationUrl === '' || config.donationLink.overrideCustomLink) {
+      return config.donationLink.url
+    }
+    return twitchConfig.donationUrl
+  }
+
   return (
     <div class={'flex flex-row justify-between ~gap-2/4 items-center'}>
       <a
@@ -66,6 +74,12 @@ const ExternalLinks = () => {
         href={'https://jinglejam.co.uk'}
         aria-label={'Jingle Jam Website'}>
         <GlobeIcon class={'~w-4/8 ~h-4/8'}/>
+      </a><a
+        class={'hover:scale-110 transition-all'}
+        target={'_blank'}
+        href={url()}
+        aria-label={'Donate'}>
+        <TiltifyRoundIcon class={'~w-4/8 ~h-4/8'}/>
       </a>
       <a
         class={'hover:scale-110 transition-all'}
