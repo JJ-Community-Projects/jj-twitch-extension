@@ -16,9 +16,14 @@ export const CommunityTab: Component = () => {
   const {fundraiser} = useData()
   const campaigns = () => fundraiser.campaigns
 
+  const show = () => {
+
+    return true; //config.showFundraiser
+  }
+
   return (
     <>
-      <Show when={config.showFundraiser}>
+      <Show when={show()}>
         <div class={'flex h-full flex-1 flex-col'}>
           <ColoredScrollbar>
             <p class={'px-2 text-center text-xl text-white'}>Community Fundraiser</p>
@@ -31,8 +36,10 @@ export const CommunityTab: Component = () => {
           </ColoredScrollbar>
         </div>
       </Show>
-      <Show when={!config.showFundraiser}>
-        <InvisibleBody text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'} />
+      <Show when={!show()}>
+        <InvisibleBody text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'}>
+          <JJStreamTeamLink/>
+        </InvisibleBody>
       </Show>
     </>
   );
@@ -44,6 +51,7 @@ const FundraiserBody: Component<{ fundraisers: Campaign[] }> = props => {
 
   return (
     <>
+      <JJStreamTeamLink/>
       <Show when={fundraiser().length == 0}>
         <p class={'text-center text-white'}>No Fundraisers found.</p>
       </Show>
@@ -184,5 +192,16 @@ const ChildBody: ParentComponent<{ i: number; url?: string }> = (props) => {
         </div>
       </Match>
     </Switch>
+  )
+}
+
+
+const JJStreamTeamLink = () => {
+  return (
+    <a
+      href={'https://twitch.tv/team/jinglejam'}
+      target={'_blank'}
+      class={'flex flex-row justify-between items-center p-2 rounded-2xl text-white bg-twitch text-center hover:scale-102 transition-all'}>Jingle Jam Stream Team
+      <FiExternalLink/></a>
   )
 }
