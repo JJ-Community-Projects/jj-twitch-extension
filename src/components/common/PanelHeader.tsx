@@ -214,8 +214,7 @@ const AboutDialog: Component<AboutDialogProps> = (props) => {
             <ExternalLinks/>
             <p class={'text-lg text-center'}>About the Extension</p>
             <span class={' ~text-xs/base text-center'}>
-                <p>The Jingle Jam Community Extension shows information about the Charities and Community Fundraisers.</p>
-                <p>This is a community project and not affiliated with the Jingle Jam.</p>
+                <p>The Jingle Jam Community Extension is a community project and not affiliated with the Jingle Jam.</p>
                 <p>The Yogs Schedule is subject to change.</p>
               </span>
             <a
