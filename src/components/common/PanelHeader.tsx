@@ -149,7 +149,7 @@ const Donate = () => {
   }
 
   return (
-    <Show when={true || jjConfig.donationLink.visible}>
+    <Show when={jjConfig.donationLink.visible}>
       <a
         class={twMerge(
           'group inline-flex items-center justify-center cursor-pointer',
