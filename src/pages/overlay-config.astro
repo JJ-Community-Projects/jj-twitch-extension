@@ -1,6 +1,6 @@
 ---
 import {OverlayConfigRoot} from "../components/config/overlay/OverlayConfigRoot";
-import Layout from "../layouts/Layout.astro";
+import OverlayLayout from "../layouts/OverlayLayout.astro";
 ---
 <style>
 
@@ -17,6 +17,8 @@ import Layout from "../layouts/Layout.astro";
     }
 
 </style>
-<Layout>
+<OverlayLayout
+  title="Jingle Jam Twitch Overlay Config"
+>
     <OverlayConfigRoot client:only="solid-js"/>
-</Layout>
+</OverlayLayout>

@@ -12,4 +12,4 @@ else
 fi
 
 # zip ./dist
-zip -r jj_tv_ext_archive.zip overlay.html overlay-config.html mobile.html panel.html config.html assets/
+zip -r jj_tv_ext_archive.zip overlay.html overlay-config.html mobile.html panel.html config.html assets/ analytics.js overlay_analytics.js
