@@ -55,3 +55,50 @@ export function createColorGradientFromColor(color: string, steps: number): stri
 	const darkColor = darkenColor(color, 0.2);
 	return createColorGradient(lightColor, darkColor, steps);
 }
+
+
+export const twLinkHoverColor = (type: string) => {
+	switch (type) {
+		case 'jj':
+			return 'hover:text-accent-500'
+		case 'twitch':
+			return 'hover:text-[#6441A4]'
+		case 'youtube':
+			return 'hover:text-[#FF0000]'
+		case 'bluesky':
+			return 'hover:text-[#1E95EF]'
+		case 'twitter':
+			return 'hover:text-[#1DA1F2]'
+		case 'tiktok':
+			return 'hover:text-[#69C9D0]'
+		case 'instagram':
+			return 'hover:text-[#E4405F]'
+		case 'discord':
+			return 'hover:text-[#5865f2]'
+		default:
+			return 'hover:text-[#000000]'
+	}
+}
+
+export const twLinkBGHoverColor = (type: string) => {
+	switch (type) {
+		case 'jj':
+			return 'hover-bg-accent-500/10'
+		case 'twitch':
+			return 'hover:bg-[#6441A4]/10'
+		case 'youtube':
+			return 'hover:bg-[#FF0000]/10'
+		case 'bluesky':
+			return 'hover:bg-[#1E95EF]/10'
+		case 'twitter':
+			return 'hover:bg-[#1DA1F2]/10'
+		case 'tiktok':
+			return 'hover:bg-[#69C9D0]/10'
+		case 'instagram':
+			return 'hover:bg-[#E4405F]/10'
+		case 'discord':
+			return 'hover:bg-[#5865f2]/10'
+		default:
+			return 'hover:bg-[#000000]/10'
+	}
+}
