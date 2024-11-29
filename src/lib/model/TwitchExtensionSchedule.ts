@@ -28,6 +28,7 @@ export type TESStream = {
 export type TESTwitchCreator = {
   id: string
   label: string
+  imageUrl?: string
   url: string
   color: string
 }
