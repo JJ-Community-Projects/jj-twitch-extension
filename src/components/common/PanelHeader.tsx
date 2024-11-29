@@ -1,7 +1,5 @@
 import {type Component, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
-import {Tooltip} from "@kobalte/core/tooltip";
-import {FaSolidHeart, FaSolidInfo} from "solid-icons/fa";
 import {usePanelConfig, useTwitchPanelConfig} from "./providers/PanelConfigProvider.tsx";
 
 import red from '../../assets/JingleJam_Red.png'
@@ -16,10 +14,13 @@ import {
   GlobeIcon,
   InstagramIcon,
   TiktokIcon,
+  TiltifyRoundIcon,
   TwitchIcon,
   TwitterIcon
 } from "./icons/JJIcons.tsx";
 import {useTheme} from "./providers/ThemeProvider.tsx";
+import {twLinkBGHoverColor, twLinkHoverColor} from "../../lib/colorUtil.ts";
+import {BiRegularInfoCircle} from "solid-icons/bi";
 
 interface PanelHeaderProps {
 }
@@ -42,11 +43,11 @@ export const PanelHeader: Component<PanelHeaderProps> = (props) => {
   return (
     <div class={'px-2'}>
       <div class={'h-8 flex flex-row bg-white shadow rounded-2xl items-center p-1'}>
-        <div class={'flex-1 flex flex-row items-center justify-start px-2'}>
+        <div class={'flex-1 flex flex-row items-center justify-start px-1 h-full'}>
           <About/>
         </div>
         <img src={image()} class={'h-full'} alt={'JJ Logo'}/>
-        <div class={'flex-1 flex flex-row items-center justify-end px-2'}>
+        <div class={'flex-1 flex flex-row items-center justify-end px-1 h-full'}>
           <Donate/>
         </div>
       </div>
@@ -56,7 +57,53 @@ export const PanelHeader: Component<PanelHeaderProps> = (props) => {
 
 const About = () => {
   const modalSignal = createModalSignal()
+  const {theme} = useTheme()
 
+  const color = () => {
+    switch (theme()) {
+      case 'blue':
+      case 'blue_light':
+        return 'text-blue-500'
+      case 'dark':
+        return 'text-white'
+      default:
+        return 'text-primary'
+    }
+  }
+
+  return (
+    <>
+      <button
+        class={twMerge(
+          'group h-full group inline-flex items-center justify-center gap-1 cursor-pointer',
+          'rounded-full shadow',
+          'transition-all duration-300',
+          'bg-white hover:bg-gray-500'
+        )}
+        onClick={() => {
+          modalSignal.open()
+        }}
+      >
+        <BiRegularInfoCircle class={'text-black group-hover:text-white size-6'} size={24}/>
+        <p
+          class={twMerge(
+            'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+            'text-white text-xs text-center',
+            'transition-all duration-300 ease-in-out',
+            'group-hover:max-w-xs group-hover:opacity-100 group-hover:pr-2'
+          )}
+        >
+          About
+        </p>
+      </button>
+      <AboutDialog
+        isOpen={modalSignal.isOpen()}
+        close={modalSignal.close}
+        onOpenChange={modalSignal.toggle}
+      />
+    </>
+  )
+  /*
   return (
     <>
       <Tooltip placement={'bottom'}>
@@ -83,13 +130,12 @@ const About = () => {
         onOpenChange={modalSignal.toggle}
       />
     </>
-  )
+  )*/
 }
 
 const Donate = () => {
   const config = useTwitchPanelConfig()
   const jjConfig = usePanelConfig()
-  const {theme} = useTheme()
 
   const url = () => {
     if (!config.donationUrl || config.donationUrl === '' || jjConfig.donationLink.overrideCustomLink) {
@@ -102,46 +148,35 @@ const Donate = () => {
     return jjConfig.donationLink.text ?? 'Donate'
   }
 
-  const color = () => {
-    switch (theme()) {
-      case 'blue':
-      case 'blue_light':
-        return 'text-blue-500'
-      case 'dark':
-        return 'text-white'
-      default:
-        return 'text-primary'
-    }
-  }
-
   return (
-    <Show when={jjConfig.donationLink.visible}>
-      <Tooltip placement={'bottom'}>
-        <Tooltip.Trigger
-          onClick={() => {
-          }}
-          class={
-            twMerge('w-5 h-5 items-center justify-center flex flex-col',
-            )
-          }>
-          <a
-            class={twMerge(
-              'hover:scale-102 flex flex-row items-center justify-center p-1 text-center transition-all',
-              color(),
-            )}
-            href={url()}
-            target={'_blank'}
-          >
-            <FaSolidHeart/>
-          </a>
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
-            <Tooltip.Arrow/>
-            <p class={'text-white'}>{text()}</p>
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip>
+    <Show when={true || jjConfig.donationLink.visible}>
+      <a
+        class={twMerge(
+          'group inline-flex items-center justify-center cursor-pointer',
+          'bg-[#133DF4]',
+          'rounded-full shadow',
+          'transition-all duration-300',
+        )}
+        href={url()}
+        target="_blank"
+      >
+        <p
+          class={twMerge(
+            'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+            'text-white text-xs',
+            'transition-all duration-300 ease-in-out',
+            'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-2'
+          )}
+        >
+          {text()}
+        </p>
+        <TiltifyRoundIcon
+          class={twMerge(
+            'size-6',
+            'transition-transform duration-300 ease-in-out',
+          )}
+        />
+      </a>
     </Show>
   )
 }
@@ -166,16 +201,23 @@ const AboutDialog: Component<AboutDialogProps> = (props) => {
               <AiOutlineClose size={24}/>
             </button>
             <div class={'flex flex-col'}>
-              <p class={'text-xl font-bold'}>About the extension</p>
+              <p class={'text-xl font-bold'}>About</p>
             </div>
           </Dialog.Title>
           <div
             class={twMerge('flex flex-col items-center gap-2 p-4')}>
-              <span class={' ~text-xs/base text-center'}>
+            <p class={'text-lg text-center'}>About the Jingle Jam</p>
+            <span class={' ~text-xs/base text-center'}>
+              <p>Jingle Jam is a registered charity in England and Wales (1200061).</p>
+              <p>The Jingle Jam fundraising event is organised by Jingle Jam Promotions on behalf of Jingle Jam to raise funds for our charity partners.</p>
+            </span>
+            <ExternalLinks/>
+            <p class={'text-lg text-center'}>About the Extension</p>
+            <span class={' ~text-xs/base text-center'}>
                 <p>The Jingle Jam Community Extension shows information about the Charities and Community Fundraisers.</p>
                 <p>This is a community project and not affiliated with the Jingle Jam.</p>
+                <p>The Yogs Schedule is subject to change.</p>
               </span>
-            <ExternalLinks/>
             <a
               class={'text-xs flex flex-row gap-1 justify-center items-center hover:scale-105 transition-all'}
               href={'https://github.com/orgs/JJ-Community-Projects/repositories'}
@@ -194,42 +236,60 @@ const ExternalLinks = () => {
   return (
     <div class={'flex flex-row justify-between ~gap-2/4 items-center'}>
       <a
-        class={'hover:scale-110 transition-all'}
+        class={twMerge('hover:scale-110 transition-all rounded-full p-1',
+          twLinkHoverColor('jj'),
+          twLinkBGHoverColor('jj')
+        )}
         target={'_blank'}
         href={'https://jinglejam.co.uk'}
         aria-label={'Jingle Jam Website'}>
         <GlobeIcon class={'~w-4/8 ~h-4/8'}/>
       </a>
       <a
-        class={'hover:scale-110 transition-all'}
+        class={twMerge('hover:scale-110 transition-all rounded-full p-1',
+          twLinkHoverColor('twitch'),
+          twLinkBGHoverColor('twitch')
+        )}
         href={'https://twitch.tv/team/jinglejam'}
         target={'_blank'}
         aria-label={'Jingle Jam Stream Team'}>
         <TwitchIcon class={'~w-4/8 ~h-4/6'}/>
       </a>
       <a
-        class={'hover:scale-110 transition-all'}
+        class={twMerge('hover:scale-110 transition-all rounded-full p-1',
+          twLinkHoverColor('discord'),
+          twLinkBGHoverColor('discord')
+        )}
         target={'_blank'}
         href={'https://discord.gg/dsCsJJcvAx'}
         aria-label={'Jingle Jam Discord'}>
         <DiscordIcon class={'~w-4/8 ~h-4/6'}/>
       </a>
       <a
-        class={'hover:scale-110 transition-all'}
+        class={twMerge('hover:scale-110 transition-all rounded-full p-1',
+          twLinkHoverColor('twitter'),
+          twLinkBGHoverColor('twitter')
+        )}
         target={'_blank'}
         href={'https://x.com/jinglejam'}
         aria-label={'Jingle Jam Twitter'}>
         <TwitterIcon class={'~w-4/8 ~h-4/8'}/>
       </a>
       <a
-        class={'hover:scale-110 transition-all'}
+        class={twMerge('hover:scale-110 transition-all rounded-full p-1',
+          twLinkHoverColor('instagram'),
+          twLinkBGHoverColor('instagram')
+        )}
         target={'_blank'}
         href={'http://instagram.com/jinglejamofficial'}
         aria-label={'Jingle Jam Instagram'}>
         <InstagramIcon class={'~w-4/8 ~h-4/8'}/>
       </a>
       <a
-        class={'hover:scale-110 transition-all'}
+        class={twMerge('hover:scale-110 transition-all rounded-full p-1',
+          twLinkHoverColor('tiktok'),
+          twLinkBGHoverColor('tiktok')
+        )}
         target={'_blank'}
         href={'http://tiktok.com/@jinglejamofficial'}
         aria-label={'Jingle Jam Tiktok'}>
