@@ -1,3 +1,12 @@
+2.0.1
+- Added Link to the Jingle Jam Stream Team in the Community Tab
+- Update Donation and About Buttons in the header
+- Update About popup with more information
+- Add images for creators in the stream dialog (click on a stream)
+- Small bug fixes
+
+---
+
 Review Feedback 24.10.2024, 22:03 CET
 Added Privacy Policy: https://jj.ostof.dev/twitch-extension/privacy
 
