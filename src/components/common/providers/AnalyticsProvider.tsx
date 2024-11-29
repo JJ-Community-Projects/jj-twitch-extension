@@ -19,10 +19,13 @@ const useAnalyticsHook = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         window.gtag('event', eventName, completeData)
+        console.log('ap', eventName)
       } catch (e) {
         console.error('ap', 'error', e)
       }
       return
+    }else{
+      console.log('ap', 'no gtag')
     }
   }
 
@@ -40,6 +43,8 @@ const useAnalyticsHook = () => {
   createEffect(() => {
     if (channelId()) {
       log('loaded')
+    } else {
+      log('loaded', { channelId: 'unknown' })
     }
   })
   return { logSlotClick, log }
