@@ -1,4 +1,9 @@
 ---
+interface Props {
+    title?: string;
+}
+
+const title = Astro.props.title || 'Jingle Jam Twitch Extension';
 
 ---
 
@@ -9,32 +14,14 @@
 
     <meta charset="UTF-8"/>
     <meta name="description" content=""/>
-    <title>Jingle Jam Twitch Extension</title>
+    <title>{title}</title>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="generator" content={Astro.generator}/>
-
     <script is:inline src="https://extension-files.twitch.tv/helper/v1/twitch-ext.min.js"/>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQFGEFJHHN"/>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-
-      gtag('js', new Date());
-      gtag("consent", "default", {
-          ad_storage: "denied",
-          ad_user_data: "denied",
-          ad_personalization: "denied",
-          analytics_storage: "granted",
-          functionality_storage: "granted",
-      });
-      gtag('config', 'G-YQFGEFJHHN');
-    </script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-YQFGEFJHHN"/>
+    <script is:inline src="./analytics.js" type="module"/>
 </head>
 <body>
 <slot/>
@@ -176,5 +163,13 @@
 
     body {
         font-family: 'Poppins', sans-serif;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    a {
+        cursor: pointer;
     }
 </style>
