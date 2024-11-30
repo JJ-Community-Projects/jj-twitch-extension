@@ -1,10 +1,14 @@
 import {type Component, For, Show} from "solid-js";
-import {usePanelConfig, useTwitchPanelConfig, useTwitchPanelConfigEdit} from "../../common/providers/PanelConfigProvider.tsx";
+import {
+  usePanelConfig,
+  useTwitchPanelConfig,
+  useTwitchPanelConfigEdit
+} from "../../common/providers/PanelConfigProvider.tsx";
 import {createModalSignal} from "../../../lib/createModalSignal.ts";
 import type {TabType} from "../../../lib/model/TwitchConfig.ts";
-import { ThemeSelection } from "./ThemeSelection.tsx";
+import {ThemeSelection} from "./ThemeSelection.tsx";
 import {TextField} from "@kobalte/core/text-field";
-import { RadioGroup } from "@kobalte/core";
+import {RadioGroup} from "@kobalte/core";
 import {PanelRoot} from "../../panel/PanelRoot.tsx";
 import {AlertDialog} from "@kobalte/core/alert-dialog";
 import {CgClose} from "solid-icons/cg";
@@ -14,14 +18,15 @@ export const ConfigMain: Component = () => {
   const jjConfig = usePanelConfig()
   const config = useTwitchPanelConfig()
   const modalSignal = createModalSignal()
-  const {setTwitchConfiguration, save, validConfig, edited } = useTwitchPanelConfigEdit()
+  const {setTwitchConfiguration, save, validConfig, edited} = useTwitchPanelConfigEdit()
   // const { log } = useAnalytics()
   const validateDonationUrl = () => {
     const urlRegex = /\bhttps?:\/\/(?:\w+\.)?tiltify\.com\b/
+    const urlRegex2 = /\bhttps?:\/\/(?:\w+\.)?tilti\.fyi\b/
     return (
-      ((config.donationUrl.includes('tiltify.com') && config.donationUrl.startsWith('https://')) ||
-        config.donationUrl === '') &&
-      urlRegex.test(config.donationUrl)
+      config.donationUrl === '' ||
+      urlRegex.test(config.donationUrl) ||
+      urlRegex2.test(config.donationUrl)
     )
   }
 
@@ -36,7 +41,7 @@ export const ConfigMain: Component = () => {
               index={1}
               tab={config.tab1}
               onChange={v => {
-                setTwitchConfiguration({ tab1: v as TabType })
+                setTwitchConfiguration({tab1: v as TabType})
               }}
             />
             <TabSelect
@@ -44,7 +49,7 @@ export const ConfigMain: Component = () => {
               index={2}
               tab={config.tab2}
               onChange={v => {
-                setTwitchConfiguration({ tab2: v as TabType })
+                setTwitchConfiguration({tab2: v as TabType})
               }}
             />
             <TabSelect
@@ -52,28 +57,29 @@ export const ConfigMain: Component = () => {
               index={3}
               tab={config.tab3}
               onChange={v => {
-                setTwitchConfiguration({ tab3: v as TabType })
+                setTwitchConfiguration({tab3: v as TabType})
               }}
             />
           </div>
         </div>
         <div class={'p-2'}>
-          <ThemeSelection />
+          <ThemeSelection/>
         </div>
         <Show when={jjConfig.donationLink.allowCustomLinks}>
           <div class={'flex flex-col p-1'}>
             <p>The donation link will disappear after the Jingle Jam ends.</p>
+            <p>{config.donationUrl}</p>
             <div class={'flex flex-row items-center justify-normal gap-2'}>
               <TextField
                 class={'flex flex-col gap-1'}
                 value={config.donationUrl}
                 onChange={v => {
-                  setTwitchConfiguration({ donationUrl: v })
+                  setTwitchConfiguration({donationUrl: v})
                 }}
                 validationState={validateDonationUrl() ? 'valid' : 'invalid'}
               >
                 <TextField.Label>Donation URL</TextField.Label>
-                <TextField.Input class={'text-black'} />
+                <TextField.Input class={'text-black'}/>
                 <TextField.Description>Enter your custom Jingle Jam Donation URL here.</TextField.Description>
                 <TextField.ErrorMessage>Invalid tiltify url</TextField.ErrorMessage>
               </TextField>
@@ -111,19 +117,20 @@ export const ConfigMain: Component = () => {
       <div class={'p-2'}>
         <p class={'text-white'}>Preview</p>
         <div class={'from-primary-300 to-primary-700 h-[496px] w-[316px] overflow-hidden bg-gradient-to-b'}>
-          <PanelRoot />
+          <PanelRoot/>
         </div>
       </div>
 
       <AlertDialog open={modalSignal.isOpen()} onOpenChange={modalSignal.setOpen}>
         <AlertDialog.Portal>
-          <AlertDialog.Overlay class="fixed inset-0 z-50 bg-black bg-opacity-20" />
+          <AlertDialog.Overlay class="fixed inset-0 z-50 bg-black bg-opacity-20"/>
           <div class="fixed inset-0 z-50 flex items-center justify-center">
-            <AlertDialog.Content class="z-50 max-w-[min(calc(100vw_-_16px),500px)] rounded-md border border-solid border-zinc-300 bg-[white] p-4 shadow-lg">
+            <AlertDialog.Content
+              class="z-50 max-w-[min(calc(100vw_-_16px),500px)] rounded-md border border-solid border-zinc-300 bg-[white] p-4 shadow-lg">
               <div class="mb-3 flex items-baseline justify-between">
                 <AlertDialog.Title class="text-xl font-medium text-zinc-900">Configuration Saved</AlertDialog.Title>
                 <AlertDialog.CloseButton class="h-4 w-4 text-zinc-600">
-                  <CgClose size={24} />
+                  <CgClose size={24}/>
                 </AlertDialog.CloseButton>
               </div>
               <AlertDialog.Description class=" text-base text-zinc-700">
@@ -165,9 +172,11 @@ const TabSelect: Component<{
         <For each={options}>
           {item => (
             <RadioGroup.Item value={item.value} class="flex items-center hover:cursor-pointer">
-              <RadioGroup.ItemInput class="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white bg-white" />
-              <RadioGroup.ItemControl class="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white bg-white">
-                <RadioGroup.ItemIndicator class="border-1 bg-accent h-2 w-2 rounded-full border-black" />
+              <RadioGroup.ItemInput
+                class="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white bg-white"/>
+              <RadioGroup.ItemControl
+                class="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white bg-white">
+                <RadioGroup.ItemIndicator class="border-1 bg-accent h-2 w-2 rounded-full border-black"/>
               </RadioGroup.ItemControl>
               <RadioGroup.ItemLabel class="ml-2 hover:cursor-pointer">{item.label}</RadioGroup.ItemLabel>
             </RadioGroup.Item>
@@ -175,9 +184,11 @@ const TabSelect: Component<{
         </For>
         <Show when={props.showNone}>
           <RadioGroup.Item value={'none'} class="flex items-center hover:cursor-pointer">
-            <RadioGroup.ItemInput class="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white bg-white" />
-            <RadioGroup.ItemControl class="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white bg-white">
-              <RadioGroup.ItemIndicator class="border-1 bg-accent h-2 w-2 rounded-full border-black" />
+            <RadioGroup.ItemInput
+              class="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white bg-white"/>
+            <RadioGroup.ItemControl
+              class="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white bg-white">
+              <RadioGroup.ItemIndicator class="border-1 bg-accent h-2 w-2 rounded-full border-black"/>
             </RadioGroup.ItemControl>
             <RadioGroup.ItemLabel class="ml-2 hover:cursor-pointer">Hide</RadioGroup.ItemLabel>
           </RadioGroup.Item>

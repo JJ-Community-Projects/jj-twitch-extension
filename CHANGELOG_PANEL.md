@@ -1,3 +1,10 @@
+2.0.2
+- Update Twitch Asset
+- Update About link color
+- Small bug fixes
+
+---
+
 2.0.1
 - Added Link to the Jingle Jam Stream Team in the Community Tab
 - Update Donation and About Buttons in the header

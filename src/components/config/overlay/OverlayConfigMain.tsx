@@ -117,10 +117,11 @@ const OverlayConfigBody: Component = () => {
   // const { log } = useAnalytics()
   const validateDonationUrl = () => {
     const urlRegex = /\bhttps?:\/\/(?:\w+\.)?tiltify\.com\b/
+    const urlRegex2 = /\bhttps?:\/\/(?:\w+\.)?tilti\.fyi\b/
     return (
-      ((twitchConfig.donationUrl.includes('tiltify.com') && twitchConfig.donationUrl.startsWith('https://')) ||
-        twitchConfig.donationUrl === '') &&
-      urlRegex.test(twitchConfig.donationUrl)
+      twitchConfig.donationUrl === '' ||
+      urlRegex.test(twitchConfig.donationUrl) ||
+      urlRegex2.test(twitchConfig.donationUrl)
     )
   }
 
