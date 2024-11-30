@@ -17,8 +17,7 @@ export const CommunityTab: Component = () => {
   const campaigns = () => fundraiser.campaigns
 
   const show = () => {
-
-    return true; //config.showFundraiser
+    return config.showFundraiser
   }
 
   return (
