@@ -57,40 +57,26 @@ export const PanelHeader: Component<PanelHeaderProps> = (props) => {
 
 const About = () => {
   const modalSignal = createModalSignal()
-  const {theme} = useTheme()
-
-  const color = () => {
-    switch (theme()) {
-      case 'blue':
-      case 'blue_light':
-        return 'text-blue-500'
-      case 'dark':
-        return 'text-white'
-      default:
-        return 'text-primary'
-    }
-  }
-
   return (
     <>
       <button
         class={twMerge(
-          'group h-full group inline-flex items-center justify-center gap-1 cursor-pointer',
+          'group h-full group inline-flex items-center justify-center cursor-pointer',
           'rounded-full shadow',
           'transition-all duration-300',
-          'bg-white hover:bg-gray-500'
+          'bg-gray-700'
         )}
         onClick={() => {
           modalSignal.open()
         }}
       >
-        <BiRegularInfoCircle class={'text-black group-hover:text-white size-6'} size={24}/>
+        <BiRegularInfoCircle class={'text-white size-6'} size={24}/>
         <p
           class={twMerge(
             'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
             'text-white text-xs text-center',
             'transition-all duration-300 ease-in-out',
-            'group-hover:max-w-xs group-hover:opacity-100 group-hover:pr-2'
+            'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-1 group-hover:pr-2'
           )}
         >
           About
@@ -103,34 +89,6 @@ const About = () => {
       />
     </>
   )
-  /*
-  return (
-    <>
-      <Tooltip placement={'bottom'}>
-        <Tooltip.Trigger
-          onClick={() => {
-            modalSignal.open()
-          }}
-          class={
-            twMerge('w-5 h-5 items-center justify-center flex flex-col',
-            )
-          }>
-          <FaSolidInfo class={'text-black'} size={18}/>
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
-            <Tooltip.Arrow/>
-            <p class={'text-white'}>About</p>
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip>
-      <AboutDialog
-        isOpen={modalSignal.isOpen()}
-        close={modalSignal.close}
-        onOpenChange={modalSignal.toggle}
-      />
-    </>
-  )*/
 }
 
 const Donate = () => {
@@ -165,7 +123,7 @@ const Donate = () => {
             'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
             'text-white text-xs',
             'transition-all duration-300 ease-in-out',
-            'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-2'
+            'group-hover:max-w-xs group-hover:opacity-100 group-hover:pr-1 group-hover:pl-2'
           )}
         >
           {text()}
