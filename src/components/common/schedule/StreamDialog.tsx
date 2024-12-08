@@ -31,6 +31,7 @@ export const StreamDialog: Component<YogsScheduleDetailDialogProps> = (props) =>
               class="w-full p-2 flex flex-row gap-4 rounded-t-2xl"
               style={{
                 background: background(),
+                color: getTextColor(background())
               }}
             >
               <button class={'rounded-full hover:bg-accent-200/10 aspect-square'} onClick={() => props.close()}>
