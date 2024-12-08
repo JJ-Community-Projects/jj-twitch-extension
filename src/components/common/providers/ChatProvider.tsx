@@ -1,12 +1,11 @@
-import {useData} from "./DataProvider.tsx";
 import {createContext, createEffect, createSignal, onCleanup, type ParentComponent, useContext} from "solid-js";
 import {DateTime, Duration} from "luxon";
 import type {TwitchOverlayChatCommand} from "../../../lib/model/TwitchConfig.ts";
-import type {Props} from "astro";
 import tmi, {type ChatUserstate} from "tmi.js";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
 import {useTwitchOverlayConfig} from "./OverlayConfigProvider.tsx";
 import {useLocalStorage} from "./LocalStorageProvider.tsx";
+import {useCharity} from "./data/CharityProvider.tsx";
 // Show command-triggered popups for 10s
 const commandTimeout = 10_000;
 
@@ -122,7 +121,7 @@ const useTwitchChatHook = (callback: (command: TwitchOverlayChatCommand) => void
 
 
 const useChatHook = (initCauseId?: number) => {
-  const {donation} = useData()
+  const {donation} = useCharity()
   const storage = useLocalStorage()
   const isChatEnabled = () => storage.getBoolean("chat", true)
   const causes = donation.causes

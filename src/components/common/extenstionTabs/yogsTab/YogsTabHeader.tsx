@@ -2,11 +2,14 @@ import {type Component, Match, Switch} from "solid-js";
 import {useScheduleState} from "../../providers/ScheduleStateProvider.tsx";
 import {DateTime} from "luxon";
 import {useCreatorFilter} from "../../providers/CreatorFilterProvider.tsx";
+import {BingoDialog} from "../bingo/BingoPage.tsx";
+import {createModalSignal} from "../../../../lib/createModalSignal.ts";
+import {Button} from "@kobalte/core/button";
 
 
 export const YogsTabHeader: Component = () => {
-  const {day,schedule} = useScheduleState()
-  const { isEmpty, filter, selectedCreatorsLabels } = useCreatorFilter()
+  const {day, schedule} = useScheduleState()
+  const {isEmpty, filter, selectedCreatorsLabels} = useCreatorFilter()
   const singleLabel = () => {
     if (selectedCreatorsLabels().length == 1) {
       return selectedCreatorsLabels()[0]
@@ -14,7 +17,7 @@ export const YogsTabHeader: Component = () => {
     return undefined
   }
 
-  const label = () =>{
+  const label = () => {
     if (selectedCreatorsLabels().length > 1) {
       return selectedCreatorsLabels()[0]
     }
@@ -25,7 +28,7 @@ export const YogsTabHeader: Component = () => {
     return filter().length > 1
   }
 
-  const date = () => DateTime.fromFormat(day().date, 'yyyy-MM-dd',{
+  const date = () => DateTime.fromFormat(day().date, 'yyyy-MM-dd', {
     zone: 'Europe/London'
   })
 

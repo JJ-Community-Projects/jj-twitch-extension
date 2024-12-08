@@ -1,9 +1,9 @@
 import { createContext, createSignal, type ParentComponent, useContext } from 'solid-js'
 import type {TESStream, TESTwitchCreator} from "../../../lib/model/TwitchExtensionSchedule.ts";
-import {useData} from "./DataProvider.tsx";
+import {useSchedule} from "./data/ScheduleProvider.tsx";
 
 const useHook = () => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
 
   const streams = schedule.days.map(day => day.streams).flat()
 

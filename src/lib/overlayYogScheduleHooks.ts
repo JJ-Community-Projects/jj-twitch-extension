@@ -1,11 +1,11 @@
-import {useData} from "../components/common/providers/DataProvider.tsx";
 import {DateTime} from "luxon";
 import {createEffect, createSignal, onMount} from "solid-js";
 import {useDatetimeLondonNow} from "./useNow.ts";
 import {isJJ} from "./useJJDates.ts";
+import {useSchedule} from "../components/common/providers/data/ScheduleProvider.tsx";
 
 const getCurrentDayIndex = (now: DateTime) => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   const index = schedule.days.findIndex(d => {
     const date = DateTime.fromISO(d.date, {
       zone: 'Europe/London'
@@ -18,7 +18,7 @@ const getCurrentDayIndex = (now: DateTime) => {
   return index
 }
 const getNextDayIndex = (now: DateTime) => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   const tomorrow = now.plus({days: 1})
   const index = schedule.days.findIndex(d => {
     const date = DateTime.fromISO(d.date, {
@@ -33,7 +33,7 @@ const getNextDayIndex = (now: DateTime) => {
 }
 
 const getCurrentStream = (now: DateTime) => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   if (!isJJ(now)) {
     return undefined
   }
@@ -52,7 +52,7 @@ const getCurrentStream = (now: DateTime) => {
 }
 
 export const getFutureStreams = (now: DateTime, i?: number) => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   const streams = schedule
     .days
     .flatMap(d => d.streams)
@@ -74,7 +74,7 @@ export const useFutureStreams = (i?: number) => {
 }
 
 const getNextStream = (now: DateTime) => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   if (!isJJ(now)) {
     return schedule.days[0].streams[0]
   }
@@ -130,7 +130,7 @@ const useTomorrowDayIndex = () => {
 
 export const useJJDates = () => {
 
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   const now = useDatetimeLondonNow()
 
   const streams = () => {
@@ -170,13 +170,13 @@ export const useJJDates = () => {
 }
 
 export const useToday = () => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   const dayIndex = useCurrentDayIndex()
   return () => schedule.days[dayIndex()]
 }
 
 export const useTomorrow = () => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   const dayIndex = useTomorrowDayIndex()
   return () => schedule.days[dayIndex()]
 }

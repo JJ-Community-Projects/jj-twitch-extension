@@ -1,5 +1,4 @@
 import {type Component, For, Show} from "solid-js";
-import {useData} from "../common/providers/DataProvider.tsx";
 import {useNow} from "../../lib/useNow.ts";
 import {DateTime} from "luxon";
 import type {TESStream} from "../../lib/model/TwitchExtensionSchedule.ts";
@@ -12,6 +11,7 @@ import {FiExternalLink} from "solid-icons/fi";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {OverlayHeader} from "./OverlayHeader.tsx";
+import {useSchedule} from "../common/providers/data/ScheduleProvider.tsx";
 
 export const OverlayYogsSchedule: Component = () => {
 
@@ -46,7 +46,7 @@ export const OverlayYogsSchedule: Component = () => {
 }
 
 const Header: Component = () => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   return (
     <div class={'w-full px-2'}>
       <div class={'bg-white rounded-2xl p-2 text-center flex flex-row items-center justify-between'}>

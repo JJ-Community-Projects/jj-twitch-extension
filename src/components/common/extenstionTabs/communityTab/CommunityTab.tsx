@@ -1,5 +1,4 @@
 import {type Component, For, Match, type ParentComponent, Show, Switch} from "solid-js";
-import {useData} from "../../providers/DataProvider.tsx";
 import {ColoredScrollbar} from "../../ColoredScrollbar.tsx";
 import {DateTime} from "luxon";
 import type {Campaign} from "../../../../lib/model/jjData/JJCommunityFundraiser.ts";
@@ -9,12 +8,12 @@ import {Numeric} from "solid-i18n";
 import {FiExternalLink} from "solid-icons/fi";
 import {usePanelConfig} from "../../providers/PanelConfigProvider.tsx";
 import {InvisibleBody} from "../../InvisibleBody.tsx";
+import {useFundraiser} from "../../providers/data/CommunityProvider.tsx";
+import {FundraiserLoader} from "../../providers/data/FundraiserLoader.tsx";
 
 
 export const CommunityTab: Component = () => {
   const config = usePanelConfig()
-  const {fundraiser} = useData()
-  const campaigns = () => fundraiser.campaigns
 
   const show = () => {
     return config.showFundraiser
@@ -23,17 +22,9 @@ export const CommunityTab: Component = () => {
   return (
     <>
       <Show when={show()}>
-        <div class={'flex h-full flex-1 flex-col'}>
-          <ColoredScrollbar>
-            <p class={'px-2 text-center text-xl text-white'}>Community Fundraiser</p>
-            <p class={'mb-2 text-center text-base text-white'}>
-              Last update, {DateTime.fromISO(fundraiser.date).toLocaleString(DateTime.DATETIME_MED)}
-            </p>
-            <div class={'flex flex-1 flex-col gap-2 mx-2 mb-4'}>
-              <FundraiserBody fundraisers={campaigns()}/>
-            </div>
-          </ColoredScrollbar>
-        </div>
+        <FundraiserLoader>
+          <Body/>
+        </FundraiserLoader>
       </Show>
       <Show when={!show()}>
         <InvisibleBody text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'}>
@@ -42,6 +33,27 @@ export const CommunityTab: Component = () => {
       </Show>
     </>
   );
+}
+
+const Body = () => {
+  const {fundraiser} = useFundraiser()
+
+  const campaigns = () => fundraiser.campaigns
+
+  return (
+
+    <div class={'flex h-full flex-1 flex-col'}>
+      <ColoredScrollbar>
+        <p class={'px-2 text-center text-xl text-white'}>Community Fundraiser</p>
+        <p class={'mb-2 text-center text-base text-white'}>
+          Last update, {DateTime.fromISO(fundraiser.date).toLocaleString(DateTime.DATETIME_MED)}
+        </p>
+        <div class={'flex flex-1 flex-col gap-2 mx-2 mb-4'}>
+          <FundraiserBody fundraisers={campaigns()}/>
+        </div>
+      </ColoredScrollbar>
+    </div>
+  )
 }
 
 
@@ -67,8 +79,8 @@ const FundraiserBody: Component<{ fundraisers: Campaign[] }> = props => {
           }
 
           const url = () => {
-            if (!d.twitch_data) {
-              return undefined
+            if (!d.twitch_data || !d.isLive) {
+              return d.url
             }
             return `https://twitch.tv/${d.twitch_data.login}`
           }

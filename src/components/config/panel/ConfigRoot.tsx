@@ -2,7 +2,6 @@ import {type Component} from "solid-js";
 import {createI18n, I18nProvider} from "solid-i18n";
 import {TwitchAuthProvider} from "../../common/providers/TwitchAuthProvider.tsx";
 import {FirestoreProvider} from "../../common/providers/FirestoreProvider.tsx";
-import {DataLoader} from "../../common/providers/DataLoader.tsx";
 import {ThemeProvider} from "../../common/providers/ThemeProvider.tsx";
 import {Background} from "../../common/Background.tsx";
 import {ConfigMain} from "./ConfigMain.tsx";
@@ -24,13 +23,11 @@ export const ConfigRoot: Component<ConfigRootProps> = (props) => {
           <TwitchPanelConfigProvider>
             <FirestoreProvider>
               <PanelConfigLoader>
-                <DataLoader>
-                  <ThemeProvider>
-                    <Background>
-                      <ConfigMain/>
-                    </Background>
-                  </ThemeProvider>
-                </DataLoader>
+                <ThemeProvider>
+                  <Background>
+                    <ConfigMain/>
+                  </Background>
+                </ThemeProvider>
               </PanelConfigLoader>
             </FirestoreProvider>
           </TwitchPanelConfigProvider>

@@ -1,15 +1,15 @@
 import {type Component, For, Match, type ParentComponent, Show, Switch} from "solid-js";
 import {ColoredScrollbar} from "../common/ColoredScrollbar.tsx";
 import {twMerge} from "tailwind-merge";
-import {useData} from "../common/providers/DataProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {Numeric} from "solid-i18n";
 import {FiExternalLink} from "solid-icons/fi";
 import {OverlayHeader} from "./OverlayHeader.tsx";
+import {useFundraiser} from "../common/providers/data/CommunityProvider.tsx";
 
 
 export const OverlayCommunityFundraiser: Component = (props) => {
-  const {fundraiser} = useData()
+  const {fundraiser} = useFundraiser()
 
   const {theme} = useTheme()
 

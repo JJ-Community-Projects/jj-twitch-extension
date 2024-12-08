@@ -2,8 +2,6 @@ import {type Component, Match, Switch} from 'solid-js'
 import {YogsTab} from "./extenstionTabs/yogsTab/YogsTab.tsx";
 import {CharityTab} from "./extenstionTabs/charityTab/CharityTab.tsx";
 import {CommunityTab} from "./extenstionTabs/communityTab/CommunityTab.tsx";
-import {ScheduleStateProvider} from "./providers/ScheduleStateProvider.tsx";
-import {CreatorFilterProvider} from "./providers/CreatorFilterProvider.tsx";
 import type {TabType} from "../../lib/model/TwitchConfig.ts";
 import {useTwitchPanelConfig} from "./providers/PanelConfigProvider.tsx";
 import {Tabs} from '@kobalte/core';
@@ -17,11 +15,7 @@ const JJTab: Component<JJTabProps> = props => {
     <Switch>
       <Match when={props.tab == 'yogs'}>
         <Tabs.Content value={'yogs'} class={'h-full mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
-          <ScheduleStateProvider>
-            <CreatorFilterProvider>
-              <YogsTab/>
-            </CreatorFilterProvider>
-          </ScheduleStateProvider>
+          <YogsTab/>
         </Tabs.Content>
       </Match>
       <Match when={props.tab == 'charities'}>

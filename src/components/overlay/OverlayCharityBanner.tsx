@@ -4,8 +4,8 @@ import {GlobeIcon, TiltifyIcon} from "../common/icons/JJIcons.tsx";
 import {twMerge} from "tailwind-merge";
 import {useChat} from "../common/providers/ChatProvider.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
-import {useData} from "../common/providers/DataProvider.tsx";
 import {Numeric} from "solid-i18n";
+import {useCharity} from "../common/providers/data/CharityProvider.tsx";
 
 export const OverlayCharityBanner: Component = () => {
   const {causes, causeId} = useChat()
@@ -31,7 +31,7 @@ export const OverlayCharityBanner: Component = () => {
 }
 
 export const ChatDemo = () => {
-  const {donation} = useData()
+  const {donation} = useCharity()
 
   return (
     <div class={'relative w-full h-full'}>
@@ -47,7 +47,7 @@ export const ChatDemo = () => {
 
 const CauseView: Component<{ cause: Cause }> = (props) => {
   const cause = props.cause
-  const {donation} = useData()
+  const {donation} = useCharity()
 
 
   const {commandTimeout, causeId, lastCauseId} = useChat()

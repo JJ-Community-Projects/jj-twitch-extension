@@ -4,9 +4,11 @@ import type {TwitchExtensionSchedule} from "../../../lib/model/TwitchExtensionSc
 import {useFirestore} from "./FirestoreProvider.tsx";
 import type {JJCommunityFundraiser} from "../../../lib/model/jjData/JJCommunityFundraiser.ts";
 import type {JJData} from "../../../lib/model/jjData/JJData.ts";
-import {DataProvider} from "./DataProvider.tsx";
 import {useFirestoreDoc} from "../../../lib/useFirestoreDoc.ts";
 import {useOverlayConfig} from "./OverlayConfigProvider.tsx";
+import {ScheduleProvider} from "./data/ScheduleProvider.tsx";
+import {FundraiserProvider} from "./data/CommunityProvider.tsx";
+import {CharityProvider} from "./data/CharityProvider.tsx";
 
 
 function loadSchedule() {
@@ -66,13 +68,13 @@ export const OverlayDataLoader: ParentComponent = (props) => {
           <div>Error: {error()?.message}</div>
         </Match>
         <Match when={done()}>
-          <DataProvider
-            schedule={schedule.data!}
-            donation={jjDonationTracker.data!}
-            fundraiser={fundraiser.data!}
-          >
-            {props.children}
-          </DataProvider>
+          <ScheduleProvider schedule={schedule.data!}>
+            <FundraiserProvider fundraiser={fundraiser.data!}>
+              <CharityProvider donation={jjDonationTracker.data!}>
+                {props.children}
+              </CharityProvider>
+            </FundraiserProvider>
+          </ScheduleProvider>
         </Match>
       </Switch>
     </>

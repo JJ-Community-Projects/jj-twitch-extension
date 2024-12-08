@@ -6,9 +6,12 @@ import {FirestoreProvider} from "./FirestoreProvider.tsx";
 import {OverlayThemeProvider} from "./ThemeProvider.tsx";
 import {TwitchOverlayConfigProvider} from "./OverlayConfigProvider.tsx";
 import {OverlayConfigLoader} from "./OverlayConfigLoader.tsx";
-import {OverlayDataLoader} from "./OverlayDataLoader.tsx";
 import {LocalStorageProvider} from "./LocalStorageProvider.tsx";
 import {AnalyticsProvider} from "./AnalyticsProvider.tsx";
+import {ScheduleLoader} from "./data/ScheduleLoader.tsx";
+import {FundraiserLoader} from "./data/FundraiserLoader.tsx";
+import {CharityLoader} from "./data/CharityLoader.tsx";
+import {OverlayDataLoader} from "./OverlayDataLoader.tsx";
 
 export const OverlayExtensionProviders: ParentComponent = (props) => {
   const i18n = createI18n({language: useLocale().locale()})

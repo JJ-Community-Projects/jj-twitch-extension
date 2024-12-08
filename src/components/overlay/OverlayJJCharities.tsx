@@ -1,5 +1,4 @@
 import {type Component, For} from "solid-js";
-import {useData} from "../common/providers/DataProvider.tsx";
 import type {Cause} from "../../lib/model/jjData/JJData.ts";
 import {twMerge} from "tailwind-merge";
 import {ColoredScrollbar} from "../common/ColoredScrollbar.tsx";
@@ -8,10 +7,11 @@ import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/Over
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {Numeric} from "solid-i18n";
 import {OverlayHeader} from "./OverlayHeader.tsx";
+import {useCharity} from "../common/providers/data/CharityProvider.tsx";
 
 
 export const OverlayJJCharities: Component = () => {
-  const {donation} = useData()
+  const {donation} = useCharity()
   const charities = donation.causes
 
   const {theme} = useTheme()
@@ -59,7 +59,7 @@ export const OverlayJJCharities: Component = () => {
 
 const Item: Component<{ cause: Cause }> = (props) => {
   const {cause: charity} = props
-  const {donation} = useData()
+  const {donation} = useCharity()
 
   const totalPounds = () => charity.raised.yogscast + charity.raised.fundraisers
   const totalDollar = () => totalPounds() * donation.avgConversionRate

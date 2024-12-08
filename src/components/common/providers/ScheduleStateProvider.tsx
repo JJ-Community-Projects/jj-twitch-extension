@@ -1,10 +1,10 @@
 import {createContext, createSignal, onMount, type ParentComponent, useContext} from "solid-js";
 import {DateTime} from "luxon";
-import {useData} from "./DataProvider.tsx";
 import {useAnalytics} from "./AnalyticsProvider.tsx";
+import {useSchedule} from "./data/ScheduleProvider.tsx";
 
 const useScheduleStateHook = () => {
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   const days = schedule.days
   const dayCount = days.length
   const {log} = useAnalytics()

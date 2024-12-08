@@ -6,7 +6,7 @@ import {CgClose} from "solid-icons/cg";
 import {twMerge} from "tailwind-merge";
 import {FaRegularSquare, FaSolidSquareCheck} from "solid-icons/fa";
 import {useAnalytics} from "./providers/AnalyticsProvider.tsx";
-import {useData} from "./providers/DataProvider.tsx";
+import {useSchedule} from "./providers/data/ScheduleProvider.tsx";
 
 interface FilterDialogProps {
   modalSignal: ModalSignal
@@ -36,7 +36,7 @@ interface FilterDialogBodyProps {
 const FilterDialogBody: Component<FilterDialogBodyProps> = props => {
   const {onClose} = props
   const {log} = useAnalytics()
-  const {schedule} = useData()
+  const {schedule} = useSchedule()
   const {creators, toggle, reset, filter, filteredStreams, appearanceCount, includes, sortByName} =
     useCreatorFilter()
   const [search, setSearch] = createSignal('')

@@ -2,10 +2,10 @@ import {type Component, For} from "solid-js";
 import type {Cause} from "../../lib/model/jjData/JJData.ts";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {GlobeIcon, TiltifyIcon} from "../common/icons/JJIcons.tsx";
-import {useData} from "../common/providers/DataProvider.tsx";
 import {Numeric} from "solid-i18n";
 import {useChat} from "../common/providers/ChatProvider.tsx";
 import {twMerge} from "tailwind-merge";
+import {useCharity} from "../common/providers/data/CharityProvider.tsx";
 
 export const OverlayCharitySideBanner: Component = () => {
   const {causes, causeId} = useChat()
@@ -31,7 +31,7 @@ export const OverlayCharitySideBanner: Component = () => {
 }
 const CauseViewSide: Component<{ cause: Cause }> = (props) => {
   const cause = props.cause
-  const {donation} = useData()
+  const {donation} = useCharity()
 
   const twitchConfig = useTwitchOverlayConfig()
   const config = useOverlayConfig()
@@ -85,7 +85,7 @@ const CauseViewSide: Component<{ cause: Cause }> = (props) => {
 }
 
 export const ChatSideDemo = () => {
-  const {donation} = useData()
+  const {donation} = useCharity()
 
   return (
     <div class={'w-48 h-full flex flex-col justify-center items-center'}>

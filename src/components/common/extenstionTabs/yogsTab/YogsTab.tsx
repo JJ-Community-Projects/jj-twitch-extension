@@ -5,9 +5,11 @@ import {useTheme} from "../../providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {ScheduleControls} from "../../schedule/ScheduleControls.tsx";
 import {DateTime} from "luxon";
-import {useScheduleState} from "../../providers/ScheduleStateProvider.tsx";
+import {ScheduleStateProvider, useScheduleState} from "../../providers/ScheduleStateProvider.tsx";
 import {usePanelConfig} from "../../providers/PanelConfigProvider.tsx";
 import {InvisibleBody} from "../../InvisibleBody.tsx";
+import {ScheduleLoader} from "../../providers/data/ScheduleLoader.tsx";
+import {CreatorFilterProvider} from "../../providers/CreatorFilterProvider.tsx";
 
 export const YogsTab: Component = (props) => {
   const scroll =
@@ -27,21 +29,29 @@ export const YogsTab: Component = (props) => {
     }
   }
 
-  return (<>
+  return (
+    <>
       <Show when={config.showSchedule}>
-        <div class="h-full flex flex-col">
-          <div class={'h-30 mb-2'}>
-            <YogsTabHeader/>
-          </div>
-          <div class={twMerge(scroll, scrollbar())}>
-            <ScheduleStreams/>
-          </div>
-          <ScheduleUpdatedAt/>
-          <ScheduleControls/>
-        </div>
+        <ScheduleLoader>
+          <ScheduleStateProvider>
+            <CreatorFilterProvider>
+              <div class="h-full flex flex-col">
+                <div class={'h-30 mb-2'}>
+                  <YogsTabHeader/>
+                </div>
+                <div class={twMerge(scroll, scrollbar())}>
+                  <ScheduleStreams/>
+                </div>
+                <ScheduleUpdatedAt/>
+                <ScheduleControls/>
+              </div>
+            </CreatorFilterProvider>
+          </ScheduleStateProvider>
+        </ScheduleLoader>
       </Show>
       <Show when={!config.showSchedule}>
-        <InvisibleBody text={'The Yogscast Jingle Jam Schedule will be shown soon after it was published.'}></InvisibleBody>
+        <InvisibleBody
+          text={'The Yogscast Jingle Jam Schedule will be shown soon after it was published.'}></InvisibleBody>
       </Show>
     </>
   );
