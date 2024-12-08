@@ -1,6 +1,8 @@
 2.0.2
-- Update Twitch Asset
+- Update data loading, previously donation and charity data was loaded even if the tabs were not visible
+- Update Community Fundraiser links, now they link to either the twitch channel or tilitfy page
 - Update About link color
+- Update stream dialog text color
 - Small bug fixes
 
 ---
