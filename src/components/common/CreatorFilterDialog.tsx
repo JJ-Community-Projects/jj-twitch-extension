@@ -6,7 +6,6 @@ import {CgClose} from "solid-icons/cg";
 import {twMerge} from "tailwind-merge";
 import {FaRegularSquare, FaSolidSquareCheck} from "solid-icons/fa";
 import {useAnalytics} from "./providers/AnalyticsProvider.tsx";
-import {useSchedule} from "./providers/data/ScheduleProvider.tsx";
 
 interface FilterDialogProps {
   modalSignal: ModalSignal
@@ -36,7 +35,6 @@ interface FilterDialogBodyProps {
 const FilterDialogBody: Component<FilterDialogBodyProps> = props => {
   const {onClose} = props
   const {log} = useAnalytics()
-  const {schedule} = useSchedule()
   const {creators, toggle, reset, filter, filteredStreams, appearanceCount, includes, sortByName} =
     useCreatorFilter()
   const [search, setSearch] = createSignal('')
@@ -46,21 +44,21 @@ const FilterDialogBody: Component<FilterDialogBodyProps> = props => {
       return creators
     }
     return creators.filter(c => {
-      return c.label.toLowerCase().includes(search().toLowerCase())
+      return c.name.toLowerCase().includes(search().toLowerCase())
     })
   }
 
   const sortedCreatorList = () => {
     if (sortByName()) {
       return searchCreatorList().sort((a, b) => {
-        return a.label.toLowerCase().localeCompare(b.label.toLowerCase())
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
       })
     }
     return searchCreatorList().sort((a, b) => {
       const aAppearance = appearanceCount(a.id)
       const bAppearance = appearanceCount(b.id)
       if (aAppearance == bAppearance) {
-        return a.label.toLowerCase().localeCompare(b.label.toLowerCase())
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
       }
       return bAppearance - aAppearance
     })
@@ -111,7 +109,7 @@ const FilterDialogBody: Component<FilterDialogBodyProps> = props => {
                   >
                     <div class={'flex flex-row items-center'}>
                       <p class={'flex-1 text-left'}>
-                        {creator.label} ({appearanceCount(creator.id)})
+                        {creator.name} ({appearanceCount(creator.id)})
                       </p>
                       <div class={'text-accent-500'}>
                         <Show when={includes(creator.id)}>
@@ -144,7 +142,6 @@ const FilterDialogBody: Component<FilterDialogBodyProps> = props => {
             onClose()
             log('schedule_filter', {
               filter: filter().join(','),
-              schedule: schedule.title,
             })
           }}
         >

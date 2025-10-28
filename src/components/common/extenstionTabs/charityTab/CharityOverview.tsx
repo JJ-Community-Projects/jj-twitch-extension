@@ -1,5 +1,4 @@
 import {type Component, Show} from "solid-js"
-import type {JJData} from "../../../../lib/model/jjData/JJData.ts";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {DateTime} from "luxon";
@@ -7,18 +6,19 @@ import {Numeric} from "solid-i18n";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
 import {ToggleButton} from "@kobalte/core/toggle-button";
 import {BsCurrencyDollar, BsCurrencyPound} from "solid-icons/bs";
+import type {OverviewSchema} from "../../../../api";
 
 interface CharityOverviewProps {
-  data: JJData
+  data: OverviewSchema
 }
 
 export const CharityOverview: Component<CharityOverviewProps> = props => {
-  const totalYogsPounds = () => props.data.raised.yogscast
-  const totalYogs = () => totalYogsPounds() * props.data.avgConversionRate
-  const totalFundraiserPounds = () => props.data.raised.fundraisers
-  const totalFundraiser = () => props.data.raised.fundraisers * props.data.avgConversionRate
-  const totalPounds = () => props.data.raised.yogscast + props.data.raised.fundraisers
-  const total = () => totalPounds() * props.data.avgConversionRate
+  const totalYogsPounds = () => props.data.raised.yogscast.gbp
+  const totalYogs = () => props.data.raised.yogscast.usd
+  const totalFundraiserPounds = () => props.data.raised.fundraisers.gbp
+  const totalFundraiser = () =>  props.data.raised.fundraisers.usd
+  const totalPounds = () => props.data.raised.total.gbp
+  const total = () => props.data.raised.total.usd
 
   const {tailwindTextPrimary, theme} = useTheme()
   const raisedTextColor = () => {
@@ -50,7 +50,7 @@ export const CharityOverview: Component<CharityOverviewProps> = props => {
             <p class={twMerge('relative text-base font-bold', raisedTextColor())}>
               <Currency dollars={total()} pounds={totalPounds()}/>
             </p>
-            <p class={darkText()}>Raised in {DateTime.fromISO(props.data.date).year}</p>
+            <p class={darkText()}>Raised in {DateTime.fromJSDate(props.data.date).year}</p>
           </div>
           <div id={'div2'} class={'absolute right-0 top-0 p-1'}>
             <CurrencyToggle/>
@@ -84,7 +84,7 @@ export const CharityOverview: Component<CharityOverviewProps> = props => {
         </div>
         <div class={'flex flex-1 items-end justify-center'}>
           <p class={twMerge('text-center', darkText())}>
-            Last update, {DateTime.fromISO(props.data.date).toLocaleString(DateTime.DATETIME_MED)}
+            Last update, {DateTime.fromJSDate(props.data.date).toLocaleString(DateTime.DATETIME_MED)}
           </p>
         </div>
       </div>

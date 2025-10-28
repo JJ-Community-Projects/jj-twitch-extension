@@ -1,9 +1,9 @@
 import {type Component, For} from 'solid-js'
-import type {Cause} from "../../../../lib/model/jjData/JJData.ts";
 import {CharityListItem} from "./CharityListItem.tsx";
+import type {JJCause} from "../../../../api";
 
 interface CharityListProps {
-  charityData: Cause[]
+  charityData: JJCause[]
 }
 
 export const CharityList: Component<CharityListProps> = props => {

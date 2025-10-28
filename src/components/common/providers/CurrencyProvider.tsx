@@ -2,13 +2,12 @@ import {type Accessor, createContext, createSignal, type ParentComponent, useCon
 
 interface CurrencyContextProps {
   pounds: Accessor<boolean>
-  avgConversionRate: number
   toggle: () => void
 }
 
 const CurrencyContext = createContext<CurrencyContextProps>()
 
-export const CurrencyProvider: ParentComponent<{ avgConversionRate?: number }> = props => {
+export const CurrencyProvider: ParentComponent<{  }> = props => {
   const [pounds, set] = createSignal(true)
 
   const toggle = () => {
@@ -20,7 +19,6 @@ export const CurrencyProvider: ParentComponent<{ avgConversionRate?: number }> =
       value={{
         pounds,
         toggle,
-        avgConversionRate: props?.avgConversionRate ?? 1,
       }}
     >
       {props.children}

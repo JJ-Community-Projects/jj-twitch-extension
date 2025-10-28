@@ -2,13 +2,13 @@ import {type Component, For, Match, Show, Switch} from "solid-js";
 import {Dialog} from "@kobalte/core";
 import {AiOutlineClose} from "solid-icons/ai";
 import {DateTime} from "luxon";
-import type {TESStream, TESTwitchCreator, TESTwitchLink} from "../../../lib/model/TwitchExtensionSchedule.ts";
 import {YogsStreamUtils} from "../../../lib/YogsStreamUtils.ts";
 import {useNow} from "../../../lib/useNow.ts";
 import {getTextColor} from "../../../lib/textColors.ts";
+import type {Creator, Stream, StreamVodsInner} from "../../../api";
 
 interface YogsScheduleDetailDialogProps {
-  stream: TESStream
+  stream: Stream
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   close: () => void;
@@ -17,7 +17,7 @@ interface YogsScheduleDetailDialogProps {
 export const StreamDialog: Component<YogsScheduleDetailDialogProps> = (props) => {
 
   const background = () => {
-    return props.stream.style?.background?.colors?.at(0) ?? '#ff0000'
+    return props.stream.color ?? '#ff0000'
   }
 
   return (
@@ -51,7 +51,7 @@ export const StreamDialog: Component<YogsScheduleDetailDialogProps> = (props) =>
 }
 
 interface BodyProps {
-  stream: TESStream
+  stream: Stream
 }
 
 const Body: Component<BodyProps> = (props) => {
@@ -75,7 +75,7 @@ const Body: Component<BodyProps> = (props) => {
         <Dialog.Description class="mb-6">{props.stream.description}</Dialog.Description>
       </Show>
       <div>
-        <p>{DateTime.fromISO(props.stream.start).toLocaleString({
+        <p>{DateTime.fromJSDate(props.stream.start).toLocaleString({
           weekday: 'short',
           month: 'short',
           day: 'numeric',
@@ -88,10 +88,10 @@ const Body: Component<BodyProps> = (props) => {
         </Show>
       </div>
       <div>
-        <Show when={props.stream.twitchVods && props.stream.twitchVods.length > 0}>
+        <Show when={props.stream.vods && props.stream.vods.length > 0}>
           <p>Twitch Vods</p>
           <div class={'flex flex-wrap gap-2'}>
-            <For each={props.stream.twitchVods}>
+            <For each={props.stream.vods}>
               {
                 vod => (<VodComponent vod={vod}/>)
               }
@@ -100,7 +100,7 @@ const Body: Component<BodyProps> = (props) => {
         </Show>
       </div>
       <Show
-        when={props.stream.twitchVods && props.stream.twitchVods.length > 0 && (props.stream.creators?.length ?? 0) > 0}>
+        when={props.stream.vods && props.stream.vods.length > 0 && (props.stream.creators?.length ?? 0) > 0}>
         <div class={'h-2'}/>
       </Show>
       <Show when={(props.stream.creators?.length ?? 0) > 0}>
@@ -118,7 +118,7 @@ const Body: Component<BodyProps> = (props) => {
 }
 
 interface VodProps {
-  vod: TESTwitchLink
+  vod: StreamVodsInner
 }
 
 const VodComponent: Component<VodProps> = (props) => {
@@ -127,7 +127,7 @@ const VodComponent: Component<VodProps> = (props) => {
       <a
         class={'hover:scale-102 text-xxs flex flex-row items-center p-2 rounded-2xl bg-twitch-500 text-white transition-all '}
         target={'_blank'}
-        href={props.vod.url}
+        href={props.vod.link}
       >
         {props.vod.label}
       </a>
@@ -137,7 +137,7 @@ const VodComponent: Component<VodProps> = (props) => {
 
 
 interface CreatorComponentProps {
-  creator: TESTwitchCreator
+  creator: Creator
 }
 
 const CreatorComponent: Component<CreatorComponentProps> = (props) => {
@@ -151,7 +151,7 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
     return props.creator.url !== ''
   }
 
-  const label = () => props.creator.label
+  const label = () => props.creator.name
 
   return (
     <Switch>

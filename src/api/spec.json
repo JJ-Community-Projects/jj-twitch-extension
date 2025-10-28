@@ -1,0 +1,1055 @@
+{
+  "info": {
+    "title": "Jingle Jam Community Page Public API",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "description": "Dev",
+      "url": "http://localhost:3000/api/public"
+    },
+    {
+      "description": "Beta",
+      "url": "https://beta.jinglejam.ostof.dev/api/public"
+    },
+    {
+      "description": "Prod",
+      "url": "https://jinglejam.ostof.dev/api/public"
+    }
+  ],
+  "openapi": "3.1.1",
+  "components": {
+    "schemas": {
+      "JJRaised": {
+        "type": "object",
+        "properties": {
+          "yogscast": {
+            "$ref": "#/components/schemas/CurrenciesSchema"
+          },
+          "fundraisers": {
+            "$ref": "#/components/schemas/CurrenciesSchema"
+          },
+          "total": {
+            "$ref": "#/components/schemas/CurrenciesSchema"
+          }
+        },
+        "required": [
+          "yogscast",
+          "fundraisers",
+          "total"
+        ]
+      },
+      "JJCause": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "logo": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "donateUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "raised": {
+            "$ref": "#/components/schemas/JJRaised"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "logo",
+          "description",
+          "url",
+          "donateUrl",
+          "raised"
+        ]
+      },
+      "JJLivestream": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "channel",
+          "type"
+        ]
+      },
+      "JJUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "avatar",
+          "url"
+        ]
+      },
+      "JJCampaign": {
+        "type": "object",
+        "properties": {
+          "campaignName": {
+            "type": "string"
+          },
+          "tiltifyUrl": {
+            "type": "string"
+          },
+          "tiltifyName": {
+            "type": "string"
+          },
+          "tiltifyDescription": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "raised": {
+            "$ref": "#/components/schemas/CurrenciesSchema"
+          },
+          "goal": {
+            "$ref": "#/components/schemas/CurrenciesSchema"
+          },
+          "twitch": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "avatar": {
+                "type": "string"
+              },
+              "isLive": {
+                "type": "boolean"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "avatar",
+              "isLive",
+              "url"
+            ]
+          }
+        },
+        "required": [
+          "campaignName",
+          "tiltifyUrl",
+          "tiltifyName",
+          "avatar",
+          "raised",
+          "goal"
+        ]
+      },
+      "JJCampaigns": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "campaigns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JJCampaign"
+            }
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          }
+        },
+        "required": [
+          "count",
+          "campaigns",
+          "date"
+        ]
+      },
+      "Creator": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "url",
+          "color"
+        ]
+      },
+      "Stream": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "markdownDescription": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          },
+          "creators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Creator"
+            }
+          },
+          "vods": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "link"
+              ]
+            }
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "start",
+          "end",
+          "color"
+        ]
+      },
+      "ExtensionConfig": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "number"
+          },
+          "showYogsSchedule": {
+            "type": "boolean"
+          },
+          "showCharities": {
+            "type": "boolean"
+          },
+          "showFundraisers": {
+            "type": "boolean"
+          },
+          "refreshInterval": {
+            "type": "object",
+            "properties": {
+              "yogsSchedule": {
+                "type": "number"
+              },
+              "charities": {
+                "type": "number"
+              },
+              "fundraisers": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "yogsSchedule",
+              "charities",
+              "fundraisers"
+            ]
+          },
+          "donationLink": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "visible": {
+                "type": "boolean"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "url",
+              "visible",
+              "text"
+            ]
+          },
+          "donationTrackerUrl": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "year",
+          "showYogsSchedule",
+          "showCharities",
+          "showFundraisers",
+          "refreshInterval",
+          "donationLink",
+          "donationTrackerUrl",
+          "timestamp"
+        ]
+      },
+      "UserExtensionConfig": {
+        "type": "object",
+        "properties": {
+          "hasCampaign": {
+            "type": "boolean"
+          },
+          "hasSchedule": {
+            "type": "boolean"
+          },
+          "tabs": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "full-user",
+                "user-schedule",
+                "yogs",
+                "charities",
+                "fundraisers"
+              ]
+            }
+          }
+        },
+        "required": [
+          "hasCampaign",
+          "hasSchedule",
+          "tabs"
+        ]
+      },
+      "CurrenciesSchema": {
+        "type": "object",
+        "properties": {
+          "gbp": {
+            "type": "number"
+          },
+          "gbpFormatted": {
+            "type": "string"
+          },
+          "usd": {
+            "type": "number"
+          },
+          "usdFormatted": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "gbp",
+          "gbpFormatted",
+          "usd",
+          "usdFormatted"
+        ]
+      },
+      "OverviewSchema": {
+        "type": "object",
+        "properties": {
+          "raised": {
+            "$ref": "#/components/schemas/JJRaised"
+          },
+          "collections": {
+            "type": "object",
+            "properties": {
+              "redeemed": {
+                "type": "number"
+              },
+              "total": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "redeemed",
+              "total"
+            ]
+          },
+          "donations": {
+            "type": "number"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          }
+        },
+        "required": [
+          "raised",
+          "collections",
+          "donations",
+          "date"
+        ]
+      },
+      "YogsScheduleSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          },
+          "initialDayIndex": {
+            "type": "number"
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "start": {
+                  "type": "string",
+                  "format": "date-time",
+                  "x-native-type": "date"
+                },
+                "end": {
+                  "type": "string",
+                  "format": "date-time",
+                  "x-native-type": "date"
+                },
+                "streams": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Stream"
+                  }
+                }
+              },
+              "required": [
+                "start",
+                "end",
+                "streams"
+              ]
+            }
+          },
+          "streams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stream"
+            }
+          }
+        },
+        "required": [
+          "title",
+          "start",
+          "end",
+          "initialDayIndex",
+          "days",
+          "streams"
+        ]
+      },
+      "UserScheduleSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          },
+          "streams": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stream"
+            }
+          }
+        },
+        "required": [
+          "title",
+          "start",
+          "end",
+          "streams"
+        ]
+      },
+      "CausesDisplaySchema": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          },
+          "causes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JJCause"
+            }
+          },
+          "overview": {
+            "$ref": "#/components/schemas/OverviewSchema"
+          }
+        },
+        "required": [
+          "count",
+          "causes",
+          "overview"
+        ]
+      },
+      "UserDisplay": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "number"
+          },
+          "primaryLiveStream": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "x-native-type": "date"
+          },
+          "username": {
+            "type": "string"
+          },
+          "profileImage": {
+            "type": "string"
+          },
+          "twitchLogin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tiltifySlug": {
+            "type": "string"
+          },
+          "tiltifyUrl": {
+            "type": "string"
+          },
+          "primaryColor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "accentColor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "userId",
+          "primaryLiveStream",
+          "createdAt",
+          "username",
+          "profileImage",
+          "twitchLogin",
+          "tiltifySlug",
+          "tiltifyUrl",
+          "primaryColor",
+          "accentColor"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/twitch-extension/config/{channelId}": {
+      "get": {
+        "operationId": "getExtensionConfig",
+        "summary": "Get the extension configuration",
+        "description": "Get the extension configuration",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Extension configuration retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtensionConfig"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/user-config/{channelId}": {
+      "get": {
+        "operationId": "getUserExtensionConfig",
+        "summary": "Get the user extension configuration",
+        "description": "Get the user extension configuration",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User extension configuration retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserExtensionConfig"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/campaigns/{channelId}": {
+      "get": {
+        "operationId": "getCampaigns",
+        "summary": "Get campaigns",
+        "description": "Retrieve all campaigns from the jj api",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaigns retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JJCampaigns"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/causes/{channelId}": {
+      "get": {
+        "operationId": "getCauses",
+        "summary": "Get causes",
+        "description": "Retrieve all causes from the jj api",
+        "deprecated": false,
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Causes retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CausesDisplaySchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/yogs-schedule": {
+      "get": {
+        "operationId": "getYogsSchedule",
+        "summary": "Get the yogs schedule",
+        "description": "Get the yogs schedule",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Yogs schedule retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/YogsScheduleSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/user-data/{channelId}": {
+      "get": {
+        "operationId": "getUserData",
+        "summary": "Get the users data",
+        "description": "Get the use data",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JJCampaign"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/user-schedule/{channelId}": {
+      "get": {
+        "operationId": "getUserSchedule",
+        "summary": "Get the users schedule",
+        "description": "Get the use schedule",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User schedule retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserScheduleSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/user-relations/{channelId}": {
+      "get": {
+        "operationId": "getUserRelations",
+        "summary": "Get the user relations",
+        "description": "Find the user by Twitch channel and return their friends",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User relations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "friends": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/UserDisplay"
+                      }
+                    }
+                  },
+                  "required": [
+                    "friends"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/user-related-schedule/{channelId}": {
+      "get": {
+        "operationId": "getUserRelatedSchedule",
+        "summary": "Get the user related schedule",
+        "description": "Find the user by Twitch channel and return next streams from their teams",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User related schedule retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "teams": {
+                      "type": "object",
+                      "properties": {
+                        "streams": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Stream"
+                          }
+                        }
+                      },
+                      "required": [
+                        "streams"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "teams"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

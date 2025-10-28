@@ -1,38 +1,58 @@
-import {type Component, Match, Show, Switch} from 'solid-js'
+import {type Component, For, Match, Show, Switch} from 'solid-js'
 import {FaSolidHeart, FaSolidPeopleGroup} from 'solid-icons/fa'
 import {twMerge} from 'tailwind-merge'
-import {useTwitchPanelConfig} from "./providers/PanelConfigProvider.tsx";
-import type {TabType} from "../../lib/model/TwitchConfig.ts";
 import {useTheme} from "./providers/ThemeProvider.tsx";
 import {Tabs} from "@kobalte/core/tabs";
 import {useTabs} from "./TabsProvider.tsx";
 import {YogsIcon} from "./icons/YogsIcon.tsx";
+import {useBackend} from "./providers/BackendProvider.tsx";
+import type {UserExtensionConfigTabsEnum} from "../../api";
+import {JJIcon} from "./icons/JJIcons.tsx";
 
 export const NavBar: Component = () => {
-  const config = useTwitchPanelConfig()
-  const tab1 = () => config.tab1
-  const tab2 = () => config.tab2
-  const tab3 = () => config.tab3
-  const visibleTabs = () => [config.tab1, config.tab2, config.tab3].filter(t => t !== 'none')
-  const visibleTabsLength = () => visibleTabs().length
-  const showTabs = () => visibleTabsLength() > 1
+  const {userConfig} = useBackend()
 
   return (
-    <>
-      <Show when={showTabs()}>
-        <Tabs.List class={`flex flex-row items-center px-2`}>
-          <TabC href={'/1'} tabType={tab1()} class={'rounded-l-2xl'}/>
-          <TabC href={'/2'} tabType={tab2()} class={tab3() === 'none' ? 'rounded-r-2xl' : ''}/>
-          <TabC href={'/3'} tabType={tab3()} class={'rounded-r-2xl'}/>
-        </Tabs.List>
-      </Show>
-      <Show when={!showTabs()}>
-        <div class={'h-2'}/>
-      </Show>
-    </>
+    <Show when={userConfig.data}>
+      {
+        (config) => {
+          const tabCount = config().tabs.length
+          return (
+            <Show when={config().tabs.length > 1} fallback={<div class={'h-2'}/>}>
+              <Tabs.List class={`flex flex-row items-center px-2`}>
+                <For each={config().tabs} fallback={<div class={'h-2'}/>}>
+                  {
+                    (tab, i) => {
+
+                      const isFirstTab = () => i() === 0
+
+                      const isLastTab = () => i() === (tabCount - 1)
+
+                      const classes = () => {
+                        if (isFirstTab()) {
+                          return 'rounded-l-2xl'
+                        } else if (isLastTab()) {
+                          return 'rounded-r-2xl'
+                        } else {
+                          return 'rounded-none'
+                        }
+                      }
+
+                      return (
+                        <TabC href={'/1'} tabType={tab} class={classes()}/>
+                      )
+                    }
+                  }
+                </For>
+              </Tabs.List>
+            </Show>
+          )
+        }
+      }
+    </Show>
   )
 }
-const TabIcon: Component<{ tab: TabType }> = props => {
+const TabIcon: Component<{ tab: UserExtensionConfigTabsEnum }> = props => {
   return (
     <Switch>
       <Match when={props.tab === 'yogs'}>
@@ -41,14 +61,20 @@ const TabIcon: Component<{ tab: TabType }> = props => {
       <Match when={props.tab === 'charities'}>
         <FaSolidHeart/>
       </Match>
-      <Match when={props.tab === 'community'}>
+      <Match when={props.tab === 'fundraisers'}>
         <FaSolidPeopleGroup/>
+      </Match>
+      <Match when={props.tab === 'user-schedule'}>
+        <JJIcon/>
+      </Match>
+      <Match when={props.tab === 'full-user'}>
+        <JJIcon/>
       </Match>
     </Switch>
   )
 }
 
-const TabC: Component<{ href: string; tabType: TabType; class?: string }> = props => {
+const TabC: Component<{ href: string; tabType: UserExtensionConfigTabsEnum; class?: string }> = props => {
   const {theme} = useTheme()
   const {currentTab, setCurrentTab} = useTabs()
   const active = () => {
@@ -74,20 +100,18 @@ const TabC: Component<{ href: string; tabType: TabType; class?: string }> = prop
     }
   }
   return (
-    <Show when={props.tabType !== 'none'}>
-      <Tabs.Trigger
-        class={twMerge(
-          'group flex h-full w-full flex-1 items-center justify-center border-2 border-white p-1 text-center text-white transition-all',
-          active(),
-          hover(),
-          props.class,
-          currentTab() === props.tabType ? 'active' : ''
-        )}
-        value={props.tabType}
-        onClick={() => setCurrentTab(props.tabType)       }
-      >
-        <TabIcon tab={props.tabType}/>
-      </Tabs.Trigger>
-    </Show>
+    <Tabs.Trigger
+      class={twMerge(
+        'group flex h-full w-full flex-1 items-center justify-center border-2 border-white p-1 text-center text-white transition-all',
+        active(),
+        hover(),
+        props.class,
+        currentTab() === props.tabType ? 'active' : ''
+      )}
+      value={props.tabType}
+      onClick={() => setCurrentTab(props.tabType)}
+    >
+      <TabIcon tab={props.tabType}/>
+    </Tabs.Trigger>
   )
 }

@@ -1,8 +1,8 @@
 import {createContext, createEffect, createSignal, onMount, type ParentComponent, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
-import type {OverlayConfig} from "../../../lib/model/Config.ts";
 import {defaultOverlayConfig, type TwitchOverlayConfig} from "../../../lib/model/TwitchConfig.ts";
+import type {ExtensionConfig} from "../../../api";
 
 
 const useTwitchOverlayConfigHook = () => {
@@ -13,9 +13,9 @@ const useTwitchOverlayConfigHook = () => {
   const [channelId, setChannelId] = createSignal<string>()
   const edited = () => {
     return (
-      config.donationUrl !== originalConfig.donationUrl ||
-      config.showCommunityFundraiser !== originalConfig.showCommunityFundraiser ||
-      config.showYogsSchedule !== originalConfig.showYogsSchedule ||
+      // config.donationUrl !== originalConfig.donationUrl ||
+      // config.showCommunityFundraiser !== originalConfig.showCommunityFundraiser ||
+      // config.showYogsSchedule !== originalConfig.showYogsSchedule ||
       config.theme !== originalConfig.theme ||
       config.chat.enabled !== originalConfig.chat.enabled ||
       config.chat.useDonationLink !== originalConfig.chat.useDonationLink ||
@@ -125,10 +125,10 @@ export const useTwitchOverlayConfigEdit = () => {
 
 
 interface OverlayConfigProps {
-  config: OverlayConfig
+  config: ExtensionConfig
 }
 
-const OverlayConfigContext = createContext<OverlayConfig>();
+const OverlayConfigContext = createContext<ExtensionConfig>();
 
 export const OverlayConfigProvider: ParentComponent<OverlayConfigProps> = (props) => {
   return (

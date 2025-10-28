@@ -1,19 +1,19 @@
 import { createContext, createSignal, type ParentComponent, useContext } from 'solid-js'
-import type {TESStream, TESTwitchCreator} from "../../../lib/model/TwitchExtensionSchedule.ts";
-import {useSchedule} from "./data/ScheduleProvider.tsx";
+import {useBackend} from "./BackendProvider.tsx";
+import type {Creator, Stream} from "../../../api";
 
 const useHook = () => {
-  const {schedule} = useSchedule()
+  const {yogsSchedule} = useBackend()
 
-  const streams = schedule.days.map(day => day.streams).flat()
+  const streams = yogsSchedule.data?.days.map(day => day.streams).flat() ?? []
 
   const creators = streams
     .filter(s => s.creators != undefined)
-    .map(stream => stream.creators as TESTwitchCreator[])
+    .map(stream => stream.creators as Creator[])
     .flat()
     .filter((v, i, a) => a.findIndex(t => (t.url === v.url)) === i)
 
-  const creatorsMap: {[key: string]: TESTwitchCreator} = {}
+  const creatorsMap: {[key: string]: Creator} = {}
   creators.forEach(creator => {
     creatorsMap[creator.id] = creator
   })
@@ -51,10 +51,10 @@ const useHook = () => {
   }
 
   const selectedCreatorsLabels = () => {
-    return selectedCreators().map(c => c.label)
+    return selectedCreators().map(c => c.name)
   }
 
-  const isStreamIncluded=(stream: TESStream) =>{
+  const isStreamIncluded=(stream: Stream) =>{
     if (!stream.creators) {
       return false
     }

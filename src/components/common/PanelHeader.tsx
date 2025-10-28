@@ -1,6 +1,5 @@
 import {type Component, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
-import {usePanelConfig, useTwitchPanelConfig} from "./providers/PanelConfigProvider.tsx";
 
 import red from '../../assets/JingleJam_Red.png'
 import blue from '../../assets/JingleJam_Blue.png'
@@ -21,11 +20,40 @@ import {
 import {useTheme} from "./providers/ThemeProvider.tsx";
 import {twLinkBGHoverColor, twLinkHoverColor} from "../../lib/colorUtil.ts";
 import {BiRegularInfoCircle} from "solid-icons/bi";
+import {useBackend} from "./providers/BackendProvider.tsx";
+import {FiExternalLink} from "solid-icons/fi";
+import type {JJCampaign} from "../../api";
+import {Numeric} from "solid-i18n";
+import {useCurrency} from "./providers/CurrencyProvider.tsx";
 
-interface PanelHeaderProps {
+export const PanelHeader: Component = () => {
+
+  const {userData, userConfig} = useBackend()
+
+  return (
+    <Show when={userConfig.data}>
+      {
+        (config) => {
+          return (
+            <Show when={config().hasCampaign}
+                  fallback={<NoUserCampaignHeader/>}
+            >
+              <Show when={userData.data}>
+                {
+                  (c) => (
+                    <UserCampaignHeader campaign={c()}/>
+                  )
+                }
+              </Show>
+            </Show>
+          )
+        }
+      }
+    </Show>
+  );
 }
 
-export const PanelHeader: Component<PanelHeaderProps> = (props) => {
+const NoUserCampaignHeader: Component = () => {
   const {theme} = useTheme()
 
   const image = () => {
@@ -43,16 +71,91 @@ export const PanelHeader: Component<PanelHeaderProps> = (props) => {
   return (
     <div class={'px-2'}>
       <div class={'h-8 flex flex-row bg-white shadow rounded-2xl items-center p-1'}>
-        <div class={'flex-1 flex flex-row items-center justify-start px-1 h-full'}>
+        <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
           <About/>
         </div>
         <img src={image()} class={'h-full'} alt={'JJ Logo'}/>
-        <div class={'flex-1 flex flex-row items-center justify-end px-1 h-full'}>
+        <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
           <Donate/>
         </div>
       </div>
     </div>
   );
+}
+
+const UserCampaignHeader: Component<{
+  campaign: JJCampaign
+}> = (props) => {
+
+  const {theme, tailwindTextPrimary} = useTheme()
+
+  const image = () => {
+    switch (theme()) {
+      case 'blue':
+      case 'blue_light':
+        return blue.src
+      case 'dark':
+        return black.src
+      default:
+        return red.src
+    }
+  }
+
+  const raisedTextColor = () => {
+    if (theme() === 'dark') return 'text-white'
+    return tailwindTextPrimary()
+  }
+
+  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
+
+  const bgColor = () => (theme() === 'dark'
+    ? 'bg-gradient-to-br from-gray-500 to-gray-600'
+    : 'bg-gradient-to-br from-white to-gray-100')
+
+  const platformName = () => {
+    const t = (props.campaign as any).twitch
+    return (t?.displayName || t?.login) ?? props.campaign.tiltifyName
+  }
+
+  return (
+    <div class={'px-2'}>
+      <div class={'flex flex-col bg-white shadow rounded-2xl items-start p-1 gap-1'}>
+        <div class={'w-full h-8 flex flex-row items-center p-1'}>
+          <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
+            <About/>
+          </div>
+          <img src={image()} class={'h-full'} alt={'JJ Logo'}/>
+          <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
+            <a href={props.campaign.tiltifyUrl} target={'_blank'}
+               class={'bg-tiltify-500 text-xs pl-2 p-1 text-white rounded-full flex flex-row gap-1 hover:brightness-105 hover:scale-101'}>Donate
+              <TiltifyRoundIcon
+              class={twMerge(
+                'size-4',
+              )}
+            /></a>
+          </div>
+        </div>
+        <div class={'w-full px-1 pb-1'}>
+          <div class={twMerge('w-full h-full flex flex-row items-start gap-2')}>
+            <img src={props.campaign.twitch?.avatar ?? props.campaign.avatar} alt={'Campaign Avatar'}
+                 class={'~w-8/12 ~h-8/12 rounded-xl object-cover'}/>
+
+            <div class={'min-w-0 flex-1 flex flex-col leading-tight'}>
+              <p class={twMerge('text-xs font-bold truncate', raisedTextColor())}>{props.campaign.campaignName}</p>
+              <p class={twMerge('text-[10px] truncate', darkText())}>{platformName()}</p>
+            </div>
+
+            <div class={'h-full flex flex-col items-end justify-start'}>
+              <p class={twMerge('text-xs font-bold', raisedTextColor())}>
+                <CurrencyAmount dollars={props.campaign.raised.usd} pounds={props.campaign.raised.gbp} />
+              </p>
+              <p class={twMerge('text-[10px]', darkText())}>Raised</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 const About = () => {
@@ -92,49 +195,45 @@ const About = () => {
 }
 
 const Donate = () => {
-  const config = useTwitchPanelConfig()
-  const jjConfig = usePanelConfig()
-
-  const url = () => {
-    if (!config.donationUrl || config.donationUrl === '' || jjConfig.donationLink.overrideCustomLink) {
-      return jjConfig.donationLink.url
-    }
-    return config.donationUrl
-  }
-
-  const text = () => {
-    return jjConfig.donationLink.text ?? 'Donate'
-  }
+  const {config} = useBackend()
 
   return (
-    <Show when={jjConfig.donationLink.visible}>
-      <a
-        class={twMerge(
-          'group inline-flex items-center justify-center cursor-pointer',
-          'bg-[#133DF4]',
-          'rounded-full shadow',
-          'transition-all duration-300',
-        )}
-        href={url()}
-        target="_blank"
-      >
-        <p
-          class={twMerge(
-            'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
-            'text-white text-xs',
-            'transition-all duration-300 ease-in-out',
-            'group-hover:max-w-xs group-hover:opacity-100 group-hover:pr-1 group-hover:pl-2'
-          )}
-        >
-          {text()}
-        </p>
-        <TiltifyRoundIcon
-          class={twMerge(
-            'size-6',
-            'transition-transform duration-300 ease-in-out',
-          )}
-        />
-      </a>
+    <Show when={config.data}>
+      {
+        (config) => {
+          return (
+            <Show when={config().donationLink.visible}>
+              <a
+                class={twMerge(
+                  'group inline-flex items-center justify-center cursor-pointer',
+                  'bg-tiltify-500',
+                  'rounded-full shadow-xl',
+                  'transition-all duration-300',
+                )}
+                href={config().donationLink.url}
+                target="_blank"
+              >
+                <p
+                  class={twMerge(
+                    'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+                    'text-white text-xs',
+                    'transition-all duration-300 ease-in-out',
+                    'group-hover:max-w-xs group-hover:opacity-100 group-hover:pr-1 group-hover:pl-2 flex flex-row items-center justify-center gap-0.5'
+                  )}
+                >
+                  {config().donationLink.text} <FiExternalLink size={12}/>
+                </p>
+                <TiltifyRoundIcon
+                  class={twMerge(
+                    'size-6',
+                    'transition-transform duration-300 ease-in-out',
+                  )}
+                />
+              </a>
+            </Show>
+          )
+        }
+      }
     </Show>
   )
 }
@@ -254,5 +353,30 @@ const ExternalLinks = () => {
       </a>
     </div>
 
+  )
+}
+
+
+interface CurrencyAmountProps {
+  dollars: number
+  pounds: number
+}
+
+const CurrencyAmount: Component<CurrencyAmountProps> = (props) => {
+  const {pounds} = useCurrency()
+  const dollar = () => !pounds()
+  return (
+    <>
+      <Show when={dollar()}>
+        <div id={'usd'}>
+          <Numeric value={props.dollars} numberStyle="currency" currency={'USD'}/>
+        </div>
+      </Show>
+      <Show when={!dollar()}>
+        <div id={'gbp'}>
+          <Numeric value={props.pounds} numberStyle="currency" currency={'GBP'}/>
+        </div>
+      </Show>
+    </>
   )
 }

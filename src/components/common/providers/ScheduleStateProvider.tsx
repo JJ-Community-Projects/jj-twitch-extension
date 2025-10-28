@@ -1,23 +1,22 @@
 import {createContext, createSignal, onMount, type ParentComponent, useContext} from "solid-js";
 import {DateTime} from "luxon";
 import {useAnalytics} from "./AnalyticsProvider.tsx";
-import {useSchedule} from "./data/ScheduleProvider.tsx";
+import {useBackend} from "./BackendProvider.tsx";
+import type {YogsScheduleSchema} from "../../../api";
 
-const useScheduleStateHook = () => {
-  const {schedule} = useSchedule()
-  const days = schedule.days
-  const dayCount = days.length
+const useScheduleStateHook = (
+  yogsSchedule: YogsScheduleSchema
+) => {
+  const days = yogsSchedule.days ?? []
+  const dayCount = days?.length ?? 0
   const {log} = useAnalytics()
 
-  const streams = schedule.days.map(day => day.streams).flat()
+  const streams = yogsSchedule.days.map(day => day.streams)
+    .flat() ?? []
 
 
-  const firstDay = DateTime.fromFormat(days[0].date, 'yyyy-MM-dd', {
-    zone: 'Europe/London'
-  })
-  const lastDay = DateTime.fromFormat(days[dayCount - 1].date, 'yyyy-MM-dd', {
-    zone: 'Europe/London'
-  })
+  const firstDay = yogsSchedule.start ? DateTime.fromJSDate(yogsSchedule.start) : DateTime.now().setZone('Europe/London')
+  const lastDay = yogsSchedule.end ? DateTime.fromJSDate(yogsSchedule.end) : DateTime.now().setZone('Europe/London')
   const now = DateTime.now().setZone('Europe/London')
 
   const isNowBetween = now >= firstDay && now <= lastDay
@@ -30,7 +29,7 @@ const useScheduleStateHook = () => {
     }
     for (let i = 0; i < dayCount; i++) {
       const day = days[i]
-      const date = DateTime.fromFormat(day.date, 'yyyy-MM-dd', {
+      const date = DateTime.fromJSDate(day.start, {
         zone: 'Europe/London'
       })
       if (date.hasSame(now, 'day')) {
@@ -61,7 +60,7 @@ const useScheduleStateHook = () => {
     const today = DateTime.now().setZone('Europe/London')
     for (let i = 0; i < dayCount; i++) {
       const day = days[i]
-      const date = DateTime.fromFormat(day.date, 'yyyy-MM-dd', {
+      const date = DateTime.fromJSDate(day.start, {
         zone: 'Europe/London'
       })
       if (date.hasSame(today, 'day')) {
@@ -72,7 +71,7 @@ const useScheduleStateHook = () => {
   }
 
   return {
-    schedule,
+    schedule: yogsSchedule,
     streams,
     day,
     nextDay,
@@ -82,8 +81,10 @@ const useScheduleStateHook = () => {
 
 const ScheduleStateContext = createContext<ReturnType<typeof useScheduleStateHook>>();
 
-export const ScheduleStateProvider: ParentComponent = (props) => {
-  const hook = useScheduleStateHook()
+export const ScheduleStateProvider: ParentComponent<{
+  schedule: YogsScheduleSchema
+}> = (props) => {
+  const hook = useScheduleStateHook(props.schedule)
   return (
     <ScheduleStateContext.Provider value={hook}>
       {props.children}

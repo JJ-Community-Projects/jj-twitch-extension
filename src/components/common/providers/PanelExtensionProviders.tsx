@@ -2,32 +2,35 @@ import {type ParentComponent} from "solid-js";
 import {createI18n, I18nProvider} from "solid-i18n";
 import {useLocale} from "@kobalte/core";
 import {TwitchAuthProvider} from "./TwitchAuthProvider.tsx";
-import {FirestoreProvider} from "./FirestoreProvider.tsx";
 import {ThemeProvider} from "./ThemeProvider.tsx";
-import {PanelConfigLoader} from "./PanelConfigLoader.tsx";
 import {TabsProvider} from "../TabsProvider.tsx";
 import {TwitchPanelConfigProvider} from "./PanelConfigProvider.tsx";
 import {AnalyticsProvider} from "./AnalyticsProvider.tsx";
+import {BackendProvider} from "./BackendProvider.tsx";
+import {QueryClient, QueryClientProvider} from "@tanstack/solid-query";
+import {CurrencyProvider} from "./CurrencyProvider.tsx";
 
 export const PanelExtensionProviders: ParentComponent = (props) => {
   const i18n = createI18n({language: useLocale().locale()})
   return (
-    <I18nProvider i18n={i18n}>
-      <TwitchAuthProvider>
-        <TwitchPanelConfigProvider>
-          <AnalyticsProvider>
-            <FirestoreProvider>
-              <PanelConfigLoader>
+    <QueryClientProvider client={new QueryClient()}>
+      <I18nProvider i18n={i18n}>
+        <TwitchAuthProvider>
+          <BackendProvider>
+            <TwitchPanelConfigProvider>
+              <AnalyticsProvider>
                 <ThemeProvider>
-                  <TabsProvider>
-                    {props.children}
-                  </TabsProvider>
+                  <CurrencyProvider>
+                    <TabsProvider>
+                      {props.children}
+                    </TabsProvider>
+                  </CurrencyProvider>
                 </ThemeProvider>
-              </PanelConfigLoader>
-            </FirestoreProvider>
-          </AnalyticsProvider>
-        </TwitchPanelConfigProvider>
-      </TwitchAuthProvider>
-    </I18nProvider>
+              </AnalyticsProvider>
+            </TwitchPanelConfigProvider>
+          </BackendProvider>
+        </TwitchAuthProvider>
+      </I18nProvider>
+    </QueryClientProvider>
   );
 }

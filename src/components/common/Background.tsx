@@ -7,7 +7,7 @@ export const Background: ParentComponent = (props) => {
   const gradient = () => {
     switch (theme()) {
       case 'blue':
-        return 'from-accent-shade from-10% via-accent to-accent-shade to-90%'
+        return 'from-accent-shade via-accent to-accent-shade '
       case 'dark':
         return 'from-gray-500 to-gray-800'
       case 'red_light':
@@ -17,7 +17,7 @@ export const Background: ParentComponent = (props) => {
       case 'rainbow':
         return ''
       default:
-        return 'from-primary-shade from-10% via-primary to-primary-shade to-90%'
+        return 'from-primary-shade via-primary to-primary-shade'
     }
   }
   const cssStyle = () => {
@@ -51,7 +51,7 @@ export const Background: ParentComponent = (props) => {
 
   return (
     <div
-      class={twMerge('flex h-screen flex-col overflow-hidden overscroll-none bg-gradient-to-b', gradient())}
+      class={twMerge('flex h-screen flex-col overflow-hidden overscroll-none bg-gradient-to-br', gradient())}
       style={cssStyle()}
     >
       {props.children}

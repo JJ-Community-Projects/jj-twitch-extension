@@ -4,18 +4,16 @@ import {ScheduleStreams} from "../../schedule/ScheduleStreams.tsx";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {ScheduleControls} from "../../schedule/ScheduleControls.tsx";
-import {DateTime} from "luxon";
 import {ScheduleStateProvider, useScheduleState} from "../../providers/ScheduleStateProvider.tsx";
-import {usePanelConfig} from "../../providers/PanelConfigProvider.tsx";
 import {InvisibleBody} from "../../InvisibleBody.tsx";
-import {ScheduleLoader} from "../../providers/data/ScheduleLoader.tsx";
 import {CreatorFilterProvider} from "../../providers/CreatorFilterProvider.tsx";
+import {useBackend} from "../../providers/BackendProvider.tsx";
 
 export const YogsTab: Component = (props) => {
   const scroll =
     'flex-1 overflow-auto overflow-x-hidden scrollbar-thin scrollbar-corner-primary-100 scrollbar-thumb-accent-500 scrollbar-track-accent-100'
 
-  const config = usePanelConfig()
+  const {config, yogsSchedule} = useBackend()
   const {theme} = useTheme()
   const scrollbar = () => {
     switch (theme()) {
@@ -30,30 +28,42 @@ export const YogsTab: Component = (props) => {
   }
 
   return (
-    <>
-      <Show when={config.showSchedule}>
-        <ScheduleLoader>
-          <ScheduleStateProvider>
-            <CreatorFilterProvider>
-              <div class="h-full flex flex-col">
-                <div class={'h-30 mb-2'}>
-                  <YogsTabHeader/>
-                </div>
-                <div class={twMerge(scroll, scrollbar())}>
-                  <ScheduleStreams/>
-                </div>
-                <ScheduleUpdatedAt/>
-                <ScheduleControls/>
-              </div>
-            </CreatorFilterProvider>
-          </ScheduleStateProvider>
-        </ScheduleLoader>
-      </Show>
-      <Show when={!config.showSchedule}>
-        <InvisibleBody
-          text={'The Yogscast Jingle Jam Schedule will be shown soon after it was published.'}></InvisibleBody>
-      </Show>
-    </>
+    <Show when={config.data}>
+      {
+        (config) => {
+          return (
+            <Show when={config().showYogsSchedule} fallback={
+              <InvisibleBody
+                text={'The Yogscast Jingle Jam Schedule will be shown soon after it was published.'}
+              />
+            }>
+              <Show when={yogsSchedule.data}>
+                {
+                  (schedule)=>{
+                    return (
+                      <ScheduleStateProvider schedule={schedule()}>
+                        <CreatorFilterProvider>
+                          <div class="h-full flex flex-col">
+                            <div class={'h-30 mb-2'}>
+                              <YogsTabHeader/>
+                            </div>
+                            <div class={twMerge(scroll, scrollbar())}>
+                              <ScheduleStreams/>
+                            </div>
+                            <ScheduleUpdatedAt/>
+                            <ScheduleControls/>
+                          </div>
+                        </CreatorFilterProvider>
+                      </ScheduleStateProvider>
+                    )
+                  }
+                }
+              </Show>
+            </Show>
+          )
+        }
+      }
+    </Show>
   );
 }
 
@@ -62,7 +72,10 @@ export const ScheduleUpdatedAt: Component = (props) => {
   const {schedule} = useScheduleState()
   return (
     <p class={'text-xxs text-center font-bold text-white'}>
-      Last updated, {DateTime.fromISO(schedule.updatedAt).toLocaleString(DateTime.DATETIME_FULL)}
+      Last updated, TODO ADD UPDATED
+
     </p>
   );
 }
+
+// {DateTime.fromISO(schedule.updatedAt).toLocaleString(DateTime.DATETIME_FULL)}

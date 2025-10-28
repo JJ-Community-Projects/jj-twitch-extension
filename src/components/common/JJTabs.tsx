@@ -2,15 +2,15 @@ import {type Component, Match, Switch} from 'solid-js'
 import {YogsTab} from "./extenstionTabs/yogsTab/YogsTab.tsx";
 import {CharityTab} from "./extenstionTabs/charityTab/CharityTab.tsx";
 import {CommunityTab} from "./extenstionTabs/communityTab/CommunityTab.tsx";
-import type {TabType} from "../../lib/model/TwitchConfig.ts";
-import {useTwitchPanelConfig} from "./providers/PanelConfigProvider.tsx";
 import {Tabs} from '@kobalte/core';
+import type {UserExtensionConfigTabsEnum} from "../../api";
+import {UserScheduleTab} from "./extenstionTabs/userSchedule/UserScheduleTab.tsx";
 
 interface JJTabProps {
-  tab: TabType
+  tab: UserExtensionConfigTabsEnum
 }
 
-const JJTab: Component<JJTabProps> = props => {
+export const JJTab: Component<JJTabProps> = props => {
   return (
     <Switch>
       <Match when={props.tab == 'yogs'}>
@@ -23,27 +23,21 @@ const JJTab: Component<JJTabProps> = props => {
           <CharityTab/>
         </Tabs.Content>
       </Match>
-      <Match when={props.tab == 'community'}>
-        <Tabs.Content value={'community'} class={'mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
+      <Match when={props.tab == 'fundraisers'}>
+        <Tabs.Content value={'fundraisers'} class={'mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
           <CommunityTab/>
         </Tabs.Content>
       </Match>
-      <Match when={props.tab == 'none'}>
-        <p>None</p>
+      <Match when={props.tab == 'user-schedule'}>
+        <Tabs.Content value={'user-schedule'} class={'mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
+          <UserScheduleTab/>
+        </Tabs.Content>
+      </Match>
+      <Match when={props.tab == 'full-user'}>
+        <Tabs.Content value={'full-user'} class={'mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
+          <p>Full user</p>
+        </Tabs.Content>
       </Match>
     </Switch>
   )
-}
-
-export const JJTab1 = () => {
-  const config = useTwitchPanelConfig()
-  return <JJTab tab={config.tab1}/>
-}
-export const JJTab2 = () => {
-  const config = useTwitchPanelConfig()
-  return <JJTab tab={config.tab2}/>
-}
-export const JJTab3 = () => {
-  const config = useTwitchPanelConfig()
-  return <JJTab tab={config.tab3}/>
 }

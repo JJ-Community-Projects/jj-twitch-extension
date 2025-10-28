@@ -48,7 +48,9 @@ const useTwitchAuthHook = () => {
   const twitch = window?.Twitch?.ext;
   onMount(() => {
     if (twitch) {
+      console.log("Twitch available", twitch)
       twitch.onAuthorized((auth) => {
+        console.log("Twitch Auth", auth)
         setAuth(auth);
         fetchCurrentChannelInfo(auth)
           .then((newChannelInfo) => {
@@ -62,9 +64,36 @@ const useTwitchAuthHook = () => {
             return undefined;
           });
       });
-    }else {
+
+      if (import.meta.env.DEV) {
+        console.log("Twitch Auth debug")
+
+        setChannelName("hrry")
+
+        setAuth({
+          // channelId: "96860795",
+          // channelId: "27063689",
+          channelId: "12131870",
+          clientId: "333",
+          token: "test-123",
+          userId: "333",
+          helixToken: "333"
+        });
+      }
+
+    } else {
       console.error("Twitch not available")
       setChannelName("ostof")
+
+      setAuth({
+        // channelId: "96860795",
+        // channelId: "27063689",
+        channelId: "12131870",
+        clientId: "333",
+        token: "test-123",
+        userId: "333",
+        helixToken: "333"
+      });
     }
   })
 

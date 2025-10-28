@@ -1,100 +1,106 @@
-import {type Component, For, Match, type ParentComponent, Show, Switch} from "solid-js";
+import {type Component, For, type ParentComponent, Show} from "solid-js";
 import {ColoredScrollbar} from "../../ColoredScrollbar.tsx";
 import {DateTime} from "luxon";
-import type {Campaign} from "../../../../lib/model/jjData/JJCommunityFundraiser.ts";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {Numeric} from "solid-i18n";
 import {FiExternalLink} from "solid-icons/fi";
-import {usePanelConfig} from "../../providers/PanelConfigProvider.tsx";
 import {InvisibleBody} from "../../InvisibleBody.tsx";
-import {useFundraiser} from "../../providers/data/CommunityProvider.tsx";
-import {FundraiserLoader} from "../../providers/data/FundraiserLoader.tsx";
+import {useBackend} from "../../providers/BackendProvider.tsx";
+import type {CurrenciesSchema, JJCampaign} from "../../../../api";
+import {TwitchIcon} from "../../icons/JJIcons.tsx";
+import {FaBrandsTwitch} from "solid-icons/fa";
 
 
 export const CommunityTab: Component = () => {
-  const config = usePanelConfig()
+  const {config} = useBackend()
 
-  const show = () => {
-    return config.showFundraiser
-  }
 
   return (
-    <>
-      <Show when={show()}>
-        <FundraiserLoader>
-          <Body/>
-        </FundraiserLoader>
-      </Show>
-      <Show when={!show()}>
-        <InvisibleBody text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'}>
-          <JJStreamTeamLink/>
-        </InvisibleBody>
-      </Show>
-    </>
+    <Show when={config.data}>
+      {
+        (config) => {
+          return (
+            <Show when={config().showFundraisers} fallback={
+
+              <InvisibleBody text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'}>
+                <JJStreamTeamLink/>
+              </InvisibleBody>
+            }>
+              <Body/>
+            </Show>
+
+          )
+        }
+      }
+    </Show>
   );
 }
 
 const Body = () => {
-  const {fundraiser} = useFundraiser()
+  const {campaigns} = useBackend()
 
-  const campaigns = () => fundraiser.campaigns
 
   return (
-
-    <div class={'flex h-full flex-1 flex-col'}>
-      <ColoredScrollbar>
-        <p class={'px-2 text-center text-xl text-white'}>Community Fundraiser</p>
-        <p class={'mb-2 text-center text-base text-white'}>
-          Last update, {DateTime.fromISO(fundraiser.date).toLocaleString(DateTime.DATETIME_MED)}
-        </p>
-        <div class={'flex flex-1 flex-col gap-2 mx-2 mb-4'}>
-          <FundraiserBody fundraisers={campaigns()}/>
-        </div>
-      </ColoredScrollbar>
-    </div>
+    <Show when={campaigns.data}>
+      {
+        (campaigns) => {
+          return (
+            <div class={'flex h-full flex-1 flex-col'}>
+              <ColoredScrollbar>
+                <p class={'px-2 text-center text-xl text-white'}>Community Fundraiser</p>
+                <p class={'mb-2 text-center text-base text-white'}>
+                  Last update, {DateTime.fromJSDate(campaigns().date).toLocaleString(DateTime.DATETIME_MED)}
+                </p>
+                <div class={'flex flex-1 flex-col gap-2 mx-2 mb-4'}>
+                  <FundraiserBody fundraisers={campaigns().campaigns}/>
+                </div>
+              </ColoredScrollbar>
+            </div>
+          )
+        }
+      }
+    </Show>
   )
 }
 
 
-const FundraiserBody: Component<{ fundraisers: Campaign[] }> = props => {
+const FundraiserBody: Component<{ fundraisers: JJCampaign[] }> = props => {
   const fundraiser = () => props.fundraisers
 
   return (
     <>
       <JJStreamTeamLink/>
-      <Show when={fundraiser().length == 0}>
+      <For each={fundraiser()} fallback={
         <p class={'text-center text-white'}>No Fundraisers found.</p>
-      </Show>
-      <For each={fundraiser()}>
-        {(d: Campaign, i) => {
-          const isTwitch = () => d.twitch_data && d.livestream.type === 'twitch'
-          const img = () => {
-            if (d.user.avatar === 'https://assets.tiltify.com/assets/default-avatar.png') {
-              if (isTwitch()) {
-                return d.twitch_data!.profile_image_url
-              }
+      }>
+        {(d, i) => {
+          const isTwitch = () => d.twitch !== undefined
+          const img = () => d.twitch?.avatar ?? d.avatar
+
+
+          const isLive = () => {
+            if (d.twitch) {
+              return d.twitch.isLive
             }
-            return d.user.avatar
+            return false
           }
 
-          const url = () => {
-            if (!d.twitch_data || !d.isLive) {
-              return d.url
-            }
-            return `https://twitch.tv/${d.twitch_data.login}`
+          const name = () => {
+            return d.twitch?.name ?? d.tiltifyName
           }
 
           return (
             <Child
               i={i()}
               img={img()}
-              title={d?.twitch_data?.display_name ?? d.user.name}
-              subtitle={d.name}
-              desc={d.description}
-              isLive={d.isLive!}
+              title={d.campaignName}
+              subtitle={name()}
+              desc={d.tiltifyDescription ?? ''}
+              isLive={isLive()}
               raised={d.raised}
-              url={url()}
+              tiltifyUrl={d.tiltifyUrl}
+              twitchUrl={d.twitch?.url}
             />
           )
         }}
@@ -118,8 +124,9 @@ const Child: Component<{
   img: string
   isLive: boolean
   desc: string
-  raised: number
-  url?: string
+  raised: CurrenciesSchema
+  tiltifyUrl: string
+  twitchUrl?: string
 }> = props => {
   const {theme, tailwindTextPrimary} = useTheme()
 
@@ -131,38 +138,6 @@ const Child: Component<{
     }
     return tailwindTextPrimary()
   }
-
-  return (
-    <ChildBody url={props.url} i={props.i}>
-      <div class={'flex h-full w-full flex-row items-center gap-2 p-1.5'}>
-        <div class={'flex h-full flex-1 flex-col gap-1 overflow-hidden'}>
-          <div class={'flex flex-row gap-1'}>
-            <img class={'h-8 w-8 rounded-lg'} alt={props.title} src={props.img} loading={'lazy'}/>
-            <div class={'flex h-full flex-col justify-between overflow-hidden'}>
-              <div class={'flex max-h-[14px] flex-row items-center gap-1 overflow-hidden'}>
-                <Show when={props.isLive && props.url}>
-                  <Live/>
-                </Show>
-                <p class={'truncate text-ellipsis text-sm font-bold'}>{props.title}</p>
-              </div>
-              <p class={'truncate text-ellipsis text-xs font-bold'}>{props.subtitle}</p>
-            </div>
-          </div>
-          <p class={'line-clamp-2 w-full text-ellipsis text-xs'}>{props.desc}</p>
-          <p class={twMerge('text-primary text-xs font-bold', raisedColor())}>
-            Raised <Numeric value={props.raised} numberStyle="currency" currency={'GBP'}/>
-          </p>
-        </div>
-        <Show when={props.url}>
-          <FiExternalLink/>
-        </Show>
-      </div>
-    </ChildBody>
-  )
-}
-
-const ChildBody: ParentComponent<{ i: number; url?: string }> = (props) => {
-  const {theme} = useTheme()
 
   const gradient = [
     'bg-gradient-to-br from-red-200 to-red-400',
@@ -183,36 +158,51 @@ const ChildBody: ParentComponent<{ i: number; url?: string }> = (props) => {
     return 'bg-gradient-to-br from-white to-gray-100'
   }
   return (
-    <Switch>
-      <Match when={props.url}>
-        <a
-          class={twMerge(
-            'min-h-24 w-full rounded-2xl shadow-xl',
-            'hover:scale-102 group/live transition-all hover:shadow-2xl hover:brightness-105',
-            campaignColor(props.i),
-          )}
-          href={props.url}
-          target={'_blank'}
-        >
-          {props.children}
-        </a>
-      </Match>
-      <Match when={!props.url}>
-        <div class={twMerge('min-h-24 w-full rounded-2xl shadow-xl transition-all', campaignColor(props.i))}>
-          {props.children}
+    <div class={twMerge('min-h-24 w-full rounded-2xl shadow-xl', campaignColor(props.i))}>
+      <div class={'flex h-full w-full flex-col items-start gap-2 p-1.5'}>
+        <div class={'flex h-full flex-1 flex-col gap-1'}>
+          <div class={'flex flex-row gap-1'}>
+            <img class={'h-8 w-8 rounded-lg'} alt={props.title} src={props.img} loading={'lazy'}/>
+            <div class={'flex h-full flex-1 min-w-0 flex-col justify-between'}>
+              <div class={'flex max-h-[14px] flex-row items-center gap-1 overflow-hidden'}>
+                <Show when={props.isLive}>
+                  <Live/>
+                </Show>
+                <p class={'truncate text-ellipsis text-sm font-bold min-w-0 flex-1'}>{props.title}</p>
+              </div>
+              <p class={'truncate text-ellipsis text-xs font-bold min-w-0'}>{props.subtitle}</p>
+            </div>
+          </div>
+          <p class={'line-clamp-2 w-full text-ellipsis text-xs'}>{props.desc}</p>
+          <p class={twMerge('text-primary text-xs font-bold', raisedColor())}>
+            Raised <Numeric value={props.raised.gbp} numberStyle="currency" currency={'GBP'}/>
+          </p>
         </div>
-      </Match>
-    </Switch>
+
+        <div class={'flex flex-row gap-2'}>
+          <a target={'_blank'} href={props.tiltifyUrl}
+             class={'transition-all hover:scale-102 hover:brightness-105 text-white gap-1 rounded-full bg-tiltify-500 p-1 flex flex-row items-center justify-center'}>
+            <span class={'text-xxs'}>Donate</span> <FiExternalLink size={12}/>
+          </a>
+          <Show when={props.twitchUrl}>
+            <a target={'_blank'} href={props.twitchUrl}
+               class={'transition-all hover:scale-102 hover:brightness-105 text-white gap-1 rounded-full bg-twitch-500 p-1 flex flex-row items-center justify-center'}>
+              <span class={'text-xxs'}>Twitch</span> <FiExternalLink size={12}/>
+            </a>
+          </Show>
+        </div>
+      </div>
+    </div>
   )
 }
-
 
 const JJStreamTeamLink = () => {
   return (
     <a
       href={'https://twitch.tv/team/jinglejam'}
       target={'_blank'}
-      class={'flex flex-row justify-between items-center p-2 rounded-2xl text-white bg-twitch text-center hover:scale-102 transition-all'}>Jingle Jam Stream Team
+      class={'flex flex-row justify-between items-center p-2 rounded-2xl text-white bg-twitch text-center hover:scale-101 hover:brightness-105 transition-all'}>Jingle
+      Jam Stream Team
       <FiExternalLink/></a>
   )
 }

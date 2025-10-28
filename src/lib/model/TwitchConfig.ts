@@ -1,26 +1,31 @@
-export type TabType = 'yogs' | 'charities' | 'community' | 'none'
 export type Theme = 'red' | 'blue' | 'dark' | 'red_light' | 'blue_light' | 'rainbow'
 
 export interface TwitchConfig {
+  /*
   tab1: TabType
   tab2: TabType
   tab3: TabType
+   */
   theme: Theme
-  donationUrl: string
+  // donationUrl: string
 }
 
 export const defaultConfig: TwitchConfig = {
+  /*
   tab1: 'yogs',
   tab2: 'charities',
   tab3: 'community',
+  */
   theme: 'red',
-  donationUrl: 'https://jinglejam.tiltify.com',
+  // donationUrl: 'https://jinglejam.tiltify.com',
 }
 
 export interface TwitchOverlayConfig {
+  /*
   showYogsSchedule: boolean
   showCommunityFundraiser: boolean
   donationUrl: string
+  */
   theme: Theme,
   chat: TwitchOverlayChatConfig
 }
@@ -40,9 +45,11 @@ export interface TwitchOverlayChatCommand {
 
 
 export const defaultOverlayConfig: TwitchOverlayConfig = {
+  /*
   showYogsSchedule: true,
   showCommunityFundraiser: true,
   donationUrl: 'https://jinglejam.tiltify.com',
+  */
   theme: 'red',
   chat: {
     enabled: true,

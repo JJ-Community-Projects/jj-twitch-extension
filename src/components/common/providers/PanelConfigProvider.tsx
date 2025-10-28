@@ -2,7 +2,7 @@ import {createContext, createSignal, onMount, type ParentComponent, useContext} 
 import {defaultConfig, type TwitchConfig} from "../../../lib/model/TwitchConfig.ts";
 import {createStore} from "solid-js/store";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
-import type {Config} from "../../../lib/model/Config.ts";
+import type {ExtensionConfig} from "../../../api";
 
 
 const useTwitchConfigHook = () => {
@@ -13,9 +13,11 @@ const useTwitchConfigHook = () => {
   const [channelId, setChannelId] = createSignal<string>()
   const edited = () => {
     return (
+      /*
       config.tab1 !== originalConfig.tab1 ||
       config.tab2 !== originalConfig.tab2 ||
       config.tab3 !== originalConfig.tab3 ||
+        */
       config.theme !== originalConfig.theme
     )
   }
@@ -75,10 +77,13 @@ const useTwitchConfigHook = () => {
   }
 
   const validConfig = () => {
+    /*
     const t12 = config.tab1 !== config.tab2 || (config.tab1 === 'none' && config.tab2 === 'none')
     const t13 = config.tab1 !== config.tab3 || (config.tab1 === 'none' && config.tab3 === 'none')
     const t23 = config.tab2 !== config.tab3 || (config.tab2 === 'none' && config.tab3 === 'none')
     return t12 && t13 && t23
+    */
+    return true
   }
 
   return {
@@ -118,10 +123,10 @@ export const useTwitchPanelConfigEdit = () => {
 }
 
 
-const ConfigContext = createContext<Config>();
+const ConfigContext = createContext<ExtensionConfig>();
 
 interface ConfigProviderProps {
-  config: Config
+  config: ExtensionConfig
 }
 
 export const PanelConfigProvider: ParentComponent<ConfigProviderProps> = (props) => {
