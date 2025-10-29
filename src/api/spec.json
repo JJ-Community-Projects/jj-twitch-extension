@@ -376,7 +376,6 @@
             "type": "array",
             "items": {
               "enum": [
-                "full-user",
                 "user-schedule",
                 "yogs",
                 "charities",

@@ -44,7 +44,6 @@ export interface UserExtensionConfig {
  * @export
  */
 export const UserExtensionConfigTabsEnum = {
-    FullUser: 'full-user',
     UserSchedule: 'user-schedule',
     Yogs: 'yogs',
     Charities: 'charities',
