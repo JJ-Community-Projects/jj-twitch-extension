@@ -9,7 +9,7 @@ import type {UserExtensionConfigTabsEnum} from "../../api";
 import {JJIcon} from "./icons/JJIcons.tsx";
 import {useTabs} from "./TabsProvider.tsx";
 
-export const NavBar: Component = () => {
+export const NavBarAlt: Component = () => {
   const {userConfig} = useBackend()
 
   return (
@@ -19,7 +19,7 @@ export const NavBar: Component = () => {
           const tabCount = config().tabs.length
           return (
             <Show when={config().tabs.length > 1} fallback={<div class={'h-2'}/>}>
-              <Tabs.List class={`flex flex-row items-center px-2`}>
+              <Tabs.List class={`flex w-full flex-row items-center px-2`}>
                 <For each={config().tabs} fallback={<div class={'h-2'}/>}>
                   {
                     (tab, i) => {
@@ -56,6 +56,7 @@ export const NavBar: Component = () => {
     </Show>
   )
 }
+
 const TabIcon: Component<{ tab: UserExtensionConfigTabsEnum }> = props => {
   return (
     <Switch>
@@ -82,6 +83,22 @@ const TabC: Component<{
 }> = props => {
   const {theme} = useTheme()
   const {currentTab, setCurrentTab} = useTabs()
+
+  const labelForTab = (tab: UserExtensionConfigTabsEnum) => {
+    switch (tab) {
+      case 'yogs':
+        return 'Yogs';
+      case 'charities':
+        return 'Charities';
+      case 'fundraisers':
+        return 'Fundraisers';
+      case 'user-schedule':
+        return 'Schedule';
+      default:
+        return ''
+    }
+  }
+
   const active = () => {
     switch (theme()) {
       case 'blue':
@@ -107,7 +124,15 @@ const TabC: Component<{
   return (
     <Tabs.Trigger
       class={twMerge(
-        'group flex h-full w-full flex-1 items-center justify-center border-2 border-white p-1 text-center text-white transition-all',
+        // base layout
+        'group flex h-full none min-w-0 items-center justify-center border-2 border-white text-white transition-all duration-300',
+        // padding and rounding
+        'py-1 px-8',
+        // when the tab is active we give it a bit more horizontal padding so it "extends"
+        '[&.active]:pl-4 [&.active]:pr-4',
+        // make the active tab take all the remaining space
+        '[&.active]:flex-1 [&.active]:basis-0',
+
         active(),
         hover(),
         props.class,
@@ -116,7 +141,26 @@ const TabC: Component<{
       value={props.tabType}
       onClick={() => setCurrentTab(props.tabType)}
     >
-      <TabIcon tab={props.tabType}/>
+      <div class={twMerge(
+        'flex flex-row items-center justify-center gap-0.5',
+        // add a touch more gap when active for a smoother reveal
+        'transition-[gap] duration-300 delay-0',
+        'group-[.active]:gap-1 group-[.active]:delay-150'
+      )}>
+        <TabIcon tab={props.tabType}/>
+        <p
+          class={twMerge(
+            // hidden by default
+            'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+            'text-white text-xs',
+            'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
+            // reveal when the parent trigger has the .active class (using Tailwind arbitrary group variant)
+            'group-[.active]:max-w-xs group-[.active]:opacity-100 group-[.active]:pl-1 group-[.active]:pr-2 group-[.active]:delay-150',
+          )}
+        >
+          {labelForTab(props.tabType)}
+        </p>
+      </div>
     </Tabs.Trigger>
   )
 }

@@ -34,7 +34,6 @@ const Body = () => {
         (causes) =>{
           return (
             <ColoredScrollbar>
-              <p class={'mb-2 text-center text-xl text-white'}>Charities</p>
                 <div class={'flex flex-col gap-2 mx-2'}>
                   <CharityOverview data={causes().overview}/>
                   <LiveDonoTrackerLink/>

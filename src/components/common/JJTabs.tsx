@@ -1,4 +1,4 @@
-import {type Component, Match, Switch} from 'solid-js'
+import {type Component, createSignal, Match, onMount, type ParentProps, Switch, Show} from 'solid-js'
 import {YogsTab} from "./extenstionTabs/yogsTab/YogsTab.tsx";
 import {CharityTab} from "./extenstionTabs/charityTab/CharityTab.tsx";
 import {CommunityTab} from "./extenstionTabs/communityTab/CommunityTab.tsx";
@@ -8,35 +8,41 @@ import {UserScheduleTab} from "./extenstionTabs/userSchedule/UserScheduleTab.tsx
 
 interface JJTabProps {
   tab: UserExtensionConfigTabsEnum
+  bare?: boolean
 }
 
 export const JJTab: Component<JJTabProps> = props => {
+  const cls = 'h-full mx-auto w-full flex-1 overflow-hidden overscroll-none'
+
   return (
     <Switch>
       <Match when={props.tab == 'yogs'}>
-        <Tabs.Content value={'yogs'} class={'h-full mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
-          <YogsTab/>
-        </Tabs.Content>
+        <Show when={!props.bare} fallback={<div class={cls}><YogsTab/></div>}>
+          <Tabs.Content value={'yogs'} class={cls}>
+            <YogsTab/>
+          </Tabs.Content>
+        </Show>
       </Match>
       <Match when={props.tab == 'charities'}>
-        <Tabs.Content value={'charities'} class={'h-full mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
-          <CharityTab/>
-        </Tabs.Content>
+        <Show when={!props.bare} fallback={<div class={cls}><CharityTab/></div>}>
+          <Tabs.Content value={'charities'} class={cls}>
+            <CharityTab/>
+          </Tabs.Content>
+        </Show>
       </Match>
       <Match when={props.tab == 'fundraisers'}>
-        <Tabs.Content value={'fundraisers'} class={'mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
-          <CommunityTab/>
-        </Tabs.Content>
+        <Show when={!props.bare} fallback={<div class={cls}><CommunityTab/></div>}>
+          <Tabs.Content value={'fundraisers'} class={cls}>
+            <CommunityTab/>
+          </Tabs.Content>
+        </Show>
       </Match>
       <Match when={props.tab == 'user-schedule'}>
-        <Tabs.Content value={'user-schedule'} class={'mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
-          <UserScheduleTab/>
-        </Tabs.Content>
-      </Match>
-      <Match when={props.tab == 'full-user'}>
-        <Tabs.Content value={'full-user'} class={'mx-auto w-full flex-1 overflow-hidden overscroll-none'}>
-          <p>Full user</p>
-        </Tabs.Content>
+        <Show when={!props.bare} fallback={<div class={cls}><UserScheduleTab/></div>}>
+          <Tabs.Content value={'user-schedule'} class={cls}>
+            <UserScheduleTab/>
+          </Tabs.Content>
+        </Show>
       </Match>
     </Switch>
   )

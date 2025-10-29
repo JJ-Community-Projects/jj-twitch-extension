@@ -1,7 +1,8 @@
-import {createContext, type ParentComponent, useContext} from "solid-js";
+import {createContext, createEffect, on, type ParentComponent, useContext} from "solid-js";
 import {Configuration, TwitchExtensionApi} from "../../../api";
 import {useQuery} from "@tanstack/solid-query";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
+import {useTabs} from "../TabsProvider.tsx";
 
 const useBackendHook = () => {
 
@@ -122,6 +123,16 @@ const useBackendHook = () => {
     refetchOnWindowFocus: false,
     refetchIntervalInBackground: true,
     placeholderData: (prev) => prev
+  }))
+
+  const {currentTab, setCurrentTab} = useTabs()
+
+  createEffect(on(() => userConfigQuery.data, (config) => {
+    if (currentTab() === '' && config) {
+      if (config.tabs.length > 0) {
+        setCurrentTab(config.tabs[0])
+      }
+    }
   }))
 
   return {

@@ -1,6 +1,61 @@
 import {createContext, createSignal, onMount, type ParentComponent, useContext} from "solid-js";
 import {createStore} from "solid-js/store";
 
+
+const debugDataMap = {
+  'ostof': {
+    channelId: "96860795",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'hrry': {
+    channelId: "27063689",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'martyn': {
+    channelId: "12131870",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'brionykay': {
+    channelId: "79911474",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'mousie': {
+    channelId: "46969360",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'shadowatnoon': {
+    channelId: "68525019",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'yogscast': {
+    channelId: "20786541",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  }
+}
+const debugChannel = 'yogscast'
+const debugData = debugDataMap[debugChannel]
+
 type ChannelsResponse = {
   data: Array<ChannelInfo>;
 };
@@ -68,32 +123,15 @@ const useTwitchAuthHook = () => {
       if (import.meta.env.DEV) {
         console.log("Twitch Auth debug")
 
-        setChannelName("hrry")
+        setChannelName(debugChannel)
 
-        setAuth({
-          // channelId: "96860795",
-          // channelId: "27063689",
-          channelId: "12131870",
-          clientId: "333",
-          token: "test-123",
-          userId: "333",
-          helixToken: "333"
-        });
+        setAuth(debugData)
       }
 
     } else {
       console.error("Twitch not available")
-      setChannelName("ostof")
-
-      setAuth({
-        // channelId: "96860795",
-        // channelId: "27063689",
-        channelId: "12131870",
-        clientId: "333",
-        token: "test-123",
-        userId: "333",
-        helixToken: "333"
-      });
+      setChannelName(debugChannel)
+      setAuth(debugData)
     }
   })
 

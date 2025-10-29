@@ -15,11 +15,11 @@ export const ScheduleControls: Component = () => {
   const {previousDay, nextDay, switchToToday, streams} = useScheduleState()
   const firstStream = streams[0]
   const lastStream = streams[streams.length - 1]
-  const start = DateTime.fromISO(firstStream.start, {
+  const start = DateTime.fromJSDate(firstStream.start, {
     zone: 'Europe/London'
   })
 
-  const end = DateTime.fromISO(lastStream.end, {
+  const end = DateTime.fromJSDate(lastStream.end, {
     zone: 'Europe/London'
   })
   const modalSignal = createModalSignal()

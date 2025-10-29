@@ -22,7 +22,6 @@ export const CommunityTab: Component = () => {
         (config) => {
           return (
             <Show when={config().showFundraisers} fallback={
-
               <InvisibleBody text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'}>
                 <JJStreamTeamLink/>
               </InvisibleBody>
@@ -48,14 +47,13 @@ const Body = () => {
           return (
             <div class={'flex h-full flex-1 flex-col'}>
               <ColoredScrollbar>
-                <p class={'px-2 text-center text-xl text-white'}>Community Fundraiser</p>
-                <p class={'mb-2 text-center text-base text-white'}>
-                  Last update, {DateTime.fromJSDate(campaigns().date).toLocaleString(DateTime.DATETIME_MED)}
-                </p>
-                <div class={'flex flex-1 flex-col gap-2 mx-2 mb-4'}>
+                <div class={'flex flex-1 flex-col gap-2 mx-2'}>
                   <FundraiserBody fundraisers={campaigns().campaigns}/>
                 </div>
               </ColoredScrollbar>
+              <p class={'text-center text-xxs text-black bg-white rounded-full p-1 mt-1 mx-2'}>
+                Last update, {DateTime.fromJSDate(campaigns().date).toLocaleString(DateTime.DATETIME_MED)}
+              </p>
             </div>
           )
         }

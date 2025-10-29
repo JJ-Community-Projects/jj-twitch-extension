@@ -50,7 +50,6 @@ export const YogsTab: Component = (props) => {
                             <div class={twMerge(scroll, scrollbar())}>
                               <ScheduleStreams/>
                             </div>
-                            <ScheduleUpdatedAt/>
                             <ScheduleControls/>
                           </div>
                         </CreatorFilterProvider>
@@ -66,16 +65,4 @@ export const YogsTab: Component = (props) => {
     </Show>
   );
 }
-
-
-export const ScheduleUpdatedAt: Component = (props) => {
-  const {schedule} = useScheduleState()
-  return (
-    <p class={'text-xxs text-center font-bold text-white'}>
-      Last updated, TODO ADD UPDATED
-
-    </p>
-  );
-}
-
 // {DateTime.fromISO(schedule.updatedAt).toLocaleString(DateTime.DATETIME_FULL)}
