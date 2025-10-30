@@ -1,6 +1,6 @@
 import {type Component, For} from 'solid-js'
-import {CharityListItem} from "./CharityListItem.tsx";
 import type {JJCause} from "../../../../api";
+import {CharityListItemAlt} from "./CharityListItemAlt.tsx";
 
 interface CharityListProps {
   charityData: JJCause[]
@@ -12,7 +12,7 @@ export const CharityList: Component<CharityListProps> = props => {
       <For each={props.charityData}>
         {(charity, i) => {
           return (
-            <CharityListItem charity={charity} i={i()}/>
+            <CharityListItemAlt charity={charity} i={i()}/>
           )
         }}
       </For>
