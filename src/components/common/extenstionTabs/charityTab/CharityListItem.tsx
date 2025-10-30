@@ -5,6 +5,7 @@ import {FiExternalLink} from "solid-icons/fi";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import type {JJCause} from "../../../../api";
+import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
 
 interface CharityListItemProps {
   charity: JJCause
@@ -85,8 +86,8 @@ export const CharityListItem: Component<CharityListItemProps> = (props) => {
           </div>
         </div>
         <a target={'_blank'} href={charity.url}
-           class={'transition-all hover:scale-102 hover:brightness-105 text-white gap-1 rounded-full bg-primary-500 p-1 flex flex-row items-center justify-center'}>
-          <span class={'text-xxs'}>Website</span> <FiExternalLink size={12}/>
+           class={'transition-all hover:scale-101 hover:brightness-105 text-white gap-1 rounded-full bg-primary-500 p-1 flex flex-row items-center justify-center'}>
+          <span class={'text-xxs'}>Website</span> <FaSolidArrowUpRightFromSquare size={12}/>
         </a>
       </div>
     </div>
