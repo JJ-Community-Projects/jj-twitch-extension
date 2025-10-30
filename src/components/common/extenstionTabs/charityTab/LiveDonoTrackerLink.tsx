@@ -48,7 +48,7 @@ export const LiveDonoTrackerLink: Component = () => {
                 return (
                   <a
                     class={twMerge(
-                      'hover:scale-102 bg-accent-500 flex w-full flex-row items-center justify-center rounded-2xl p-0.5 text-center text-white shadow-xl transition-all hover:shadow-2xl hover:brightness-105',
+                      'hover:scale-101 bg-accent-500 flex w-full flex-row items-center justify-center rounded-2xl p-0.5 text-center text-white shadow-xl transition-all hover:shadow-2xl hover:brightness-105',
                       gradient(),
                     )}
                     href={url()}

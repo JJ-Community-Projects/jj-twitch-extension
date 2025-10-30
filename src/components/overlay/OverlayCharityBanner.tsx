@@ -79,11 +79,11 @@ const CauseView: Component<{ cause: Cause }> = (props) => {
         </div>
         <div class={'flex-1'}/>
         <a
-          class={'p-2 bg-accent-500 rounded-2xl text-white hover:scale-102 hover:brightness-105 flex flex-row gap-1 items-center'}
+          class={'p-2 bg-accent-500 rounded-2xl text-white hover:scale-101 hover:brightness-105 flex flex-row gap-1 items-center'}
           target={'_blank'}
           href={cause.url}><GlobeIcon class={'text-white'}/></a>
         <a
-          class={'p-2 bg-accent-500 rounded-2xl text-white hover:scale-102 hover:brightness-105 flex flex-row gap-1 items-center'}
+          class={'p-2 bg-accent-500 rounded-2xl text-white hover:scale-101 hover:brightness-105 flex flex-row gap-1 items-center'}
           target={'_blank'}
           href={donationUrl()}
         >Donate <TiltifyIcon class={'text-white'}/></a>

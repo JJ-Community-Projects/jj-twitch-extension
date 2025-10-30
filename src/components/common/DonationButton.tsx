@@ -33,7 +33,7 @@ export const DonationButton: Component = () => {
     <Show when={jjConfig.donationLink.visible}>
       <a
         class={twMerge(
-          'hover:scale-102 flex flex-row items-center justify-center rounded-2xl p-1 text-center text-white shadow-xl transition-all hover:shadow-2xl hover:brightness-105',
+          'hover:scale-101 flex flex-row items-center justify-center rounded-2xl p-1 text-center text-white shadow-xl transition-all hover:shadow-2xl hover:brightness-105',
           gradient(),
         )}
         href={url()}

@@ -183,7 +183,7 @@ export const StreamStripeCard: Component<SlotCardProps> = props => {
     <>
       <div
         class={
-          'hover:scale-101 bg-white flex h-[68px] w-full cursor-pointer flex-row rounded-2xl shadow-2xl transition-all hover:brightness-105'
+          'hover:scale-101 bg-white flex h-[68px] w-full cursor-pointer flex-row rounded-2xl shadow-xl transition-all hover:brightness-101'
         }
         onclick={() => {
           modalSignal.toggle()

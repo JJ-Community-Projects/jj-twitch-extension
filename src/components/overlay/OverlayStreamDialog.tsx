@@ -107,7 +107,7 @@ const VodComponent: Component<VodProps> = (props) => {
   return (
     <div class={'flex flex-row py-1'}>
       <a
-        class={'hover:scale-102 text-xxs flex flex-row items-center p-2 rounded-2xl bg-twitch-500 text-white transition-all '}
+        class={'hover:scale-101 text-xxs flex flex-row items-center p-2 rounded-2xl bg-twitch-500 text-white transition-all '}
         target={'_blank'}
         href={props.vod.url}
       >
@@ -139,7 +139,7 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
     <Switch>
       <Match when={hasUrl()}>
         <a
-          class={'hover:scale-102 text-xs flex flex-row items-center p-2 rounded-2xl transition-all gap-1'}
+          class={'hover:scale-101 text-xs flex flex-row items-center p-2 rounded-2xl transition-all gap-1'}
           style={{
             background: color(),
             color: getTextColor(color())

@@ -33,7 +33,7 @@ export const OverlayCommunityFundraiser: Component = (props) => {
         <a
           href={'https://twitch.tv/team/jinglejam'}
           target={'_blank'}
-          class={'flex flex-row justify-between items-center gap-1 bg-twitch text-white p-2 rounded-2xl full text-center w-full transition-all hover:scale-102'}>
+          class={'flex flex-row justify-between items-center gap-1 bg-twitch text-white p-2 rounded-2xl full text-center w-full transition-all hover:scale-101'}>
           Jingle Jam Stream Team <FiExternalLink/></a>
       </div>
       <Show when={fundraiser.campaigns.length === 0}>
@@ -175,7 +175,7 @@ const ChildBody: ParentComponent<{ i: number; url?: string }> = (props) => {
         <a
           class={twMerge(
             'min-h-24 w-full rounded-2xl shadow-xl',
-            'hover:scale-102 group/live transition-all hover:shadow-2xl hover:brightness-105',
+            'hover:scale-101 group/live transition-all hover:shadow-2xl hover:brightness-105',
             campaignColor(props.i),
           )}
           href={props.url}
