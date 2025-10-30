@@ -4,20 +4,34 @@ import type {UserScheduleSchema} from "../../../../api";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {StreamStripeCard} from "../../schedule/StreamCard.tsx";
+import {CrossFade} from "../../CrossFade.tsx";
+import {ErrorPage} from "../../Error.tsx";
+import {Loading} from "../../Loading.tsx";
 
 export const UserScheduleTab: Component = (props) => {
-
   const {userSchedule} = useBackend()
+
   return (
-    <Show when={userSchedule.data}>
-      {
-        (schedule) => {
-          return (
-            <Body schedule={schedule()}/>
-          )
-        }
-      }
-    </Show>
+    <>
+      <CrossFade show={userSchedule.isError}>
+        <ErrorPage message={'Failed to load schedule.'}/>
+      </CrossFade>
+      <CrossFade show={userSchedule.isPending}>
+        <Loading/>
+      </CrossFade>
+      <CrossFade show={userSchedule.isPending}>
+        <Show when={userSchedule.data}>
+          {
+            (schedule) => {
+              return (
+                <Body schedule={schedule()}/>
+              )
+            }
+          }
+        </Show>
+      </CrossFade>
+
+    </>
   );
 }
 
