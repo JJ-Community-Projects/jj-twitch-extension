@@ -7,7 +7,7 @@ import {YogsIcon} from "./icons/YogsIcon.tsx";
 import {useBackend} from "./providers/BackendProvider.tsx";
 import type {UserExtensionConfigTabsEnum} from "../../api";
 import {JJIcon} from "./icons/JJIcons.tsx";
-import {useTabs} from "./TabsProvider.tsx";
+import {useTabs} from "./providers/TabsProvider.tsx";
 
 export const NavBarAlt: Component = () => {
   const {userConfig} = useBackend()
@@ -40,7 +40,6 @@ export const NavBarAlt: Component = () => {
 
                       return (
                         <TabC
-                          href={'/1'}
                           tabType={tab}
                           class={classes()}
                         />
@@ -77,7 +76,6 @@ const TabIcon: Component<{ tab: UserExtensionConfigTabsEnum }> = props => {
 }
 
 const TabC: Component<{
-  href: string;
   tabType: UserExtensionConfigTabsEnum;
   class?: string,
 }> = props => {
