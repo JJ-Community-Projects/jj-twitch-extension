@@ -1,17 +1,15 @@
 import {type Component, For, Show} from "solid-js";
 import {useNow} from "../../lib/useNow.ts";
 import {DateTime} from "luxon";
-import type {TESStream} from "../../lib/model/TwitchExtensionSchedule.ts";
 import {getTextColor} from "../../lib/textColors.ts";
 import {Button} from "@kobalte/core/button";
 import {useOverlay} from "../common/providers/OverlayProvider.tsx";
 import {useCurrentStream, useFutureStreams} from "../../lib/overlayYogScheduleHooks.ts";
 import {ColoredScrollbar} from "../common/ColoredScrollbar.tsx";
-import {FiExternalLink} from "solid-icons/fi";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {OverlayHeader} from "./OverlayHeader.tsx";
-import {useSchedule} from "../common/providers/data/ScheduleProvider.tsx";
+import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
 
 export const OverlayYogsSchedule: Component = () => {
 
@@ -56,7 +54,7 @@ const Header: Component = () => {
           target={'_blank'}
           href={'https://jinglejam.ostof.dev/yogs'}
         >
-          <FiExternalLink class={'~text-base/xl'}/>
+          <FaSolidArrowUpRightFromSquare class={'~text-base/xl'}/>
         </a>
       </div>
     </div>
