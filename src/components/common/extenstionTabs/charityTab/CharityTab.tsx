@@ -3,8 +3,11 @@ import {CharityList} from "./CharityList.tsx";
 import {ColoredScrollbar} from "../../ColoredScrollbar.tsx";
 import {LiveDonoTrackerLink} from "./LiveDonoTrackerLink.tsx";
 import {CharityOverview} from "./CharityOverview.tsx";
-import {InvisibleBody} from "../../InvisibleBody.tsx";
+import {InvisibleBodyAlt} from "../../InvisibleBody.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
+import {CrossFade} from "../../CrossFade.tsx";
+import {ErrorPage} from "../../Error.tsx";
+import {Loading} from "../../Loading.tsx";
 
 
 export const CharityTab: Component = (props) => {
@@ -14,10 +17,10 @@ export const CharityTab: Component = (props) => {
       {
         (config) => {
           return (
-            <Show when={config().showCharities}
-                  fallback={<InvisibleBody text={'The Charities Page will be live soon.'}/>
-                  }>
-                <Body/>
+            <Show
+              when={config().showCharities}
+              fallback={<InvisibleBodyAlt text={'The Charities Page will be live soon.'}/>}>
+              <Body/>
             </Show>
           )
         }
@@ -29,21 +32,31 @@ export const CharityTab: Component = (props) => {
 const Body = () => {
   const {causes} = useBackend()
   return (
-    <Show when={causes.data}>
-      {
-        (causes) =>{
-          return (
-            <ColoredScrollbar>
-                <div class={'flex flex-col gap-2 mx-2'}>
-                  <CharityOverview data={causes().overview}/>
-                  <LiveDonoTrackerLink/>
-                  <CharityList charityData={causes().causes}/>
-                </div>
-            </ColoredScrollbar>
-          )
-        }
-      }
-    </Show>
+    <>
+      <CrossFade show={causes.isError}>
+        <ErrorPage message={'Failed to load causes.'}/>
+      </CrossFade>
+      <CrossFade show={causes.isPending}>
+        <Loading/>
+      </CrossFade>
+      <CrossFade show={causes.data !== undefined}>
+        <Show when={causes.data}>
+          {
+            (causes) => {
+              return (
+                <ColoredScrollbar>
+                  <div class={'flex flex-col gap-2 mx-2'}>
+                    <CharityOverview data={causes().overview}/>
+                    <LiveDonoTrackerLink/>
+                    <CharityList charityData={causes().causes}/>
+                  </div>
+                </ColoredScrollbar>
+              )
+            }
+          }
+        </Show>
+      </CrossFade>
+    </>
   )
 }
 
