@@ -7,6 +7,7 @@ import {useCurrency} from "../../providers/CurrencyProvider.tsx";
 import {ToggleButton} from "@kobalte/core/toggle-button";
 import {BsCurrencyDollar, BsCurrencyPound} from "solid-icons/bs";
 import type {OverviewSchema} from "../../../../api";
+import {CurrencyToggle} from "../../CurrencyToggle.tsx";
 
 interface CharityOverviewProps {
   data: OverviewSchema
@@ -92,38 +93,6 @@ export const CharityOverview: Component<CharityOverviewProps> = props => {
   )
 }
 
-const CurrencyToggle: Component = () => {
-  const {pounds, toggle} = useCurrency()
-  const {tailwindBGPrimary} = useTheme()
-  const dollar = () => !pounds()
-
-  return (
-    <ToggleButton class={'flex flex-row text-white transition-all'} pressed={dollar()} onChange={toggle}>
-      {state => (
-        <>
-          <div
-            class={twMerge(
-              'rounded-l-2xl bg-gray-400 p-1 opacity-60 transition-all',
-              !state.pressed() && 'opacity-100',
-              !state.pressed() && tailwindBGPrimary(),
-            )}
-          >
-            <BsCurrencyPound size={12}/>
-          </div>
-          <div
-            class={twMerge(
-              'rounded-r-2xl bg-gray-400 p-1 opacity-60 transition-all',
-              state.pressed() && 'opacity-100',
-              state.pressed() && tailwindBGPrimary(),
-            )}
-          >
-            <BsCurrencyDollar size={12}/>
-          </div>
-        </>
-      )}
-    </ToggleButton>
-  )
-}
 
 interface CurrencyAnimProps {
   dollars: number
