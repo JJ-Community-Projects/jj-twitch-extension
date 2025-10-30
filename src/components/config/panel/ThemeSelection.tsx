@@ -5,9 +5,7 @@ import {AiOutlineCheck} from "solid-icons/ai";
 
 const optionsMap = new Map<string, string>([
   ['red', 'Red'],
-  ['red_light', 'Light Red'],
   ['blue', 'Blue'],
-  ['blue_light', 'Light Blue'],
   ['dark', 'Dark'],
   ['rainbow', 'Rainbow'],
 ])
