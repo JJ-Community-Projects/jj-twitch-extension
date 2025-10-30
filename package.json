@@ -22,6 +22,7 @@
     "@kobalte/core": "^0.13.7",
     "@kobalte/tailwindcss": "^0.7.0",
     "@tanstack/solid-query": "^5.90.6",
+    "@tanstack/solid-query-devtools": "^5.90.4",
     "astro": "5.14.3",
     "luxon": "^3.5.0",
     "node-html-parser": "^6.1.12",
