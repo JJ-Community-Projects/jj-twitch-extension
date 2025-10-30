@@ -8,7 +8,7 @@ import {AnalyticsProvider} from "./AnalyticsProvider.tsx";
 import {BackendProvider} from "./BackendProvider.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/solid-query";
 import {CurrencyProvider} from "./CurrencyProvider.tsx";
-import {TabsProvider} from "../TabsProvider.tsx";
+import {TabsProvider} from "./TabsProvider.tsx";
 
 export const PanelExtensionProviders: ParentComponent = (props) => {
   const i18n = createI18n({language: useLocale().locale()})
