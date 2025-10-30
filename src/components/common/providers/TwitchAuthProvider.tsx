@@ -103,13 +103,10 @@ const useTwitchAuthHook = () => {
   const twitch = window?.Twitch?.ext;
   onMount(() => {
     if (twitch) {
-      console.log("Twitch available", twitch)
       twitch.onAuthorized((auth) => {
-        console.log("Twitch Auth", auth)
         setAuth(auth);
         fetchCurrentChannelInfo(auth)
           .then((newChannelInfo) => {
-            console.log("Channel Info", newChannelInfo)
             if (typeof newChannelInfo?.broadcaster_login === "string") {
               setChannelName(newChannelInfo.broadcaster_login.toLowerCase());
             }
