@@ -25,6 +25,7 @@ import {FiExternalLink} from "solid-icons/fi";
 import type {JJCampaign} from "../../api";
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "./providers/CurrencyProvider.tsx";
+import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
 
 export const PanelHeader: Component = () => {
 
@@ -221,7 +222,7 @@ const Donate = () => {
                     'group-hover:max-w-xs group-hover:opacity-100 group-hover:pr-1 group-hover:pl-2 flex flex-row items-center justify-center gap-0.5'
                   )}
                 >
-                  {config().donationLink.text} <FiExternalLink size={12}/>
+                  {config().donationLink.text}
                 </p>
                 <TiltifyRoundIcon
                   class={twMerge(
