@@ -4,10 +4,13 @@ import {ScheduleStreams} from "../../schedule/ScheduleStreams.tsx";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {ScheduleControls} from "../../schedule/ScheduleControls.tsx";
-import {ScheduleStateProvider, useScheduleState} from "../../providers/ScheduleStateProvider.tsx";
-import {InvisibleBody} from "../../InvisibleBody.tsx";
+import {ScheduleStateProvider} from "../../providers/ScheduleStateProvider.tsx";
+import {InvisibleBody, InvisibleBodyAlt} from "../../InvisibleBody.tsx";
 import {CreatorFilterProvider} from "../../providers/CreatorFilterProvider.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
+import {CrossFade} from "../../CrossFade.tsx";
+import {ErrorPage} from "../../Error.tsx";
+import {Loading} from "../../Loading.tsx";
 
 export const YogsTab: Component = (props) => {
   const scroll =
@@ -33,31 +36,41 @@ export const YogsTab: Component = (props) => {
         (config) => {
           return (
             <Show when={config().showYogsSchedule} fallback={
-              <InvisibleBody
+              <InvisibleBodyAlt
                 text={'The Yogscast Jingle Jam Schedule will be shown soon after it was published.'}
               />
             }>
-              <Show when={yogsSchedule.data}>
-                {
-                  (schedule)=>{
-                    return (
-                      <ScheduleStateProvider schedule={schedule()}>
-                        <CreatorFilterProvider>
-                          <div class="h-full flex flex-col">
-                            <div class={'h-30 mb-2'}>
-                              <YogsTabHeader/>
-                            </div>
-                            <div class={twMerge(scroll, scrollbar())}>
-                              <ScheduleStreams/>
-                            </div>
-                            <ScheduleControls/>
-                          </div>
-                        </CreatorFilterProvider>
-                      </ScheduleStateProvider>
-                    )
-                  }
-                }
-              </Show>
+              <>
+                <CrossFade show={yogsSchedule.isError}>
+                  <ErrorPage message={'Failed to load yogs schedule.'}/>
+                </CrossFade>
+                <CrossFade show={yogsSchedule.isPending}>
+                  <Loading/>
+                </CrossFade>
+                <CrossFade show={yogsSchedule.data !== undefined}>
+                  <Show when={yogsSchedule.data}>
+                    {
+                      (schedule) => {
+                        return (
+                          <ScheduleStateProvider schedule={schedule()}>
+                            <CreatorFilterProvider>
+                              <div class="h-full flex flex-col">
+                                <div class={'h-30 mb-2'}>
+                                  <YogsTabHeader/>
+                                </div>
+                                <div class={twMerge(scroll, scrollbar())}>
+                                  <ScheduleStreams/>
+                                </div>
+                                <ScheduleControls/>
+                              </div>
+                            </CreatorFilterProvider>
+                          </ScheduleStateProvider>
+                        )
+                      }
+                    }
+                  </Show>
+                </CrossFade>
+              </>
             </Show>
           )
         }
