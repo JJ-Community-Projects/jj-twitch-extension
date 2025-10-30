@@ -7,7 +7,7 @@ import {YogsIcon} from "./icons/YogsIcon.tsx";
 import {useBackend} from "./providers/BackendProvider.tsx";
 import type {UserExtensionConfigTabsEnum} from "../../api";
 import {JJIcon} from "./icons/JJIcons.tsx";
-import {useTabs} from "./TabsProvider.tsx";
+import {useTabs} from "./providers/TabsProvider.tsx";
 
 export const NavBar: Component = () => {
   const {userConfig} = useBackend()
