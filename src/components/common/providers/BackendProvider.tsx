@@ -2,11 +2,13 @@ import {createContext, createEffect, on, type ParentComponent, useContext} from 
 import {Configuration, TwitchExtensionApi} from "../../../api";
 import {useQuery} from "@tanstack/solid-query";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
-import {useTabs} from "../TabsProvider.tsx";
+import {useTabs} from "./TabsProvider.tsx";
 
 const useBackendHook = () => {
 
   const {auth} = useTwitchAuth()
+
+  const {currentTab, setCurrentTab} = useTabs()
 
   const isAuthInit = () => auth.channelId !== undefined && auth.userId !== undefined
     && auth.channelId !== '' && auth.userId !== ''
@@ -29,7 +31,7 @@ const useBackendHook = () => {
       staleTime: 60_000,
       refetchInterval: 60_000 * 10,
       refetchOnWindowFocus: false,
-      refetchIntervalInBackground: true,
+      refetchIntervalInBackground: false,
       placeholderData: (prev) => prev
     })
   )
@@ -41,29 +43,42 @@ const useBackendHook = () => {
     staleTime: 60_000,
     refetchInterval: 60_000 * 10,
     refetchOnWindowFocus: false,
-    refetchIntervalInBackground: true,
+    refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
+
+  const enableCampaignsQuery = () => {
+    return isAuthInit() && configQuery.data !== undefined
+      && configQuery.data.showFundraisers
+      && currentTab() === 'fundraisers'
+  }
 
   const campaignsQuery = useQuery(() => ({
     queryKey: ['campaigns'],
     queryFn: () => api.getCampaigns(requestAuth()),
-    enabled: isAuthInit(),
+    enabled: enableCampaignsQuery(),
     staleTime: 60_000,
-    refetchInterval: configQuery.data?.refreshInterval.fundraisers ?? 60_000,
+    refetchInterval: () => configQuery.data?.refreshInterval.fundraisers ?? 60_000,
     refetchOnWindowFocus: false,
-    refetchIntervalInBackground: true,
+    refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
+
+  const enableCausesQuery = () => {
+    return isAuthInit() &&
+      configQuery.data !== undefined &&
+      configQuery.data.showCharities &&
+      currentTab() === 'charities'
+  }
 
   const causesQuery = useQuery(() => ({
     queryKey: ['causes'],
     queryFn: () => api.getCauses(requestAuth()),
-    enabled: isAuthInit(),
+    enabled: enableCausesQuery(),
     staleTime: 60_000,
-    refetchInterval: configQuery.data?.refreshInterval.charities ?? 60_000,
+    refetchInterval: () => configQuery.data?.refreshInterval.charities ?? 60_000,
     refetchOnWindowFocus: false,
-    refetchIntervalInBackground: true,
+    refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
 
@@ -78,7 +93,7 @@ const useBackendHook = () => {
     staleTime: 60_000,
     refetchInterval: 60_000,
     refetchOnWindowFocus: false,
-    refetchIntervalInBackground: true,
+    refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
 
@@ -96,7 +111,9 @@ const useBackendHook = () => {
   }))
 
   const enableUserScheduleQuery = () => {
-    return isAuthInit() && userConfigQuery.data !== undefined && userConfigQuery.data.hasSchedule
+    return isAuthInit() && userConfigQuery.data !== undefined
+      && userConfigQuery.data.hasSchedule
+      && currentTab() === 'user-schedule'
   }
 
 
@@ -105,27 +122,29 @@ const useBackendHook = () => {
     queryFn: () => api.getUserSchedule(requestAuth()),
     enabled: enableUserScheduleQuery(),
     staleTime: 60_000,
-    refetchInterval: configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 15,
+    refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 15,
     refetchOnWindowFocus: false,
-    refetchIntervalInBackground: true,
+    refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
 
   const enableYogsScheduleQuery = () => {
-    return isAuthInit() && userConfigQuery.data !== undefined && !userConfigQuery.data.hasSchedule
+    return isAuthInit() && userConfigQuery.data !== undefined
+      && configQuery.data !== undefined && configQuery.data.showYogsSchedule &&
+      currentTab() === 'yogs'
   }
+
   const yogsScheduleQuery = useQuery(() => ({
     queryKey: ['yogs-schedule'],
     queryFn: () => api.getYogsSchedule(requestAuth()),
     enabled: enableYogsScheduleQuery(),
-    staleTime: 60_000,
-    refetchInterval: configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 15,
+    staleTime: 60_000 * 5,
+    refetchInterval: () =>  configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 10,
     refetchOnWindowFocus: false,
-    refetchIntervalInBackground: true,
+    refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
 
-  const {currentTab, setCurrentTab} = useTabs()
 
   createEffect(on(() => userConfigQuery.data, (config) => {
     if (currentTab() === '' && config) {
