@@ -3,15 +3,23 @@ import {type Accessor, createContext, createSignal, type ParentComponent, useCon
 interface CurrencyContextProps {
   pounds: Accessor<boolean>
   toggle: () => void
+  currency: () => 'GBP' | 'USD'
 }
 
 const CurrencyContext = createContext<CurrencyContextProps>()
 
-export const CurrencyProvider: ParentComponent<{  }> = props => {
+export const CurrencyProvider: ParentComponent<{}> = props => {
   const [pounds, set] = createSignal(true)
 
   const toggle = () => {
     set(!pounds())
+  }
+
+  const currency = () => {
+    if (pounds()) {
+      return 'GBP'
+    }
+    return 'USD'
   }
 
   return (
@@ -19,6 +27,7 @@ export const CurrencyProvider: ParentComponent<{  }> = props => {
       value={{
         pounds,
         toggle,
+        currency
       }}
     >
       {props.children}
