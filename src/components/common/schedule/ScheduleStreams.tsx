@@ -25,7 +25,18 @@ export const ScheduleStreams: Component = (props) => {
       <Show when={!isEmpty()}>
         <For each={filteredStreams()}>
           {stream => (
-            <StreamStripeCard stream={stream} showCountdown={true} showTime={true}/>
+            <StreamStripeCard
+              stream={stream}
+              showCountdown={true}
+              showTime={true}
+              startFormat={{
+                hour: 'numeric',
+                minute: 'numeric',
+                timeZoneName: 'short',
+                month: 'short',
+                day: 'numeric',
+              }}
+            />
           )}
         </For>
       </Show>
