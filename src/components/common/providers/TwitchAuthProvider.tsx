@@ -10,6 +10,13 @@ const debugDataMap = {
     userId: "333",
     helixToken: "333"
   },
+  'ostofbot': {
+    channelId: "960814823",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
   'hrry': {
     channelId: "27063689",
     clientId: "333",
@@ -53,7 +60,7 @@ const debugDataMap = {
     helixToken: "333"
   }
 }
-const debugChannel = 'yogscast'
+const debugChannel = 'ostofbot'
 const debugData = debugDataMap[debugChannel]
 
 type ChannelsResponse = {
