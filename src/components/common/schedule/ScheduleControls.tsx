@@ -43,11 +43,25 @@ export const ScheduleControls: Component = () => {
     }
   }
 
+  const active = () => {
+    switch (theme()) {
+      case 'blue':
+      case 'blue_light':
+        return 'active:bg-primary-500'
+      case 'dark':
+        return 'active:bg-gray-700'
+      default:
+        return 'active:bg-accent-500'
+    }
+  }
+
   const link = twMerge(
     'group overflow-hidden flex flex-1 flex-col items-center justify-center p-1 transition-all duration-300',
     'hover:text-white',
-    hover()
+    hover(),
+    active(),
   )
+
   return (
     <>
       <div class={'flex flex-col justify-center px-2 pb-0 pt-2'}>
