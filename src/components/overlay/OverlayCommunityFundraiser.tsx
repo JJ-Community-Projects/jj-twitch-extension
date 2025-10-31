@@ -5,11 +5,11 @@ import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {Numeric} from "solid-i18n";
 import {FiExternalLink} from "solid-icons/fi";
 import {OverlayHeader} from "./OverlayHeader.tsx";
-import {useBackend} from "../common/providers/BackendProvider.tsx";
+import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 
 export const OverlayCommunityFundraiser: Component = (props) => {
-  const {campaigns} = useBackend()
+  const {campaigns} = useOverlayBackend()
 
   const {theme} = useTheme()
 

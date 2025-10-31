@@ -11,7 +11,7 @@ import {twMerge} from "tailwind-merge";
 import {OverlayHeader} from "./OverlayHeader.tsx";
 import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
 import type { Stream } from "../../api/index.ts";
-import {useBackend} from "../common/providers/BackendProvider.tsx";
+import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 export const OverlayYogsSchedule: Component = () => {
 
@@ -46,7 +46,7 @@ export const OverlayYogsSchedule: Component = () => {
 }
 
 const Header: Component = () => {
-  const {yogsSchedule} = useBackend()
+  const {yogsSchedule} = useOverlayBackend()
   return (
     <Show when={yogsSchedule.data}>
       {

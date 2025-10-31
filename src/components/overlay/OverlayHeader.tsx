@@ -9,6 +9,7 @@ import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {BiRegularInfoCircle} from "solid-icons/bi";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useOverlay} from "../common/providers/OverlayProvider.tsx";
+import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 
 export const OverlayHeader: Component = (props) => {
@@ -100,19 +101,18 @@ const About = () => {
 }
 
 const Donate = () => {
-  const config = useTwitchOverlayConfig()
-  const jjConfig = useOverlayConfig()
+  const {userData, config} = useOverlayBackend()
 
   const url = () => {
-    return jjConfig.donationLink.url
+    return userData.data?.tiltifyUrl ?? config.data?.donationLink.url
   }
 
   const text = () => {
-    return jjConfig.donationLink.text ?? 'Donate'
+    return config.data?.donationLink.text ?? 'Donate'
   }
 
   return (
-    <Show when={jjConfig.donationLink.visible}>
+    <Show when={config.data?.donationLink.visible}>
       <a
         class={twMerge(
           'group inline-flex items-center justify-center cursor-pointer',

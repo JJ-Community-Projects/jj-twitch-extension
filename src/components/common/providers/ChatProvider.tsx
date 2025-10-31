@@ -5,7 +5,7 @@ import tmi, {type ChatUserstate} from "tmi.js";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
 import {useTwitchOverlayConfig} from "./OverlayConfigProvider.tsx";
 import {useLocalStorage} from "./LocalStorageProvider.tsx";
-import {useBackend} from "./BackendProvider.tsx";
+import {useOverlayBackend} from "./OverlayBackendProvider.tsx";
 // Show command-triggered popups for 10s
 const commandTimeout = 10_000;
 
@@ -121,7 +121,7 @@ const useTwitchChatHook = (callback: (command: TwitchOverlayChatCommand) => void
 
 
 const useChatHook = (initCauseId?: number) => {
-  const {causes} = useBackend()
+  const {causes} = useOverlayBackend()
   const storage = useLocalStorage()
   const isChatEnabled = () => storage.getBoolean("chat", true)
 

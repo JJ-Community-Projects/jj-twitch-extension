@@ -5,7 +5,7 @@ import {Numeric} from "solid-i18n";
 import {useChat} from "../common/providers/ChatProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import type {JJCause} from "../../api";
-import {useBackend} from "../common/providers/BackendProvider.tsx";
+import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 export const OverlayCharitySideBanner: Component = () => {
   const {causes, causeId} = useChat()
@@ -31,7 +31,7 @@ export const OverlayCharitySideBanner: Component = () => {
 }
 const CauseViewSide: Component<{ cause: JJCause }> = (props) => {
   const cause = props.cause
-  const {causes} = useBackend()
+  const {causes} = useOverlayBackend()
 
   const twitchConfig = useTwitchOverlayConfig()
   const config = useOverlayConfig()

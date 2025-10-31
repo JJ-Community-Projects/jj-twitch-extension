@@ -12,6 +12,7 @@ import {
 } from "../common/icons/JJIcons.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
+import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 
 export const OverlayAboutJJ: Component = (props) => {
@@ -46,13 +47,13 @@ export const OverlayAboutJJ: Component = (props) => {
 
 
 const ExternalLinks = () => {
-  const config = useOverlayConfig()
+  const {userData} = useOverlayBackend()
   const twitchConfig = useTwitchOverlayConfig()
   const {theme, tailwindBGPrimary} = useTheme()
 
 
   const url = () => {
-    return config.donationLink.url
+    return userData.data?.tiltifyUrl ?? ''
   }
 
   return (

@@ -5,12 +5,12 @@ import {GlobeIcon, TiltifyRoundIcon} from "../common/icons/JJIcons.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {Numeric} from "solid-i18n";
 import {OverlayHeader} from "./OverlayHeader.tsx";
-import {useBackend} from "../common/providers/BackendProvider.tsx";
+import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 import type {JJCause} from "../../api";
 
 
 export const OverlayJJCharities: Component = () => {
-  const {causes} = useBackend()
+  const {causes} = useOverlayBackend()
 
   const {theme} = useTheme()
 
@@ -53,7 +53,7 @@ export const OverlayJJCharities: Component = () => {
 
 const Item: Component<{ cause: JJCause }> = (props) => {
   const {cause: charity} = props
-  const {causes} = useBackend()
+  const {causes} = useOverlayBackend()
 
   const totalPounds = () => causes.data?.overview.raised.total.gbp ?? 0
   const totalDollar = () => causes.data?.overview.raised.total.usd ?? 0

@@ -1,11 +1,11 @@
-import {type Component, For, Show} from "solid-js";
+import {type Component, For} from "solid-js";
 import {GlobeIcon, TiltifyIcon} from "../common/icons/JJIcons.tsx";
 import {twMerge} from "tailwind-merge";
 import {useChat} from "../common/providers/ChatProvider.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {Numeric} from "solid-i18n";
 import type {JJCause} from "../../api";
-import {useBackend} from "../common/providers/BackendProvider.tsx";
+import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 export const OverlayCharityBanner: Component = () => {
   const {causes, causeId} = useChat()
@@ -16,12 +16,12 @@ export const OverlayCharityBanner: Component = () => {
         {
           cause => {
             return (
-                <div class={twMerge(
-                  'absolute inset-0 w-full h-full transition-all duration-500',
-                  cause.id === causeId() ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                )}>
-                  <CauseView cause={cause}/>
-                </div>
+              <div class={twMerge(
+                'absolute inset-0 w-full h-full transition-all duration-500',
+                cause.id === causeId() ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              )}>
+                <CauseView cause={cause}/>
+              </div>
             )
           }
         }
@@ -33,7 +33,7 @@ export const OverlayCharityBanner: Component = () => {
 
 const CauseView: Component<{ cause: JJCause }> = (props) => {
   const cause = props.cause
-  const {causes} = useBackend()
+  const {overview} = useOverlayBackend()
 
 
   const {commandTimeout, causeId, lastCauseId} = useChat()
@@ -47,8 +47,8 @@ const CauseView: Component<{ cause: JJCause }> = (props) => {
     return cause.donateUrl
   }
 
-  const totalPounds = () => causes.data?.overview.raised.total.gbp ?? 0
-  const totalDollar = () => causes.data?.overview.raised.total.usd ?? 0
+  const totalPounds = () => overview.data?.raised.total.gbp ?? 0
+  const totalDollar = () => overview.data?.raised.total.usd ?? 0
 
   return (
     <div class={'h-full w-full flex flex-row items-center justify-center'}>

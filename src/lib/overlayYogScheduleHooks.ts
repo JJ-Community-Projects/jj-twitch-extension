@@ -2,10 +2,10 @@ import {DateTime} from "luxon";
 import {createEffect, createSignal, onMount} from "solid-js";
 import {useDatetimeLondonNow} from "./useNow.ts";
 import {isJJ} from "./useJJDates.ts";
-import {useBackend} from "../components/common/providers/BackendProvider.tsx";
+import {useOverlayBackend} from "../components/common/providers/OverlayBackendProvider.tsx";
 
 const getCurrentDayIndex = (now: DateTime) => {
-  const {yogsSchedule} = useBackend()
+  const {yogsSchedule} = useOverlayBackend()
   const index = yogsSchedule.data?.days.findIndex(d => {
     const date = DateTime.fromJSDate(d.start, {
       zone: 'Europe/London'
@@ -18,7 +18,7 @@ const getCurrentDayIndex = (now: DateTime) => {
   return index
 }
 const getNextDayIndex = (now: DateTime) => {
-  const {yogsSchedule} = useBackend()
+  const {yogsSchedule} = useOverlayBackend()
   const tomorrow = now.plus({days: 1})
   const index = yogsSchedule.data?.days.findIndex(d => {
     const date = DateTime.fromJSDate(d.start, {
@@ -33,7 +33,7 @@ const getNextDayIndex = (now: DateTime) => {
 }
 
 const getCurrentStream = (now: DateTime) => {
-  const {yogsSchedule} = useBackend()
+  const {yogsSchedule} = useOverlayBackend()
   if (!isJJ(now)) {
     return undefined
   }
@@ -50,7 +50,7 @@ const getCurrentStream = (now: DateTime) => {
 }
 
 export const getFutureStreams = (now: DateTime, i?: number) => {
-  const {yogsSchedule} = useBackend()
+  const {yogsSchedule} = useOverlayBackend()
   const streams = yogsSchedule.data?.days
     .flatMap(d => d.streams)
     .filter(s => {
@@ -71,7 +71,7 @@ export const useFutureStreams = (i?: number) => {
 }
 
 const getNextStream = (now: DateTime) => {
-  const {yogsSchedule} = useBackend()
+  const {yogsSchedule} = useOverlayBackend()
   if (!isJJ(now)) {
     return yogsSchedule.data?.days[0].streams[0]
   }
@@ -128,7 +128,7 @@ const useTomorrowDayIndex = () => {
 /*
 export const useJJDates = () => {
 
-  const {yogsSchedule} = useBackend()
+  const {yogsSchedule} = useOverlayBackend()
   const now = useDatetimeLondonNow()
 
   const streams = () => {
