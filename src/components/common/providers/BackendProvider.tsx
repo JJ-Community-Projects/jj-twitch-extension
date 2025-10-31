@@ -10,12 +10,15 @@ const useBackendHook = () => {
 
   const {currentTab, setCurrentTab} = useTabs()
 
-  const isAuthInit = () => auth.channelId !== undefined && auth.userId !== undefined
-    && auth.channelId !== '' && auth.userId !== ''
+  const isAuthInit = () => auth().channelId !== undefined && auth().userId !== undefined
+    && auth().channelId !== '' && auth().userId !== ''
+
+  const channelId = () => auth().channelId
+  const userId = () => auth().userId
 
   const requestAuth = () => ({
-    channelId: auth.channelId,
-    userId: auth.userId,
+    channelId: auth().channelId,
+    userId: auth().userId,
   })
 
   const apiConfig = new Configuration({
@@ -25,7 +28,7 @@ const useBackendHook = () => {
   const api = new TwitchExtensionApi(apiConfig)
 
   const configQuery = useQuery(() => ({
-      queryKey: ['config'],
+      queryKey: ['config', channelId(), userId()],
       queryFn: () => api.getExtensionConfig(requestAuth()),
       enabled: isAuthInit(),
       staleTime: 60_000,
@@ -37,7 +40,7 @@ const useBackendHook = () => {
   )
 
   const userConfigQuery = useQuery(() => ({
-    queryKey: ['user-config'],
+    queryKey: ['user-config', channelId(), userId()],
     queryFn: () => api.getUserExtensionConfig(requestAuth()),
     enabled: isAuthInit(),
     staleTime: 60_000,
@@ -52,7 +55,7 @@ const useBackendHook = () => {
   }
 
   const overviewQuery = useQuery(() => ({
-    queryKey: ['overview'],
+    queryKey: ['overview', channelId(), userId()],
     queryFn: () => api.getOverview(requestAuth()),
     enabled: enableOverviewQuery(),
     staleTime: 60_000,
@@ -69,7 +72,7 @@ const useBackendHook = () => {
   }
 
   const campaignsQuery = useQuery(() => ({
-    queryKey: ['campaigns'],
+    queryKey: ['campaigns', channelId(), userId()],
     queryFn: () => api.getCampaigns(requestAuth()),
     enabled: enableCampaignsQuery(),
     staleTime: 60_000,
@@ -87,7 +90,7 @@ const useBackendHook = () => {
   }
 
   const causesQuery = useQuery(() => ({
-    queryKey: ['causes'],
+    queryKey: ['causes', channelId(), userId()],
     queryFn: () => api.getCauses(requestAuth()),
     enabled: enableCausesQuery(),
     staleTime: 60_000,
@@ -102,7 +105,7 @@ const useBackendHook = () => {
   }
 
   const userDataQuery = useQuery(() => ({
-    queryKey: ['user-data'],
+    queryKey: ['user-data', channelId(), userId()],
     queryFn: () => api.getUserData(requestAuth()),
     enabled: enableUserDataQuery(),
     staleTime: 60_000,
@@ -113,13 +116,13 @@ const useBackendHook = () => {
   }))
 
   const userRelatedScheduleQuery = useQuery(() => ({
-    queryKey: ['user-related-schedule'],
+    queryKey: ['user-related-schedule', channelId(), userId()],
     queryFn: () => api.getUserRelatedSchedule(requestAuth()),
     enabled: false, // isAuthInit()
   }))
 
   const userRelationsQuery = useQuery(() => ({
-    queryKey: ['user-relations'],
+    queryKey: ['user-relations', channelId(), userId()],
     queryFn: () => api.getUserRelations(requestAuth()),
     enabled: false, // isAuthInit(),
     placeholderData: (prev) => prev
@@ -133,7 +136,7 @@ const useBackendHook = () => {
 
 
   const userScheduleQuery = useQuery(() => ({
-    queryKey: ['user-schedule'],
+    queryKey: ['user-schedule', channelId(), userId()],
     queryFn: () => api.getUserSchedule(requestAuth()),
     enabled: enableUserScheduleQuery(),
     staleTime: 60_000,
@@ -150,7 +153,7 @@ const useBackendHook = () => {
   }
 
   const yogsScheduleQuery = useQuery(() => ({
-    queryKey: ['yogs-schedule'],
+    queryKey: ['yogs-schedule', channelId(), userId()],
     queryFn: () => api.getYogsSchedule(requestAuth()),
     enabled: enableYogsScheduleQuery(),
     staleTime: 60_000 * 5,
@@ -169,6 +172,18 @@ const useBackendHook = () => {
     }
   }))
 
+  const refetchAll = () => {
+    configQuery.refetch()
+    userConfigQuery.refetch()
+    /*
+    campaignsQuery.refetch()
+    causesQuery.refetch()
+    overviewQuery.refetch()
+    userDataQuery.refetch()
+    userScheduleQuery.refetch()
+    yogsScheduleQuery.refetch()*/
+  }
+
   return {
     config: configQuery,
     userConfig: userConfigQuery,
@@ -180,6 +195,7 @@ const useBackendHook = () => {
     userRelations: userRelationsQuery,
     userSchedule: userScheduleQuery,
     yogsSchedule: yogsScheduleQuery,
+    refetchAll,
   }
 }
 

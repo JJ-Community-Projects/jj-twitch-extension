@@ -60,7 +60,7 @@ const debugDataMap = {
     helixToken: "333"
   }
 }
-const debugChannel = 'ostofbot'
+const debugChannel = 'brionykay'
 const debugData = debugDataMap[debugChannel]
 
 type ChannelsResponse = {
@@ -96,9 +96,17 @@ export async function fetchCurrentChannelInfo(auth: Twitch.ext.Authorized) {
   return null;
 }
 
-const useTwitchAuthHook = () => {
+const useTwitchAuthHook = (overwriteTwitchAuth?: Twitch.ext.Authorized) => {
   // if (!("Twitch" in window) || !window.Twitch.ext) return;
-  const [auth, setAuth] = createStore<Twitch.ext.Authorized>({
+  const [auth, setAuth] = createStore<Twitch.ext.Authorized>(overwriteTwitchAuth ?? {
+    channelId: "",
+    clientId: "",
+    token: "",
+    userId: "",
+    helixToken: ""
+  })
+
+  const [previewAuth, setPreviewAuth] = createStore<Twitch.ext.Authorized>({
     channelId: "",
     clientId: "",
     token: "",
@@ -109,6 +117,20 @@ const useTwitchAuthHook = () => {
   const [channelName, setChannelName] = createSignal<string>();
   const twitch = window?.Twitch?.ext;
   onMount(() => {
+    // If an auth object is provided, use it and skip Twitch SDK wiring
+    if (overwriteTwitchAuth) {
+      setAuth(overwriteTwitchAuth)
+      // Try to resolve channel name if possible, otherwise leave undefined
+      fetchCurrentChannelInfo(overwriteTwitchAuth)
+        .then((info) => {
+          if (typeof info?.broadcaster_login === "string") {
+            setChannelName(info.broadcaster_login.toLowerCase())
+          }
+        })
+        .catch(() => void 0)
+      return
+    }
+
     if (twitch) {
       twitch.onAuthorized((auth) => {
         setAuth(auth);
@@ -126,12 +148,9 @@ const useTwitchAuthHook = () => {
 
       if (import.meta.env.DEV) {
         console.log("Twitch Auth debug")
-
         setChannelName(debugChannel)
-
         setAuth(debugData)
       }
-
     } else {
       console.error("Twitch not available")
       setChannelName(debugChannel)
@@ -139,16 +158,25 @@ const useTwitchAuthHook = () => {
     }
   })
 
-  return {auth, channelName}
+  const actualAuth = () => {
+    if (previewAuth.channelId === '') {
+      return auth
+    }
+    return previewAuth
+
+  }
+
+  return {auth: actualAuth, channelName, setPreviewAuth, }
 }
 
 interface TwitchAuthProps {
+  overwriteTwitchAuth?: Twitch.ext.Authorized;
 }
 
 const TwitchAuthContext = createContext<ReturnType<typeof useTwitchAuthHook>>();
 
 export const TwitchAuthProvider: ParentComponent<TwitchAuthProps> = (props) => {
-  const hook = useTwitchAuthHook()
+  const hook = useTwitchAuthHook(props.overwriteTwitchAuth)
   return (
     <TwitchAuthContext.Provider value={hook}>
       {props.children}
