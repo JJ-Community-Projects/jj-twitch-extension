@@ -8,7 +8,7 @@ import {BiRegularReset} from "solid-icons/bi";
 import {useNow} from "../../../lib/useNow.ts";
 import {DateTime} from "luxon";
 import {twMerge} from "tailwind-merge";
-import {Tooltip} from "@kobalte/core/tooltip";
+import {useTheme} from "../providers/ThemeProvider.tsx";
 import {FilterDialog} from "../CreatorFilterDialog.tsx";
 
 export const ScheduleControls: Component = () => {
@@ -25,64 +25,175 @@ export const ScheduleControls: Component = () => {
   const modalSignal = createModalSignal()
   const {reset, isEmpty} = useCreatorFilter()
   const now = useNow()
+  const {theme} = useTheme()
 
   const isJJ = () => {
     return now() >= start && now() <= end
   }
 
-  const link = 'hover:border-accent-500 hover:bg-accent-500 flex flex-1 flex-col items-center justify-center p-1 transition-all hover:scale-110 hover:text-white'
+  const hover = () => {
+    switch (theme()) {
+      case 'blue':
+      case 'blue_light':
+        return 'hover:bg-primary-400'
+      case 'dark':
+        return 'hover:bg-gray-600'
+      default:
+        return 'hover:bg-accent-400'
+    }
+  }
+
+  const link = twMerge(
+    'group overflow-hidden flex flex-1 flex-col items-center justify-center p-1 transition-all duration-300',
+    'hover:text-white',
+    hover()
+  )
   return (
     <>
       <div class={'flex flex-col justify-center px-2 pb-0 pt-2'}>
         <Switch>
           <Match when={isEmpty()}>
             <div class={`h-full w-full rounded-2xl shadow-xl hover:shadow-2xl bg-white flex flex-row justify-between`}>
-              <Tooltip>
-                <Tooltip.Trigger class={twMerge('rounded-l-2xl', link)} onClick={previousDay}>
-                  <FaSolidChevronLeft/>
-                </Tooltip.Trigger>
-                <LinkTooltipContent tooltip={'Previous Day'}/>
-              </Tooltip>
-              <Tooltip>
-                <Tooltip.Trigger class={link} onClick={modalSignal.open}>
-                  <FaSolidFilter/>
-                </Tooltip.Trigger>
-                <LinkTooltipContent tooltip={'Filter'}/>
-              </Tooltip>
+              <button class={twMerge('rounded-l-2xl', link)} onClick={previousDay}>
+                <div class={twMerge(
+                  'flex flex-row items-center justify-center gap-0.5',
+                  'transition-[gap] duration-300 delay-0',
+                  'group-hover:gap-0.5 group-hover:delay-150'
+                )}>
+                  <span class={'transition-transform duration-300 group-hover:-translate-x-0.5'}>
+                    <FaSolidChevronLeft class={'size-4 transition-all duration-300 group-hover:size-3'}/>
+                  </span>
+                  <p class={twMerge(
+                    'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+                    'text-white text-xxs',
+                    'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
+                    'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-0.5 group-hover:pr-1 group-hover:delay-150',
+                  )}>
+                    Previous
+                  </p>
+                </div>
+              </button>
+              <button class={link} onClick={modalSignal.open}>
+                <div class={twMerge(
+                  'flex flex-row items-center justify-center gap-0.5',
+                  'transition-[gap] duration-300 delay-0',
+                  'group-hover:gap-0.5 group-hover:delay-150'
+                )}>
+                  <span class={'transition-transform duration-300 group-hover:-translate-x-0.5'}>
+                    <FaSolidFilter class={'size-4 transition-all duration-300 group-hover:size-3'}/>
+                  </span>
+                  <p class={twMerge(
+                    'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+                    'text-white text-xxs',
+                    'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
+                    'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-0.5 group-hover:pr-1 group-hover:delay-150',
+                  )}>
+                    Filter
+                  </p>
+                </div>
+              </button>
 
               <Show when={isJJ()}>
-                <Tooltip>
-                  <Tooltip.Trigger class={link} onClick={switchToToday}>
-                    <FaSolidCalendarDay/>
-                  </Tooltip.Trigger>
-                  <LinkTooltipContent tooltip={'Today'}/>
-                </Tooltip>
+                <button class={link} onClick={switchToToday}>
+                  <div class={twMerge(
+                    'flex flex-row items-center justify-center gap-0.5',
+                    'transition-[gap] duration-300 delay-0',
+                    'group-hover:gap-0.5 group-hover:delay-150'
+                  )}>
+                    <span class={'transition-transform duration-300 group-hover:-translate-x-0.5'}>
+                      <FaSolidCalendarDay class={'size-4 transition-all duration-300 group-hover:size-3'}/>
+                    </span>
+                    <p class={twMerge(
+                      'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+                      'text-white text-xxs',
+                      'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
+                      'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-0.5 group-hover:pr-1 group-hover:delay-150',
+                    )}>
+                      Today
+                    </p>
+                  </div>
+                </button>
               </Show>
               <a class={link} href={'https://jinglejam.ostof.dev/yogs'} target={'_blank'}>
-                <FiExternalLink/>
+                <div class={twMerge(
+                  'flex flex-row items-center justify-center gap-0.5',
+                  'transition-[gap] duration-300 delay-0',
+                  'group-hover:gap-0.5 group-hover:delay-150'
+                )}>
+                  <span class={'transition-transform duration-300 group-hover:-translate-x-0.5'}>
+                    <FiExternalLink class={'size-4 transition-all duration-300 group-hover:size-3'}/>
+                  </span>
+                  <p class={twMerge(
+                    'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+                    'text-white text-xxs',
+                    'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
+                    'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-0.5 group-hover:pr-1 group-hover:delay-150',
+                  )}>
+                    Website
+                  </p>
+                </div>
               </a>
-              <Tooltip>
-                <Tooltip.Trigger class={twMerge(link, 'rounded-r-2xl')} onClick={nextDay}>
-                  <FaSolidChevronRight/>
-                </Tooltip.Trigger>
-                <LinkTooltipContent tooltip={'Next da'}/>
-              </Tooltip>
+              <button class={twMerge(link, 'rounded-r-2xl')} onClick={nextDay}>
+                <div class={twMerge(
+                  'flex flex-row items-center justify-center gap-0.5',
+                  'transition-[gap] duration-300 delay-0',
+                  'group-hover:gap-0.5 group-hover:delay-150'
+                )}>
+                  <p class={twMerge(
+                    'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+                    'text-white text-xxs',
+                    'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
+                    'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-1 group-hover:pr-0.5 group-hover:delay-150',
+                  )}>
+                    Next
+                  </p>
+                  <span class={'transition-transform duration-300 group-hover:translate-x-0.5'}>
+                    <FaSolidChevronRight class={'size-4 transition-all duration-300 group-hover:size-3'}/>
+                  </span>
+                </div>
+              </button>
             </div>
           </Match>
           <Match when={!isEmpty()}>
             <div class={`w-full rounded-2xl shadow-xl hover:shadow-2xl bg-white flex h-full flex-row`}>
-              <Tooltip>
-                <Tooltip.Trigger class={twMerge('rounded-l-2xl', link)} onClick={modalSignal.open}>
-                  <FaSolidFilter/>
-                </Tooltip.Trigger>
-                <LinkTooltipContent tooltip={'Filter'}/>
-              </Tooltip>
-              <Tooltip>
-                <Tooltip.Trigger class={twMerge('rounded-l-2xl', link)} onClick={reset}>
-                  <BiRegularReset/>
-                </Tooltip.Trigger>
-                <LinkTooltipContent tooltip={'Reset'}/>
-              </Tooltip>
+              <button class={twMerge('rounded-l-2xl', link)} onClick={modalSignal.open}>
+                <div class={twMerge(
+                  'flex flex-row items-center justify-center gap-0.5',
+                  'transition-[gap] duration-300 delay-0',
+                  'group-hover:gap-0.5 group-hover:delay-150'
+                )}>
+                  <span class={'transition-transform duration-300 group-hover:-translate-x-0.5'}>
+                    <FaSolidFilter class={'size-4 transition-all duration-300 group-hover:size-3'}/>
+                  </span>
+                  <p class={twMerge(
+                    'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+                    'text-white text-xxs',
+                    'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
+                    'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-0.5 group-hover:pr-1 group-hover:delay-150',
+                  )}>
+                    Filter
+                  </p>
+                </div>
+              </button>
+              <button class={twMerge('rounded-l-2xl', link)} onClick={reset}>
+                <div class={twMerge(
+                  'flex flex-row items-center justify-center gap-0.5',
+                  'transition-[gap] duration-300 delay-0',
+                  'group-hover:gap-0.5 group-hover:delay-150'
+                )}>
+                  <span class={'transition-transform duration-300 group-hover:-translate-x-0.5'}>
+                    <BiRegularReset class={'size-4 transition-all duration-300 group-hover:size-3'}/>
+                  </span>
+                  <p class={twMerge(
+                    'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+                    'text-white text-xxs',
+                    'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
+                    'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-0.5 group-hover:pr-1 group-hover:delay-150',
+                  )}>
+                    Reset
+                  </p>
+                </div>
+              </button>
             </div>
           </Match>
         </Switch>
@@ -90,21 +201,4 @@ export const ScheduleControls: Component = () => {
       <FilterDialog modalSignal={modalSignal}/>
     </>
   )
-}
-
-
-interface LinkTooltipContentProps {
-  tooltip: string
-}
-
-export const LinkTooltipContent: Component<LinkTooltipContentProps> = (props) => {
-  return (
-    <Tooltip.Portal>
-      <Tooltip.Content>
-        <Tooltip.Arrow/>
-        <span
-          class={twMerge('bg-accent text-xxs -mt-20 rounded p-1 text-white shadow-lg')}>{props.tooltip}</span>
-      </Tooltip.Content>
-    </Tooltip.Portal>
-  );
 }
