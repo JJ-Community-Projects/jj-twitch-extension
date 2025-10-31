@@ -2,12 +2,12 @@ import {type Component, Show} from "solid-js";
 import {CharityList} from "./CharityList.tsx";
 import {ColoredScrollbar} from "../../ColoredScrollbar.tsx";
 import {LiveDonoTrackerLink} from "./LiveDonoTrackerLink.tsx";
-import {CharityOverview} from "./CharityOverview.tsx";
 import {InvisibleBodyAlt} from "../../InvisibleBody.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
 import {CrossFade} from "../../CrossFade.tsx";
 import {ErrorPage} from "../../Error.tsx";
 import {Loading} from "../../Loading.tsx";
+import {CharityOverviewCollapsable} from "./CharityOverviewCollapsable.tsx";
 
 
 export const CharityTab: Component = (props) => {
@@ -46,7 +46,7 @@ const Body = () => {
               return (
                 <ColoredScrollbar>
                   <div class={'flex flex-col gap-2 mx-2'}>
-                    <CharityOverview />
+                    <CharityOverviewCollapsable />
                     <LiveDonoTrackerLink/>
                     <CharityList charityData={causes().causes}/>
                   </div>

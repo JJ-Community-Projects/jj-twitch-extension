@@ -10,7 +10,7 @@ import {CurrencyToggle} from "../../CurrencyToggle.tsx";
 import {CrossFade} from "../../CrossFade.tsx";
 import {Loading} from "../../Loading.tsx";
 import {ErrorPage} from "../../Error.tsx";
-import {CharityOverview} from "../charityTab/CharityOverview.tsx";
+import {CharityOverviewCollapsable} from "../charityTab/CharityOverviewCollapsable.tsx";
 
 
 export const CommunityTab: Component = () => {
@@ -77,7 +77,7 @@ const FundraiserBody: Component<{ fundraisers: JJCampaign[] }> = props => {
 
   return (
     <>
-      <CharityOverview/>
+      <CharityOverviewCollapsable/>
       <For each={fundraiser()} fallback={
         <p class={'text-center text-white'}>No Fundraisers found.</p>
       }>
