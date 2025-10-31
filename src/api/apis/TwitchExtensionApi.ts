@@ -21,6 +21,7 @@ import type {
   GetUserRelations200Response,
   JJCampaign,
   JJCampaigns,
+  OverviewSchema,
   UserExtensionConfig,
   UserScheduleSchema,
   YogsScheduleSchema,
@@ -38,6 +39,8 @@ import {
     JJCampaignToJSON,
     JJCampaignsFromJSON,
     JJCampaignsToJSON,
+    OverviewSchemaFromJSON,
+    OverviewSchemaToJSON,
     UserExtensionConfigFromJSON,
     UserExtensionConfigToJSON,
     UserScheduleSchemaFromJSON,
@@ -57,6 +60,11 @@ export interface GetCausesRequest {
 }
 
 export interface GetExtensionConfigRequest {
+    channelId: string;
+    userId: string;
+}
+
+export interface GetOverviewRequest {
     channelId: string;
     userId: string;
 }
@@ -231,6 +239,52 @@ export class TwitchExtensionApi extends runtime.BaseAPI {
      */
     async getExtensionConfig(requestParameters: GetExtensionConfigRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtensionConfig> {
         const response = await this.getExtensionConfigRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieve overview from the jj api
+     * Get overview
+     */
+    async getOverviewRaw(requestParameters: GetOverviewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OverviewSchema>> {
+        if (requestParameters['channelId'] == null) {
+            throw new runtime.RequiredError(
+                'channelId',
+                'Required parameter "channelId" was null or undefined when calling getOverview().'
+            );
+        }
+
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling getOverview().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['userId'] != null) {
+            queryParameters['userId'] = requestParameters['userId'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/twitch-extension/overview/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters['channelId']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => OverviewSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieve overview from the jj api
+     * Get overview
+     */
+    async getOverview(requestParameters: GetOverviewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OverviewSchema> {
+        const response = await this.getOverviewRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

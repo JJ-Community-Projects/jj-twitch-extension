@@ -808,6 +808,49 @@
         }
       }
     },
+    "/twitch-extension/overview/{channelId}": {
+      "get": {
+        "operationId": "getOverview",
+        "summary": "Get overview",
+        "description": "Retrieve overview from the jj api",
+        "deprecated": false,
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Overview retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OverviewSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/twitch-extension/yogs-schedule": {
       "get": {
         "operationId": "getYogsSchedule",
