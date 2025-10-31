@@ -46,7 +46,7 @@ const Body = () => {
               return (
                 <ColoredScrollbar>
                   <div class={'flex flex-col gap-2 mx-2'}>
-                    <CharityOverview data={causes().overview}/>
+                    <CharityOverview />
                     <LiveDonoTrackerLink/>
                     <CharityList charityData={causes().causes}/>
                   </div>

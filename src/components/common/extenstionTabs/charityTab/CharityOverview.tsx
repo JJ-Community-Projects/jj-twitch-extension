@@ -12,7 +12,6 @@ export const CharityOverview: Component = () => {
 
   const {overview} = useBackend()
 
-
   const totalYogsPounds = () => overview.data?.raised.yogscast.gbp ?? 0
   const totalYogs = () => overview.data?.raised.yogscast.usd ?? 0
   const totalFundraiserPounds = () => overview.data?.raised.fundraisers.gbp ?? 0
@@ -52,7 +51,8 @@ export const CharityOverview: Component = () => {
             </p>
             <Show when={overview.data}>
               {
-                (overview) => (<p class={darkText()}>Raised in {DateTime.fromJSDate(overview().date).year}</p>)
+                (overview) => (
+                  <p class={twMerge('text-xs', darkText())}>Raised in {DateTime.fromJSDate(overview().date).year}</p>)
               }
             </Show>
           </div>
@@ -65,13 +65,13 @@ export const CharityOverview: Component = () => {
             <p class={twMerge('text-xs font-bold', raisedTextColor())}>
               <Currency dollars={totalYogs()} pounds={totalYogsPounds()}/>
             </p>
-            <p class={darkText()}>Raised by the Yogscast</p>
+            <p class={twMerge('text-xxs', darkText())}>Raised by the Yogscast</p>
           </div>
           <div>
             <p class={twMerge('text-xs font-bold', raisedTextColor())}>
               <Currency dollars={totalFundraiser()} pounds={totalFundraiserPounds()}/>
             </p>
-            <p class={darkText()}>Raised by Fundraisers</p>
+            <p class={twMerge('text-xxs', darkText())}>Raised by Fundraisers</p>
           </div>
           <div>
             <Show when={overview.data}>
@@ -83,7 +83,7 @@ export const CharityOverview: Component = () => {
                 )
               }
             </Show>
-            <p class={darkText()}>Collections Sold</p>
+            <p class={twMerge('text-xxs', darkText())}>Collections Sold</p>
           </div>
           <div>
             <Show when={overview.data}>
@@ -97,7 +97,7 @@ export const CharityOverview: Component = () => {
                 )
               }
             </Show>
-            <p class={darkText()}>Collections Available</p>
+            <p class={twMerge('text-xxs', darkText())}>Collections Available</p>
           </div>
         </div>
         <div class={'flex flex-1 items-end justify-center'}>
@@ -105,11 +105,9 @@ export const CharityOverview: Component = () => {
           <Show when={overview.data}>
             {
               (overview) => (
-
-                <p class={twMerge('text-center', darkText())}>
+                <p class={twMerge('text-xxs text-center', darkText())}>
                   Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
                 </p>
-
               )
             }
           </Show>
