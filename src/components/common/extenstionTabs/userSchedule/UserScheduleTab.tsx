@@ -19,7 +19,7 @@ export const UserScheduleTab: Component = (props) => {
       <CrossFade show={userSchedule.isPending}>
         <Loading/>
       </CrossFade>
-      <CrossFade show={userSchedule.isPending}>
+      <CrossFade show={userSchedule.isSuccess}>
         <Show when={userSchedule.data}>
           {
             (schedule) => {

@@ -39,7 +39,7 @@ const Body = () => {
       <CrossFade show={causes.isPending}>
         <Loading/>
       </CrossFade>
-      <CrossFade show={causes.data !== undefined}>
+      <CrossFade show={causes.isSuccess}>
         <Show when={causes.data}>
           {
             (causes) => {

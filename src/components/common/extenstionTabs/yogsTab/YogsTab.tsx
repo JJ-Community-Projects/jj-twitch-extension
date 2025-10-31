@@ -47,7 +47,7 @@ export const YogsTab: Component = (props) => {
                 <CrossFade show={yogsSchedule.isPending}>
                   <Loading/>
                 </CrossFade>
-                <CrossFade show={yogsSchedule.data !== undefined}>
+                <CrossFade show={yogsSchedule.isSuccess}>
                   <Show when={yogsSchedule.data}>
                     {
                       (schedule) => {
