@@ -36,6 +36,8 @@ export const OverlaySideNav: Component = () => {
   } = useOverlay()
 
   const showYogsSchedule = () => {
+    return true
+    /*
     if (import.meta.env.DEV) {
       return true
     }
@@ -43,6 +45,7 @@ export const OverlaySideNav: Component = () => {
       return false
     }
     return config.yogsScheduleChannel.includes(channelName()?.toLowerCase() ?? '')
+     */
   }
 
   const buttonColor = () => {
@@ -128,7 +131,7 @@ export const OverlaySideNav: Component = () => {
         </Tooltip.Portal>
       </Tooltip>
 
-      <Show when={config.showFundraiser && twitchConfig.showCommunityFundraiser}>
+      <Show when={twitchConfig.showCommunityFundraiser}>
         <Tooltip placement={'right'}>
           <Tooltip.Trigger
             onClick={toggleCommunity}

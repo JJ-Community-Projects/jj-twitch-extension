@@ -1,18 +1,18 @@
 import {type Component, For, Show} from "solid-js";
-import type {Cause} from "../../lib/model/jjData/JJData.ts";
 import {GlobeIcon, TiltifyIcon} from "../common/icons/JJIcons.tsx";
 import {twMerge} from "tailwind-merge";
 import {useChat} from "../common/providers/ChatProvider.tsx";
 import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {Numeric} from "solid-i18n";
-import {useCharity} from "../common/providers/data/CharityProvider.tsx";
+import type {JJCause} from "../../api";
+import {useBackend} from "../common/providers/BackendProvider.tsx";
 
 export const OverlayCharityBanner: Component = () => {
   const {causes, causeId} = useChat()
 
   return (
     <div class={'relative w-full h-full'}>
-      <For each={causes}>
+      <For each={causes.data?.causes}>
         {
           cause => {
             return (
@@ -30,24 +30,10 @@ export const OverlayCharityBanner: Component = () => {
   );
 }
 
-export const ChatDemo = () => {
-  const {donation} = useCharity()
 
-  return (
-    <div class={'relative w-full h-full'}>
-      <div class={twMerge(
-        'absolute inset-0 w-full h-full transition-all duration-500',
-      )}>
-        <CauseView cause={donation.causes[0]}/>
-      </div>
-    </div>
-  )
-}
-
-
-const CauseView: Component<{ cause: Cause }> = (props) => {
+const CauseView: Component<{ cause: JJCause }> = (props) => {
   const cause = props.cause
-  const {donation} = useCharity()
+  const {causes} = useBackend()
 
 
   const {commandTimeout, causeId, lastCauseId} = useChat()
@@ -61,8 +47,8 @@ const CauseView: Component<{ cause: Cause }> = (props) => {
     return cause.donateUrl
   }
 
-  const totalPounds = () => cause.raised.yogscast + cause.raised.fundraisers
-  const totalDollar = () => totalPounds() * donation.avgConversionRate
+  const totalPounds = () => causes.data?.overview.raised.total.gbp ?? 0
+  const totalDollar = () => causes.data?.overview.raised.total.usd ?? 0
 
   return (
     <div class={'h-full w-full flex flex-row items-center justify-center'}>

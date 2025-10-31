@@ -104,10 +104,7 @@ const Donate = () => {
   const jjConfig = useOverlayConfig()
 
   const url = () => {
-    if (!config.donationUrl || config.donationUrl === '' || jjConfig.donationLink.overrideCustomLink) {
-      return jjConfig.donationLink.url
-    }
-    return config.donationUrl
+    return jjConfig.donationLink.url
   }
 
   const text = () => {

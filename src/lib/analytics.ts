@@ -1,5 +1,5 @@
-import type {TESStream, TESTwitchCreator} from "./model/TwitchExtensionSchedule.ts";
 import {DateTime} from "luxon";
+import type {Creator, Stream} from "../api";
 
 export const log = (eventName: string, data: { [key: string]: any }) => {
   try {
@@ -10,8 +10,8 @@ export const log = (eventName: string, data: { [key: string]: any }) => {
   }
 }
 
-export const logSlotClick = (slot: TESStream) => {
-  const start = DateTime.fromISO(slot.start)
+export const logSlotClick = (slot: Stream) => {
+  const start = DateTime.fromJSDate(slot.start)
   const data = {
     slot_title: slot.title,
     slot_year: start.year,
@@ -19,29 +19,29 @@ export const logSlotClick = (slot: TESStream) => {
   }
   log('click_slot', data)
 }
-export const logCreatorFromSlotClick = (creator: TESTwitchCreator, slot: TESStream) => {
-  const start = DateTime.fromISO(slot.start)
+export const logCreatorFromSlotClick = (creator: Creator, slot: Stream) => {
+  const start = DateTime.fromJSDate(slot.start)
   const data = {
     slot_title: slot.title,
     slot_year: start.year,
     event_label: `${start.year}_${start.day}_${start.hour}`,
-    name: creator.label,
+    name: creator.name,
   }
   log('click_creator_slot', data)
 }
-export const logCreatorSlotFilterClick = (creator: TESTwitchCreator, slot: TESStream) => {
-  const start = DateTime.fromISO(slot.start)
+export const logCreatorSlotFilterClick = (creator: Creator, slot: Stream) => {
+  const start = DateTime.fromJSDate(slot.start)
   const data = {
     slot_title: slot.title,
     slot_year: start.year,
     event_label: `${start.year}_${start.day}_${start.hour}`,
-    name: creator.label,
+    name: creator.name,
   }
   log('creator_slot_filter', data)
 }
 
-export const logCreator = (creator: TESTwitchCreator) => {
+export const logCreator = (creator: Creator) => {
   log('click_creator', {
-    name: creator.label,
+    name: creator.name,
   })
 }

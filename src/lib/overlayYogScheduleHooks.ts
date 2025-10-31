@@ -2,30 +2,30 @@ import {DateTime} from "luxon";
 import {createEffect, createSignal, onMount} from "solid-js";
 import {useDatetimeLondonNow} from "./useNow.ts";
 import {isJJ} from "./useJJDates.ts";
-import {useSchedule} from "../components/common/providers/data/ScheduleProvider.tsx";
+import {useBackend} from "../components/common/providers/BackendProvider.tsx";
 
 const getCurrentDayIndex = (now: DateTime) => {
-  const {schedule} = useSchedule()
-  const index = schedule.days.findIndex(d => {
-    const date = DateTime.fromISO(d.date, {
+  const {yogsSchedule} = useBackend()
+  const index = yogsSchedule.data?.days.findIndex(d => {
+    const date = DateTime.fromJSDate(d.start, {
       zone: 'Europe/London'
     })
     return date.hasSame(now, 'day')
-  })
+  }) ?? 0
   if (index === -1) {
     return 0
   }
   return index
 }
 const getNextDayIndex = (now: DateTime) => {
-  const {schedule} = useSchedule()
+  const {yogsSchedule} = useBackend()
   const tomorrow = now.plus({days: 1})
-  const index = schedule.days.findIndex(d => {
-    const date = DateTime.fromISO(d.date, {
+  const index = yogsSchedule.data?.days.findIndex(d => {
+    const date = DateTime.fromJSDate(d.start, {
       zone: 'Europe/London'
     })
     return date.hasSame(tomorrow, 'day')
-  })
+  }) ?? 0
   if (index === -1) {
     return 0
   }
@@ -33,18 +33,16 @@ const getNextDayIndex = (now: DateTime) => {
 }
 
 const getCurrentStream = (now: DateTime) => {
-  const {schedule} = useSchedule()
+  const {yogsSchedule} = useBackend()
   if (!isJJ(now)) {
     return undefined
   }
-  const streams = schedule
-    .days
-    .flatMap(d => d.streams)
+  const streams = yogsSchedule.data?.days.flatMap(d => d.streams) ?? []
   return streams.find(s => {
-    const start = DateTime.fromISO(s.start, {
+    const start = DateTime.fromJSDate(s.start, {
       zone: 'Europe/London'
     })
-    const end = DateTime.fromISO(s.end, {
+    const end = DateTime.fromJSDate(s.end, {
       zone: 'Europe/London'
     })
     return now >= start && now <= end
@@ -52,16 +50,15 @@ const getCurrentStream = (now: DateTime) => {
 }
 
 export const getFutureStreams = (now: DateTime, i?: number) => {
-  const {schedule} = useSchedule()
-  const streams = schedule
-    .days
+  const {yogsSchedule} = useBackend()
+  const streams = yogsSchedule.data?.days
     .flatMap(d => d.streams)
     .filter(s => {
-      const start = DateTime.fromISO(s.start, {
+      const start = DateTime.fromJSDate(s.start, {
         zone: 'Europe/London'
       })
       return now < start
-    })
+    }) ?? []
   if (i) {
     return streams.slice(0, i)
   }
@@ -74,16 +71,16 @@ export const useFutureStreams = (i?: number) => {
 }
 
 const getNextStream = (now: DateTime) => {
-  const {schedule} = useSchedule()
+  const {yogsSchedule} = useBackend()
   if (!isJJ(now)) {
-    return schedule.days[0].streams[0]
+    return yogsSchedule.data?.days[0].streams[0]
   }
   return getFutureStreams(now)
     .reduce((a, b) => {
-      const aStart = DateTime.fromISO(a.start, {
+      const aStart = DateTime.fromJSDate(a.start, {
         zone: 'Europe/London'
       })
-      const bStart = DateTime.fromISO(b.start, {
+      const bStart = DateTime.fromJSDate(b.start, {
         zone: 'Europe/London'
       })
       const aDiff = aStart.diff(now)
@@ -128,22 +125,23 @@ const useTomorrowDayIndex = () => {
   return dayIndex
 }
 
+/*
 export const useJJDates = () => {
 
-  const {schedule} = useSchedule()
+  const {yogsSchedule} = useBackend()
   const now = useDatetimeLondonNow()
 
   const streams = () => {
-    return schedule.days.flatMap(d => d.streams)
+    return yogsSchedule.data?.days.flatMap(d => d.streams)
   }
   const jjStart = () => {
-    return DateTime.fromISO(streams()[0].start, {
+    return DateTime.fromJSDate(streams()?[0].start, {
       zone: 'Europe/London'
     })
   }
 
   const jjEnd = () => {
-    return DateTime.fromISO(streams()[streams().length - 1].end, {
+    return DateTime.fromJSDate(streams()[streams().length - 1].end, {
       zone: 'Europe/London'
     })
   }
@@ -180,6 +178,7 @@ export const useTomorrow = () => {
   const dayIndex = useTomorrowDayIndex()
   return () => schedule.days[dayIndex()]
 }
+*/
 
 export const useCurrentStream = () => {
   const now = useDatetimeLondonNow()
@@ -197,10 +196,10 @@ export const useCurrentStream = () => {
       const day = schedule.days[i]
       for (let j = 0; j < day.streams.length; j++) {
         const s = day.streams[j]
-        const start = DateTime.fromISO(s.start, {
+        const start = DateTime.fromJSDate(s.start, {
           zone: 'Europe/London'
         })
-        const end = DateTime.fromISO(s.end, {
+        const end = DateTime.fromJSDate(s.end, {
           zone: 'Europe/London'
         })
         if (now() >= start && now() <= end) {
@@ -231,7 +230,7 @@ export const useNextStream = () => {
   const streams = () => schedule
     .days
     .flatMap(d => d.streams)
-    .filter(s => DateTime.fromISO(s.start, {
+    .filter(s => DateTime.fromJSDate(s.start, {
       zone: 'Europe/London'
     }) > now())
   const {isJJ} = useJJDates()
@@ -244,7 +243,7 @@ export const useNextStream = () => {
     }
     for (let i = 0; i < streams().length; i++) {
       const s = streams()[i]
-      const start = DateTime.fromISO(s.start, {
+      const start = DateTime.fromJSDate(s.start, {
         zone: 'Europe/London'
       })
       if (now() < start) {

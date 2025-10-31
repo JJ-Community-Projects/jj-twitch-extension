@@ -1,29 +1,18 @@
-import {type Component, For} from "solid-js";
-import type {Cause} from "../../lib/model/jjData/JJData.ts";
+import {type Component, For, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
 import {ColoredScrollbar} from "../common/ColoredScrollbar.tsx";
-import {GlobeIcon, HeartIcon, TiltifyRoundIcon} from "../common/icons/JJIcons.tsx";
-import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
+import {GlobeIcon, TiltifyRoundIcon} from "../common/icons/JJIcons.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {Numeric} from "solid-i18n";
 import {OverlayHeader} from "./OverlayHeader.tsx";
-import {useCharity} from "../common/providers/data/CharityProvider.tsx";
+import {useBackend} from "../common/providers/BackendProvider.tsx";
+import type {JJCause} from "../../api";
 
 
 export const OverlayJJCharities: Component = () => {
-  const {donation} = useCharity()
-  const charities = donation.causes
+  const {causes} = useBackend()
 
   const {theme} = useTheme()
-  const config = useOverlayConfig()
-  const twitchConfig = useTwitchOverlayConfig()
-
-  const url = () => {
-    if (!twitchConfig.donationUrl || twitchConfig.donationUrl === '' || config.donationLink.overrideCustomLink) {
-      return config.donationLink.url
-    }
-    return twitchConfig.donationUrl
-  }
 
   const backgroundColor = () => {
     switch (theme()) {
@@ -46,9 +35,13 @@ export const OverlayJJCharities: Component = () => {
             'lg:grid lg:grid-cols-2',
             'flex flex-col p-2'
           )}>
-            <For each={charities}>
-              {charity => <Item cause={charity}/>}
-            </For>
+            <Show when={causes.data}>{
+              (causes) => {
+                return (<For each={causes().causes}>
+                  {charity => <Item cause={charity}/>}
+                </For>)
+              }
+            }</Show>
           </div>
         </ColoredScrollbar>
       </div>
@@ -57,12 +50,13 @@ export const OverlayJJCharities: Component = () => {
 }
 
 
-const Item: Component<{ cause: Cause }> = (props) => {
-  const {cause: charity} = props
-  const {donation} = useCharity()
 
-  const totalPounds = () => charity.raised.yogscast + charity.raised.fundraisers
-  const totalDollar = () => totalPounds() * donation.avgConversionRate
+const Item: Component<{ cause: JJCause }> = (props) => {
+  const {cause: charity} = props
+  const {causes} = useBackend()
+
+  const totalPounds = () => causes.data?.overview.raised.total.gbp ?? 0
+  const totalDollar = () => causes.data?.overview.raised.total.usd ?? 0
 
   return (
     <div
@@ -97,8 +91,9 @@ const Item: Component<{ cause: Cause }> = (props) => {
 
       <div class={'flex flex-row w-full items-start justify-start'}>
         <p class={'text-primary-500 text-xs font-bold'}>
-          Raised <Numeric value={totalPounds()} numberStyle="currency" currency={'GBP'}/> / <Numeric value={totalDollar()} numberStyle="currency"
-                                                                                                     currency={'USD'}/>
+          Raised <Numeric value={totalPounds()} numberStyle="currency" currency={'GBP'}/> / <Numeric
+          value={totalDollar()} numberStyle="currency"
+          currency={'USD'}/>
         </p>
       </div>
     </div>

@@ -10,6 +10,8 @@ import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {OverlayHeader} from "./OverlayHeader.tsx";
 import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
+import type { Stream } from "../../api/index.ts";
+import {useBackend} from "../common/providers/BackendProvider.tsx";
 
 export const OverlayYogsSchedule: Component = () => {
 
@@ -44,20 +46,28 @@ export const OverlayYogsSchedule: Component = () => {
 }
 
 const Header: Component = () => {
-  const {schedule} = useSchedule()
+  const {yogsSchedule} = useBackend()
   return (
-    <div class={'w-full px-2'}>
-      <div class={'bg-white rounded-2xl p-2 text-center flex flex-row items-center justify-between'}>
-        <h1 class={'~text-base/xl'}>{schedule.title}</h1>
-        <a
-          class={'hover:scale-105 hover:bg-text-500 transition-all'}
-          target={'_blank'}
-          href={'https://jinglejam.ostof.dev/yogs'}
-        >
-          <FaSolidArrowUpRightFromSquare class={'~text-base/xl'}/>
-        </a>
-      </div>
-    </div>
+    <Show when={yogsSchedule.data}>
+      {
+        (schedule) => {
+          return (
+            <div class={'w-full px-2'}>
+              <div class={'bg-white rounded-2xl p-2 text-center flex flex-row items-center justify-between'}>
+                <h1 class={'~text-base/xl'}>{schedule().title}</h1>
+                <a
+                  class={'hover:scale-105 hover:bg-text-500 transition-all'}
+                  target={'_blank'}
+                  href={'https://jinglejam.ostof.dev/yogs'}
+                >
+                  <FaSolidArrowUpRightFromSquare class={'~text-base/xl'}/>
+                </a>
+              </div>
+            </div>
+          )
+        }
+      }
+    </Show>
   );
 }
 
@@ -92,42 +102,18 @@ const CurrentStream: Component = () => {
   )
 }
 
-const SingleStreamCard: Component<{ stream: TESStream }> = (props) => {
+const SingleStreamCard: Component<{ stream: Stream }> = (props) => {
   const {setStream} = useOverlay()
   const stream = props.stream
-  const style = stream.style
-  const orientation = style.background.orientation
-  const colors = style.background.colors ?? ['#ff0', '#f0f']
-
-  function orientationInCss() {
-    switch (orientation) {
-      case 'TD':
-        return 'to bottom'
-      case 'LR':
-        return 'to right'
-      case 'RL':
-        return 'to left'
-      case 'DT':
-        return 'to top'
-      case 'TLBR':
-        return 'to bottom right'
-      case 'TRBL':
-        return 'to bottom left'
-      default:
-        return orientation
-    }
-  }
-
-  const gradient = `linear-gradient(${orientationInCss()}, ${colors.join(', ')})`
 
   const start = () => {
-    return DateTime.fromISO(stream.start, {
+    return DateTime.fromJSDate(stream.start, {
       zone: 'Europe/London'
     }).toLocal().toFormat('HH:mm')
   }
 
   const end = () => {
-    return DateTime.fromISO(stream.end, {
+    return DateTime.fromJSDate(stream.end, {
       zone: 'Europe/London'
     }).toLocal().toFormat('HH:mm')
   }
@@ -136,8 +122,8 @@ const SingleStreamCard: Component<{ stream: TESStream }> = (props) => {
     <Button
       class={'w-full ~h-24/32 rounded-2xl p-2 flex flex-col items-center justify-center gap-1 hover:brightness-105'}
       style={{
-        'background-image': gradient,
-        color: getTextColor(colors[0]),
+        'background-color': props.stream.color,
+        color: getTextColor(props.stream.color),
       }}
       onClick={() => {
         setStream(stream)
@@ -182,7 +168,7 @@ const UpcomingStreamList: Component<{
 
 
 interface StreamCardProps {
-  stream: TESStream
+  stream: Stream
 }
 
 const StreamCard: Component<StreamCardProps> = (props) => {
@@ -190,34 +176,9 @@ const StreamCard: Component<StreamCardProps> = (props) => {
 
   const {setStream} = useOverlay()
 
-  const style = stream.style
-  const orientation = style.background.orientation
-  const colors = style.background.colors ?? ['#ff0', '#f0f']
-
-  function orientationInCss() {
-    switch (orientation) {
-      case 'TD':
-        return 'to bottom'
-      case 'LR':
-        return 'to right'
-      case 'RL':
-        return 'to left'
-      case 'DT':
-        return 'to top'
-      case 'TLBR':
-        return 'to bottom right'
-      case 'TRBL':
-        return 'to bottom left'
-      default:
-        return 'to bottom'
-    }
-  }
-
-  const gradient = `linear-gradient(${orientationInCss()}, ${colors.join(', ')})`
-
   const now = useNow()
 
-  const start = DateTime.fromISO(stream.start, {
+  const start = DateTime.fromJSDate(stream.start, {
     zone: 'Europe/London'
   })
 
@@ -253,8 +214,8 @@ const StreamCard: Component<StreamCardProps> = (props) => {
     <Button
       class={'flex-1 rounded-2xl p-2 shadow-2xl flex flex-col items-center justify-center hover:brightness-105'}
       style={{
-        'background-image': gradient,
-        color: getTextColor(colors[0]),
+        'background-color': props.stream.color,
+        color: getTextColor(props.stream.color),
       }}
       onClick={() => {
         setStream(stream)

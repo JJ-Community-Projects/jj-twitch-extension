@@ -1,7 +1,7 @@
 import { createContext, createEffect, type ParentComponent, useContext } from 'solid-js'
 import { DateTime } from 'luxon'
-import type {TESStream} from "../../../lib/model/TwitchExtensionSchedule.ts";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
+import type {Stream} from "../../../api";
 
 const useAnalyticsHook = () => {
   const { auth } = useTwitchAuth()
@@ -29,10 +29,8 @@ const useAnalyticsHook = () => {
     }
   }
 
-  const logSlotClick = (slot: TESStream) => {
-    const start = DateTime.fromISO(slot.start, {
-      setZone: true,
-    })
+  const logSlotClick = (slot: Stream) => {
+    const start = DateTime.fromJSDate(slot.start)
     const data = {
       slot_title: slot.title,
       slot_year: start.year,

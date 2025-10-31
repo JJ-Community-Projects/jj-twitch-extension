@@ -5,7 +5,7 @@ import tmi, {type ChatUserstate} from "tmi.js";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
 import {useTwitchOverlayConfig} from "./OverlayConfigProvider.tsx";
 import {useLocalStorage} from "./LocalStorageProvider.tsx";
-import {useCharity} from "./data/CharityProvider.tsx";
+import {useBackend} from "./BackendProvider.tsx";
 // Show command-triggered popups for 10s
 const commandTimeout = 10_000;
 
@@ -121,10 +121,9 @@ const useTwitchChatHook = (callback: (command: TwitchOverlayChatCommand) => void
 
 
 const useChatHook = (initCauseId?: number) => {
-  const {donation} = useCharity()
+  const {causes} = useBackend()
   const storage = useLocalStorage()
   const isChatEnabled = () => storage.getBoolean("chat", true)
-  const causes = donation.causes
 
   const [lastCommandShown, setLastCommandShown] = createSignal<DateTime>()
 
@@ -138,7 +137,7 @@ const useChatHook = (initCauseId?: number) => {
   }
 
   const findCause = (command: TwitchOverlayChatCommand) => {
-    return causes.find((cause) => cause.id === command.tiltifyId)
+    return causes.data?.causes.find((cause) => cause.id === command.tiltifyId)
   }
 
   const diff = () => {

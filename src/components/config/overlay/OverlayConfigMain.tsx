@@ -114,16 +114,6 @@ const OverlayConfigBody: Component = () => {
 
   const {theme} = useTheme()
 
-  // const { log } = useAnalytics()
-  const validateDonationUrl = () => {
-    const urlRegex = /\bhttps?:\/\/(?:\w+\.)?tiltify\.com\b/
-    const urlRegex2 = /\bhttps?:\/\/(?:\w+\.)?tilti\.fyi\b/
-    return (
-      twitchConfig.donationUrl === '' ||
-      urlRegex.test(twitchConfig.donationUrl) ||
-      urlRegex2.test(twitchConfig.donationUrl)
-    )
-  }
 
   const saveButtonBackground = () => {
     switch (theme()) {
@@ -141,22 +131,8 @@ const OverlayConfigBody: Component = () => {
     <>
       <ColoredScrollbar>
         <div class={'flex flex-col items-start  gap-6 p-2'}>
-          <TextField
-            class={'flex flex-col gap-1'}
-            value={twitchConfig.donationUrl}
-            onChange={v => {
-              setTwitchOverlayConfiguration({donationUrl: v})
-            }}
-            validationState={validateDonationUrl() ? 'valid' : 'invalid'}
-          >
-            <TextField.Label>Donation URL</TextField.Label>
-            <TextField.Input class={'text-black'}/>
-            <TextField.Description>Enter your custom Jingle Jam Donation URL here.</TextField.Description>
-            <TextField.ErrorMessage>Invalid tiltify url</TextField.ErrorMessage>
-          </TextField>
 
           <OverlayThemeSelection/>
-
 
           <ViewsSelection/>
 
@@ -172,7 +148,6 @@ const OverlayConfigBody: Component = () => {
               modalSignal.toggle()
               // log('config_save', config)
             }}
-            disabled={!validateDonationUrl()}
           >
             Save
           </Button>

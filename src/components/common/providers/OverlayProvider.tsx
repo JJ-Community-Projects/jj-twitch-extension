@@ -1,9 +1,9 @@
 import {createContext, createEffect, createSignal, type ParentComponent, useContext} from "solid-js";
-import type {TESStream} from "../../../lib/model/TwitchExtensionSchedule.ts";
+import type {Stream} from "../../../api";
 
 const useOverlayHook = () => {
   const [window, setWindow] = createSignal<string>('none')
-  const [stream, setStream] = createSignal<TESStream | undefined>(undefined)
+  const [stream, setStream] = createSignal<Stream | undefined>(undefined)
 
   const showAboutJJ = () => {
     setWindow('jj')

@@ -1,4 +1,3 @@
-import type {TESTwitchCreator, TESTwitchLink} from "../../lib/model/TwitchExtensionSchedule.ts";
 import {type Component, For, Match, Show, Switch} from "solid-js";
 import {DateTime} from "luxon";
 import {useOverlay} from "../common/providers/OverlayProvider.tsx";
@@ -6,6 +5,7 @@ import {AiOutlineClose} from "solid-icons/ai";
 import {YogsStreamUtils} from "../../lib/YogsStreamUtils.ts";
 import {useNow} from "../../lib/useNow.ts";
 import {getTextColor} from "../../lib/textColors.ts";
+import type {Creator, StreamVodsInner} from "../../api/index.ts";
 
 
 export const OverlayStreamDialog: Component = (props) => {
@@ -14,7 +14,7 @@ export const OverlayStreamDialog: Component = (props) => {
   const now = useNow()
 
   const background = () => {
-    return stream()?.style?.background?.colors?.at(0) ?? ''
+    return stream()?.color ?? 'transparent'
   }
 
 
@@ -57,7 +57,7 @@ export const OverlayStreamDialog: Component = (props) => {
           <Show when={stream()!.description}>
             <p class="mb-6">{stream()!.description}</p>
           </Show>
-          <p>{DateTime.fromISO(stream()!.start).toLocaleString({
+          <p>{DateTime.fromJSDate(stream()!.start).toLocaleString({
             weekday: 'short',
             month: 'short',
             day: 'numeric',
@@ -69,11 +69,11 @@ export const OverlayStreamDialog: Component = (props) => {
             <p>{countdownFormat()}</p>
           </Show>
           <div>
-            <Show when={stream()!.twitchVods}>
-              <Show when={stream()!.twitchVods!.length > 0}>
+            <Show when={stream()!.vods}>
+              <Show when={stream()!.vods!.length > 0}>
                 <p>Twitch Vods</p>
                 <div class={'flex flex-wrap gap-2'}>
-                  <For each={stream()!.twitchVods}>
+                  <For each={stream()!.vods}>
                     {
                       vod => (<VodComponent vod={vod}/>)
                     }
@@ -100,7 +100,7 @@ export const OverlayStreamDialog: Component = (props) => {
 }
 
 interface VodProps {
-  vod: TESTwitchLink
+  vod: StreamVodsInner
 }
 
 const VodComponent: Component<VodProps> = (props) => {
@@ -109,7 +109,7 @@ const VodComponent: Component<VodProps> = (props) => {
       <a
         class={'hover:scale-101 text-xxs flex flex-row items-center p-2 rounded-2xl bg-twitch-500 text-white transition-all '}
         target={'_blank'}
-        href={props.vod.url}
+        href={props.vod.link}
       >
         {props.vod.label}
       </a>
@@ -119,7 +119,7 @@ const VodComponent: Component<VodProps> = (props) => {
 
 
 interface CreatorComponentProps {
-  creator: TESTwitchCreator
+  creator: Creator
 }
 
 const CreatorComponent: Component<CreatorComponentProps> = (props) => {
@@ -133,7 +133,7 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
     return props.creator.url !== ''
   }
 
-  const label = () => props.creator.label
+  const label = () => props.creator.name
 
   return (
     <Switch>

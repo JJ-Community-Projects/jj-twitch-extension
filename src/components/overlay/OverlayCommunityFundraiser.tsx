@@ -5,11 +5,11 @@ import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {Numeric} from "solid-i18n";
 import {FiExternalLink} from "solid-icons/fi";
 import {OverlayHeader} from "./OverlayHeader.tsx";
-import {useFundraiser} from "../common/providers/data/CommunityProvider.tsx";
+import {useBackend} from "../common/providers/BackendProvider.tsx";
 
 
 export const OverlayCommunityFundraiser: Component = (props) => {
-  const {fundraiser} = useFundraiser()
+  const {campaigns} = useBackend()
 
   const {theme} = useTheme()
 
@@ -36,7 +36,7 @@ export const OverlayCommunityFundraiser: Component = (props) => {
           class={'flex flex-row justify-between items-center gap-1 bg-twitch text-white p-2 rounded-2xl full text-center w-full transition-all hover:scale-101'}>
           Jingle Jam Stream Team <FiExternalLink/></a>
       </div>
-      <Show when={fundraiser.campaigns.length === 0}>
+      <Show when={campaigns.data?.campaigns.length === 0}>
         <div class={'h-full w-full flex items-center justify-center'}>
           <p class={'text-lg text-center text-black bg-white rounded-2xl p-2'}>No fundraisers found.</p>
         </div>
@@ -49,35 +49,19 @@ export const OverlayCommunityFundraiser: Component = (props) => {
             'lg:grid lg:grid-cols-2',
             'flex flex-col p-2'
           )}>
-            <For each={fundraiser.campaigns}>
+            <For each={campaigns.data?.campaigns}>
               {(d, i) => {
-                const isTwitch = () => d.twitch_data && d.livestream.type === 'twitch'
-                const img = () => {
-                  if (d.user.avatar === 'https://assets.tiltify.com/assets/default-avatar.png') {
-                    if (isTwitch()) {
-                      return d.twitch_data!.profile_image_url
-                    }
-                  }
-                  return d.user.avatar
-                }
-
-                const url = () => {
-                  if (!d.twitch_data) {
-                    return undefined
-                  }
-                  return `https://twitch.tv/${d.twitch_data.login}`
-                }
 
                 return (
                   <Child
                     i={i()}
-                    img={img()}
-                    title={d?.twitch_data?.display_name ?? d.user.name}
-                    subtitle={d.name}
-                    desc={d.description}
-                    isLive={d.isLive!}
-                    raised={d.raised}
-                    url={url()}
+                    img={'img()'}
+                    title={d?.twitch?.name ?? d.tiltifyName}
+                    subtitle={d.tiltifyName}
+                    desc={d.tiltifyDescription ?? ''}
+                    isLive={false}
+                    raised={d.raised.gbp}
+                    url={'url()'}
                   />
                 )
               }}

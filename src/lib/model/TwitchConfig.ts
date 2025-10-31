@@ -21,9 +21,9 @@ export const defaultConfig: TwitchConfig = {
 }
 
 export interface TwitchOverlayConfig {
+  showCommunityFundraiser: boolean
   /*
   showYogsSchedule: boolean
-  showCommunityFundraiser: boolean
   donationUrl: string
   */
   theme: Theme,
@@ -45,9 +45,9 @@ export interface TwitchOverlayChatCommand {
 
 
 export const defaultOverlayConfig: TwitchOverlayConfig = {
+  showCommunityFundraiser: true,
   /*
   showYogsSchedule: true,
-  showCommunityFundraiser: true,
   donationUrl: 'https://jinglejam.tiltify.com',
   */
   theme: 'red',
