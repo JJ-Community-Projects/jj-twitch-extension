@@ -19,12 +19,6 @@ import {
     JJCauseFromJSONTyped,
     JJCauseToJSON,
 } from './JJCause';
-import type { OverviewSchema } from './OverviewSchema';
-import {
-    OverviewSchemaFromJSON,
-    OverviewSchemaFromJSONTyped,
-    OverviewSchemaToJSON,
-} from './OverviewSchema';
 
 /**
  * 
@@ -44,12 +38,6 @@ export interface CausesDisplaySchema {
      * @memberof CausesDisplaySchema
      */
     causes: Array<JJCause>;
-    /**
-     * 
-     * @type {OverviewSchema}
-     * @memberof CausesDisplaySchema
-     */
-    overview: OverviewSchema;
 }
 
 /**
@@ -58,7 +46,6 @@ export interface CausesDisplaySchema {
 export function instanceOfCausesDisplaySchema(value: object): value is CausesDisplaySchema {
     if (!('count' in value) || value['count'] === undefined) return false;
     if (!('causes' in value) || value['causes'] === undefined) return false;
-    if (!('overview' in value) || value['overview'] === undefined) return false;
     return true;
 }
 
@@ -74,7 +61,6 @@ export function CausesDisplaySchemaFromJSONTyped(json: any, ignoreDiscriminator:
         
         'count': json['count'],
         'causes': ((json['causes'] as Array<any>).map(JJCauseFromJSON)),
-        'overview': OverviewSchemaFromJSON(json['overview']),
     };
 }
 
@@ -86,7 +72,6 @@ export function CausesDisplaySchemaToJSON(value?: CausesDisplaySchema | null): a
         
         'count': value['count'],
         'causes': ((value['causes'] as Array<any>).map(JJCauseToJSON)),
-        'overview': OverviewSchemaToJSON(value['overview']),
     };
 }
 

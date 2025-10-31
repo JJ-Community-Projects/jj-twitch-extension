@@ -555,15 +555,11 @@
             "items": {
               "$ref": "#/components/schemas/JJCause"
             }
-          },
-          "overview": {
-            "$ref": "#/components/schemas/OverviewSchema"
           }
         },
         "required": [
           "count",
-          "causes",
-          "overview"
+          "causes"
         ]
       },
       "UserDisplay": {

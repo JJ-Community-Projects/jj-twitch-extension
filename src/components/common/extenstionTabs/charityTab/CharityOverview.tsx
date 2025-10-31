@@ -4,22 +4,21 @@ import {twMerge} from "tailwind-merge";
 import {DateTime} from "luxon";
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
-import {ToggleButton} from "@kobalte/core/toggle-button";
-import {BsCurrencyDollar, BsCurrencyPound} from "solid-icons/bs";
-import type {OverviewSchema} from "../../../../api";
 import {CurrencyToggle} from "../../CurrencyToggle.tsx";
+import {useBackend} from "../../providers/BackendProvider.tsx";
 
-interface CharityOverviewProps {
-  data: OverviewSchema
-}
 
-export const CharityOverview: Component<CharityOverviewProps> = props => {
-  const totalYogsPounds = () => props.data.raised.yogscast.gbp
-  const totalYogs = () => props.data.raised.yogscast.usd
-  const totalFundraiserPounds = () => props.data.raised.fundraisers.gbp
-  const totalFundraiser = () =>  props.data.raised.fundraisers.usd
-  const totalPounds = () => props.data.raised.total.gbp
-  const total = () => props.data.raised.total.usd
+export const CharityOverview: Component = () => {
+
+  const {overview} = useBackend()
+
+
+  const totalYogsPounds = () => overview.data?.raised.yogscast.gbp ?? 0
+  const totalYogs = () => overview.data?.raised.yogscast.usd ?? 0
+  const totalFundraiserPounds = () => overview.data?.raised.fundraisers.gbp ?? 0
+  const totalFundraiser = () => overview.data?.raised.fundraisers.usd ?? 0
+  const totalPounds = () => overview.data?.raised.total.gbp ?? 0
+  const total = () => overview.data?.raised.total.usd ?? 0
 
   const {tailwindTextPrimary, theme} = useTheme()
   const raisedTextColor = () => {
@@ -51,7 +50,11 @@ export const CharityOverview: Component<CharityOverviewProps> = props => {
             <p class={twMerge('relative text-base font-bold', raisedTextColor())}>
               <Currency dollars={total()} pounds={totalPounds()}/>
             </p>
-            <p class={darkText()}>Raised in {DateTime.fromJSDate(props.data.date).year}</p>
+            <Show when={overview.data}>
+              {
+                (overview) => (<p class={darkText()}>Raised in {DateTime.fromJSDate(overview().date).year}</p>)
+              }
+            </Show>
           </div>
           <div id={'div2'} class={'absolute right-0 top-0 p-1'}>
             <CurrencyToggle/>
@@ -71,22 +74,45 @@ export const CharityOverview: Component<CharityOverviewProps> = props => {
             <p class={darkText()}>Raised by Fundraisers</p>
           </div>
           <div>
-            <p class={twMerge('text-xs font-bold', raisedTextColor())}>
-              <Numeric value={props.data.collections.redeemed} numberStyle={'decimal'}/>
-            </p>
+            <Show when={overview.data}>
+              {
+                (overview) => (
+                  <p class={twMerge('text-xs font-bold', raisedTextColor())}>
+                    <Numeric value={overview().collections.redeemed} numberStyle={'decimal'}/>
+                  </p>
+                )
+              }
+            </Show>
             <p class={darkText()}>Collections Sold</p>
           </div>
           <div>
-            <p class={twMerge('text-xs font-bold', raisedTextColor())}>
-              <Numeric value={props.data.collections.total - props.data.collections.redeemed} numberStyle={'decimal'}/>
-            </p>
+            <Show when={overview.data}>
+              {
+                (overview) => (
+                  <p class={twMerge('text-xs font-bold', raisedTextColor())}>
+                    <Numeric value={overview().collections.total - overview().collections.redeemed}
+                             numberStyle={'decimal'}/>
+                  </p>
+
+                )
+              }
+            </Show>
             <p class={darkText()}>Collections Available</p>
           </div>
         </div>
         <div class={'flex flex-1 items-end justify-center'}>
-          <p class={twMerge('text-center', darkText())}>
-            Last update, {DateTime.fromJSDate(props.data.date).toLocaleString(DateTime.DATETIME_MED)}
-          </p>
+
+          <Show when={overview.data}>
+            {
+              (overview) => (
+
+                <p class={twMerge('text-center', darkText())}>
+                  Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
+                </p>
+
+              )
+            }
+          </Show>
         </div>
       </div>
     </div>

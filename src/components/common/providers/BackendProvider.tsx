@@ -47,6 +47,21 @@ const useBackendHook = () => {
     placeholderData: (prev) => prev
   }))
 
+  const enableOverviewQuery = () => {
+    return isAuthInit() && (currentTab() === 'fundraisers' || currentTab() === 'charities')
+  }
+
+  const overviewQuery = useQuery(() => ({
+    queryKey: ['overview'],
+    queryFn: () => api.getOverview(requestAuth()),
+    enabled: enableOverviewQuery(),
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+    refetchOnWindowFocus: false,
+    refetchIntervalInBackground: false,
+    placeholderData: (prev) => prev
+  }))
+
   const enableCampaignsQuery = () => {
     return isAuthInit() && configQuery.data !== undefined
       && configQuery.data.showFundraisers
@@ -139,7 +154,7 @@ const useBackendHook = () => {
     queryFn: () => api.getYogsSchedule(requestAuth()),
     enabled: enableYogsScheduleQuery(),
     staleTime: 60_000 * 5,
-    refetchInterval: () =>  configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 10,
+    refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 10,
     refetchOnWindowFocus: false,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
@@ -159,6 +174,7 @@ const useBackendHook = () => {
     userConfig: userConfigQuery,
     campaigns: campaignsQuery,
     causes: causesQuery,
+    overview: overviewQuery,
     userData: userDataQuery,
     userRelatedSchedule: userRelatedScheduleQuery,
     userRelations: userRelationsQuery,
