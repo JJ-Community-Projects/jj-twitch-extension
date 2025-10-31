@@ -1,5 +1,5 @@
 import {type Component, For, Match, Show, Switch} from 'solid-js'
-import {FaSolidHeart, FaSolidPeopleGroup} from 'solid-icons/fa'
+import {FaSolidCalendarWeek, FaSolidHeart, FaSolidPeopleGroup} from 'solid-icons/fa'
 import {twMerge} from 'tailwind-merge'
 import {useTheme} from "./providers/ThemeProvider.tsx";
 import {Tabs} from "@kobalte/core/tabs";
@@ -69,7 +69,7 @@ const TabIcon: Component<{ tab: UserExtensionConfigTabsEnum }> = props => {
         <FaSolidPeopleGroup/>
       </Match>
       <Match when={props.tab === 'user-schedule'}>
-        <JJIcon/>
+        <FaSolidCalendarWeek/>
       </Match>
     </Switch>
   )
