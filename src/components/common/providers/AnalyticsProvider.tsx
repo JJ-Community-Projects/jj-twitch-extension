@@ -5,7 +5,7 @@ import type {Stream} from "../../../api";
 
 const useAnalyticsHook = () => {
   const { auth } = useTwitchAuth()
-  const channelId = () => auth?.channelId
+  const channelId = () => auth()?.channelId
 
   const log = (eventName: string, data?: { [key: string]: any }) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

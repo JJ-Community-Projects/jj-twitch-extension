@@ -63,7 +63,7 @@ const useTwitchConfigHook = () => {
 
   onMount(() => {
     if (auth) {
-      setChannelId(auth.channelId)
+      setChannelId(auth().channelId)
     }
     loadConfig()
   })

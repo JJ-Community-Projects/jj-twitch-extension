@@ -31,7 +31,7 @@ export const OverlayCharitySideBanner: Component = () => {
 }
 const CauseViewSide: Component<{ cause: JJCause }> = (props) => {
   const cause = props.cause
-  const {causes} = useOverlayBackend()
+  const {overview} = useOverlayBackend()
 
   const twitchConfig = useTwitchOverlayConfig()
   const config = useOverlayConfig()
@@ -48,8 +48,8 @@ const CauseViewSide: Component<{ cause: JJCause }> = (props) => {
     }
     return cause.donateUrl
   }
-  const totalPounds = () => causes.data?.overview.raised.total.gbp ?? 0
-  const totalDollar = () => causes.data?.overview.raised.total.usd ?? 0
+  const totalPounds = () => overview.data?.raised.total.gbp ?? 0
+  const totalDollar = () => overview.data?.raised.total.usd ?? 0
 
 
   return (

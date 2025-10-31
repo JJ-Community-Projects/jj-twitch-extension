@@ -53,10 +53,10 @@ export const OverlayJJCharities: Component = () => {
 
 const Item: Component<{ cause: JJCause }> = (props) => {
   const {cause: charity} = props
-  const {causes} = useOverlayBackend()
+  const {overview} = useOverlayBackend()
 
-  const totalPounds = () => causes.data?.overview.raised.total.gbp ?? 0
-  const totalDollar = () => causes.data?.overview.raised.total.usd ?? 0
+  const totalPounds = () => overview.data?.raised.total.gbp ?? 0
+  const totalDollar = () => overview.data?.raised.total.usd ?? 0
 
   return (
     <div

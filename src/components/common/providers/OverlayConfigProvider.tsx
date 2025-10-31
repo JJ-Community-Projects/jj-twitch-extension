@@ -67,8 +67,8 @@ const useTwitchOverlayConfigHook = () => {
   }
 
   onMount(() => {
-    if (auth) {
-      setChannelId(auth.channelId)
+    if (auth()) {
+      setChannelId(auth().channelId)
     }
     loadConfig()
   })
