@@ -4,15 +4,12 @@ import {twMerge} from "tailwind-merge";
 import {DateTime} from "luxon";
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
-import {CurrencyToggle} from "../../CurrencyToggle.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
 import {Accordion} from '@kobalte/core';
-import {FaSolidChevronDown, FaSolidChevronUp} from "solid-icons/fa";
+import {FaSolidChevronDown} from "solid-icons/fa";
 import "./CharityOverviewCollapsable.css";
 import type {CurrenciesSchema, OverviewSchema} from "../../../../api";
 import {CrossFade} from "../../CrossFade.tsx";
-import {CurrencyToggleAlt} from "../../CurrencyToggleAlt.tsx";
-import {CurrencyToggleVert} from "../../CurrencyToggleVert.tsx";
 import {CurrencyToggleDropdown} from "../../CurrencyToggleDropdown.tsx";
 
 // A collapsable version of CharityOverview. When closed, only shows total raised and the currency toggle.
@@ -124,7 +121,7 @@ const OverviewChanger: Component<{ overview: OverviewSchema }> = (props) => {
       </CrossFade>
       <CrossFade show={v() === 4}>
         <BigValue value={props.overview.collections.total - props.overview.collections.redeemed}
-                    text={'Collections Available'}/>
+                  text={'Collections Available'}/>
       </CrossFade>
     </>
   )
