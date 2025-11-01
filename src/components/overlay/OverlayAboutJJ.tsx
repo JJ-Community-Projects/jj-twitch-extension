@@ -53,7 +53,7 @@ const ExternalLinks = () => {
 
 
   const url = () => {
-    return userData.data?.tiltifyUrl ?? ''
+    return userData.data?.campaign.tiltifyUrl ?? ''
   }
 
   return (

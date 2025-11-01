@@ -86,7 +86,7 @@ const useBackendHook = () => {
     return isAuthInit() &&
       configQuery.data !== undefined &&
       configQuery.data.showCharities &&
-      currentTab() === 'charities'
+      (currentTab() === 'charities' || currentTab() === 'fundraisers')
   }
 
   const causesQuery = useQuery(() => ({

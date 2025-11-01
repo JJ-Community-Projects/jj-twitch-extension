@@ -141,6 +141,9 @@
           "tiltifyDescription": {
             "type": "string"
           },
+          "tiltifyCauseId": {
+            "type": "number"
+          },
           "avatar": {
             "type": "string"
           },
@@ -925,7 +928,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JJCampaign"
+                  "type": "object",
+                  "properties": {
+                    "campaign": {
+                      "$ref": "#/components/schemas/JJCampaign"
+                    },
+                    "cause": {
+                      "$ref": "#/components/schemas/JJCause"
+                    }
+                  },
+                  "required": [
+                    "campaign"
+                  ]
                 }
               }
             }

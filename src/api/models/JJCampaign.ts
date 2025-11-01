@@ -58,6 +58,12 @@ export interface JJCampaign {
     tiltifyDescription?: string;
     /**
      * 
+     * @type {number}
+     * @memberof JJCampaign
+     */
+    tiltifyCauseId?: number;
+    /**
+     * 
      * @type {string}
      * @memberof JJCampaign
      */
@@ -109,6 +115,7 @@ export function JJCampaignFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'tiltifyUrl': json['tiltifyUrl'],
         'tiltifyName': json['tiltifyName'],
         'tiltifyDescription': json['tiltifyDescription'] == null ? undefined : json['tiltifyDescription'],
+        'tiltifyCauseId': json['tiltifyCauseId'] == null ? undefined : json['tiltifyCauseId'],
         'avatar': json['avatar'],
         'raised': CurrenciesSchemaFromJSON(json['raised']),
         'goal': CurrenciesSchemaFromJSON(json['goal']),
@@ -126,6 +133,7 @@ export function JJCampaignToJSON(value?: JJCampaign | null): any {
         'tiltifyUrl': value['tiltifyUrl'],
         'tiltifyName': value['tiltifyName'],
         'tiltifyDescription': value['tiltifyDescription'],
+        'tiltifyCauseId': value['tiltifyCauseId'],
         'avatar': value['avatar'],
         'raised': CurrenciesSchemaToJSON(value['raised']),
         'goal': CurrenciesSchemaToJSON(value['goal']),

@@ -6,6 +6,7 @@ export * from './CurrenciesSchema';
 export * from './ExtensionConfig';
 export * from './ExtensionConfigDonationLink';
 export * from './ExtensionConfigRefreshInterval';
+export * from './GetUserData200Response';
 export * from './GetUserRelatedSchedule200Response';
 export * from './GetUserRelatedSchedule200ResponseTeams';
 export * from './GetUserRelations200Response';

@@ -1,4 +1,4 @@
-import {type Component, Show} from "solid-js";
+import {type Component, createSignal, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
 
 import red from '../../assets/JingleJam_Red.png'
@@ -21,11 +21,10 @@ import {useTheme} from "./providers/ThemeProvider.tsx";
 import {twLinkBGHoverColor, twLinkHoverColor} from "../../lib/colorUtil.ts";
 import {BiRegularInfoCircle} from "solid-icons/bi";
 import {useBackend} from "./providers/BackendProvider.tsx";
-import {FiExternalLink} from "solid-icons/fi";
-import type {JJCampaign} from "../../api";
+import type {GetUserData200Response, JJCampaign, JJCause} from "../../api";
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "./providers/CurrencyProvider.tsx";
-import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
+import {CrossFade} from "./CrossFade.tsx";
 
 export const PanelHeader: Component = () => {
 
@@ -41,8 +40,8 @@ export const PanelHeader: Component = () => {
             >
               <Show when={userData.data}>
                 {
-                  (c) => (
-                    <UserCampaignHeader campaign={c()}/>
+                  (userData) => (
+                    <UserCampaignHeader userData={userData()}/>
                   )
                 }
               </Show>
@@ -85,7 +84,7 @@ const NoUserCampaignHeader: Component = () => {
 }
 
 const UserCampaignHeader: Component<{
-  campaign: JJCampaign
+  userData: GetUserData200Response
 }> = (props) => {
 
   const {theme, tailwindTextPrimary} = useTheme()
@@ -109,14 +108,6 @@ const UserCampaignHeader: Component<{
 
   const darkText = () => (theme() === 'dark' ? 'text-white' : '')
 
-  const bgColor = () => (theme() === 'dark'
-    ? 'bg-gradient-to-br from-gray-500 to-gray-600'
-    : 'bg-gradient-to-br from-white to-gray-100')
-
-  const platformName = () => {
-    const t = (props.campaign as any).twitch
-    return (t?.displayName || t?.login) ?? props.campaign.tiltifyName
-  }
 
   return (
     <div class={'px-2'}>
@@ -127,28 +118,26 @@ const UserCampaignHeader: Component<{
           </div>
           <img src={image()} class={'h-full'} alt={'JJ Logo'}/>
           <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
-            <a href={props.campaign.tiltifyUrl} target={'_blank'}
+            <a href={props.userData.campaign.tiltifyUrl} target={'_blank'}
                class={'bg-tiltify-500 text-xs pl-2 p-1 text-white rounded-full flex flex-row gap-1 hover:brightness-105 hover:scale-101'}>Donate
               <TiltifyRoundIcon
-              class={twMerge(
-                'size-4',
-              )}
-            /></a>
+                class={twMerge(
+                  'size-4',
+                )}
+              /></a>
           </div>
         </div>
         <div class={'w-full px-1 pb-1'}>
           <div class={twMerge('w-full h-full flex flex-row items-start gap-2')}>
-            <img src={props.campaign.twitch?.avatar ?? props.campaign.avatar} alt={'Campaign Avatar'}
+            <img src={props.userData.campaign.twitch?.avatar ?? props.userData.campaign.avatar} alt={'Campaign Avatar'}
                  class={'~w-8/12 ~h-8/12 rounded-xl object-cover'}/>
 
-            <div class={'min-w-0 flex-1 flex flex-col leading-tight'}>
-              <p class={twMerge('text-xs font-bold truncate', raisedTextColor())}>{props.campaign.campaignName}</p>
-              <p class={twMerge('text-[10px] truncate', darkText())}>{platformName()}</p>
-            </div>
+            <UserHeaderTexts userData={props.userData}/>
 
             <div class={'h-full flex flex-col items-end justify-start'}>
               <p class={twMerge('text-xs font-bold', raisedTextColor())}>
-                <CurrencyAmount dollars={props.campaign.raised.usd} pounds={props.campaign.raised.gbp} />
+                <CurrencyAmount dollars={props.userData.campaign.raised.usd}
+                                pounds={props.userData.campaign.raised.gbp}/>
               </p>
               <p class={twMerge('text-[10px]', darkText())}>Raised</p>
             </div>
@@ -156,6 +145,86 @@ const UserCampaignHeader: Component<{
         </div>
       </div>
     </div>
+  )
+}
+
+const UserHeaderTexts: Component<{ userData: GetUserData200Response }> = (props) => {
+
+  const [showCampaign, setShowCampaign] = createSignal<boolean>(true)
+
+
+  const intervall = setInterval(() => {
+    setShowCampaign(v => !v)
+  }, 10000)
+
+  return (
+
+    <div class={'relative min-w-0 flex-1 flex flex-col leading-tight'}>
+      <Show
+        when={props.userData.cause}
+        fallback={<UserCampaignTexts campaign={props.userData.campaign}/>}
+      >
+        {
+          (cause) => {
+            return (
+              <>
+                <CrossFade show={showCampaign()}>
+                  <UserCampaignTexts campaign={props.userData.campaign}/>
+                </CrossFade>
+                <CrossFade show={!showCampaign()}>
+                  <UserCauseTexts campaign={props.userData.campaign} cause={cause()}/>
+                </CrossFade>
+              </>
+            )
+          }
+        }
+      </Show>
+    </div>
+  )
+}
+
+const UserCampaignTexts: Component<{ campaign: JJCampaign }> = (props) => {
+
+  const {theme, tailwindTextPrimary} = useTheme()
+  const raisedTextColor = () => {
+    if (theme() === 'dark') return 'text-white'
+    return tailwindTextPrimary()
+  }
+
+  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
+
+  const platformName = () => {
+    const t = props.campaign.twitch
+    return t?.name ?? props.campaign.tiltifyName
+  }
+
+  return (
+    <>
+      <p class={twMerge('text-xs font-bold truncate', raisedTextColor())}>{platformName()}</p>
+      <p class={twMerge('text-[10px] truncate', darkText())}>{props.campaign.campaignName}</p>
+    </>
+  )
+}
+
+const UserCauseTexts: Component<{ campaign: JJCampaign, cause: JJCause }> = (props) => {
+  const {theme, tailwindTextPrimary} = useTheme()
+  const raisedTextColor = () => {
+    if (theme() === 'dark') return 'text-white'
+    return tailwindTextPrimary()
+  }
+
+  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
+
+  const platformName = () => {
+    const t = props.campaign.twitch
+    return t?.name ?? props.campaign.tiltifyName
+  }
+
+  return (
+    <>
+      <p class={twMerge('text-xs font-bold truncate', raisedTextColor())}>{platformName()}</p>
+      <p class={twMerge('text-[10px] truncate', darkText())}>Raising for {props.cause.name}</p>
+    </>
   )
 }
 

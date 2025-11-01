@@ -13,18 +13,18 @@
  */
 
 import { mapValues } from '../runtime';
-import type { GetUserData200ResponseUser } from './GetUserData200ResponseUser';
+import type { JJCampaign } from './JJCampaign';
 import {
-    GetUserData200ResponseUserFromJSON,
-    GetUserData200ResponseUserFromJSONTyped,
-    GetUserData200ResponseUserToJSON,
-} from './GetUserData200ResponseUser';
-import type { GetUserData200ResponseLivestream } from './GetUserData200ResponseLivestream';
+    JJCampaignFromJSON,
+    JJCampaignFromJSONTyped,
+    JJCampaignToJSON,
+} from './JJCampaign';
+import type { JJCause } from './JJCause';
 import {
-    GetUserData200ResponseLivestreamFromJSON,
-    GetUserData200ResponseLivestreamFromJSONTyped,
-    GetUserData200ResponseLivestreamToJSON,
-} from './GetUserData200ResponseLivestream';
+    JJCauseFromJSON,
+    JJCauseFromJSONTyped,
+    JJCauseToJSON,
+} from './JJCause';
 
 /**
  * 
@@ -34,80 +34,23 @@ import {
 export interface GetUserData200Response {
     /**
      * 
-     * @type {number}
+     * @type {JJCampaign}
      * @memberof GetUserData200Response
      */
-    causeId: number | null;
+    campaign: JJCampaign;
     /**
      * 
-     * @type {string}
+     * @type {JJCause}
      * @memberof GetUserData200Response
      */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserData200Response
-     */
-    description: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserData200Response
-     */
-    slug: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserData200Response
-     */
-    url: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserData200Response
-     */
-    startTime: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetUserData200Response
-     */
-    raised: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetUserData200Response
-     */
-    goal: number;
-    /**
-     * 
-     * @type {GetUserData200ResponseLivestream}
-     * @memberof GetUserData200Response
-     */
-    livestream: GetUserData200ResponseLivestream;
-    /**
-     * 
-     * @type {GetUserData200ResponseUser}
-     * @memberof GetUserData200Response
-     */
-    user: GetUserData200ResponseUser;
+    cause?: JJCause;
 }
 
 /**
  * Check if a given object implements the GetUserData200Response interface.
  */
 export function instanceOfGetUserData200Response(value: object): value is GetUserData200Response {
-    if (!('causeId' in value) || value['causeId'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('description' in value) || value['description'] === undefined) return false;
-    if (!('slug' in value) || value['slug'] === undefined) return false;
-    if (!('url' in value) || value['url'] === undefined) return false;
-    if (!('startTime' in value) || value['startTime'] === undefined) return false;
-    if (!('raised' in value) || value['raised'] === undefined) return false;
-    if (!('goal' in value) || value['goal'] === undefined) return false;
-    if (!('livestream' in value) || value['livestream'] === undefined) return false;
-    if (!('user' in value) || value['user'] === undefined) return false;
+    if (!('campaign' in value) || value['campaign'] === undefined) return false;
     return true;
 }
 
@@ -121,16 +64,8 @@ export function GetUserData200ResponseFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'causeId': json['causeId'],
-        'name': json['name'],
-        'description': json['description'],
-        'slug': json['slug'],
-        'url': json['url'],
-        'startTime': json['startTime'],
-        'raised': json['raised'],
-        'goal': json['goal'],
-        'livestream': GetUserData200ResponseLivestreamFromJSON(json['livestream']),
-        'user': GetUserData200ResponseUserFromJSON(json['user']),
+        'campaign': JJCampaignFromJSON(json['campaign']),
+        'cause': json['cause'] == null ? undefined : JJCauseFromJSON(json['cause']),
     };
 }
 
@@ -140,16 +75,8 @@ export function GetUserData200ResponseToJSON(value?: GetUserData200Response | nu
     }
     return {
         
-        'causeId': value['causeId'],
-        'name': value['name'],
-        'description': value['description'],
-        'slug': value['slug'],
-        'url': value['url'],
-        'startTime': value['startTime'],
-        'raised': value['raised'],
-        'goal': value['goal'],
-        'livestream': GetUserData200ResponseLivestreamToJSON(value['livestream']),
-        'user': GetUserData200ResponseUserToJSON(value['user']),
+        'campaign': JJCampaignToJSON(value['campaign']),
+        'cause': JJCauseToJSON(value['cause']),
     };
 }
 

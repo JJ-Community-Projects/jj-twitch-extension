@@ -104,7 +104,7 @@ const Donate = () => {
   const {userData, config} = useOverlayBackend()
 
   const url = () => {
-    return userData.data?.tiltifyUrl ?? config.data?.donationLink.url
+    return userData.data?.campaign.tiltifyUrl ?? config.data?.donationLink.url
   }
 
   const text = () => {

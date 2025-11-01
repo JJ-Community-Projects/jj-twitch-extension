@@ -7,6 +7,7 @@ models/CurrenciesSchema.ts
 models/ExtensionConfig.ts
 models/ExtensionConfigDonationLink.ts
 models/ExtensionConfigRefreshInterval.ts
+models/GetUserData200Response.ts
 models/GetUserRelatedSchedule200Response.ts
 models/GetUserRelatedSchedule200ResponseTeams.ts
 models/GetUserRelations200Response.ts

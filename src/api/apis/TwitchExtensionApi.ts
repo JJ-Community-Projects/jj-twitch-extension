@@ -17,9 +17,9 @@ import * as runtime from '../runtime';
 import type {
   CausesDisplaySchema,
   ExtensionConfig,
+  GetUserData200Response,
   GetUserRelatedSchedule200Response,
   GetUserRelations200Response,
-  JJCampaign,
   JJCampaigns,
   OverviewSchema,
   UserExtensionConfig,
@@ -31,12 +31,12 @@ import {
     CausesDisplaySchemaToJSON,
     ExtensionConfigFromJSON,
     ExtensionConfigToJSON,
+    GetUserData200ResponseFromJSON,
+    GetUserData200ResponseToJSON,
     GetUserRelatedSchedule200ResponseFromJSON,
     GetUserRelatedSchedule200ResponseToJSON,
     GetUserRelations200ResponseFromJSON,
     GetUserRelations200ResponseToJSON,
-    JJCampaignFromJSON,
-    JJCampaignToJSON,
     JJCampaignsFromJSON,
     JJCampaignsToJSON,
     OverviewSchemaFromJSON,
@@ -292,7 +292,7 @@ export class TwitchExtensionApi extends runtime.BaseAPI {
      * Get the use data
      * Get the users data
      */
-    async getUserDataRaw(requestParameters: GetUserDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<JJCampaign>> {
+    async getUserDataRaw(requestParameters: GetUserDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetUserData200Response>> {
         if (requestParameters['channelId'] == null) {
             throw new runtime.RequiredError(
                 'channelId',
@@ -322,14 +322,14 @@ export class TwitchExtensionApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => JJCampaignFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetUserData200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Get the use data
      * Get the users data
      */
-    async getUserData(requestParameters: GetUserDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<JJCampaign> {
+    async getUserData(requestParameters: GetUserDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetUserData200Response> {
         const response = await this.getUserDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
