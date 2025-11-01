@@ -1,7 +1,6 @@
 import {type Component} from "solid-js";
 import {twMerge} from "tailwind-merge";
 import {Numeric} from "solid-i18n";
-import {FiExternalLink} from "solid-icons/fi";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import type {JJCause} from "../../../../api";
@@ -15,7 +14,7 @@ interface CharityListItemProps {
 export const CharityListItem: Component<CharityListItemProps> = (props) => {
   const {charity, i} = props
 
-  const {pounds} = useCurrency()
+  const {currency} = useCurrency()
   const {theme, tailwindTextPrimary} = useTheme()
   const gradient = [
     'bg-gradient-to-br from-red-200 to-red-400',
@@ -50,20 +49,15 @@ export const CharityListItem: Component<CharityListItemProps> = (props) => {
     return charity.name
   }
 
-  const currency = () => {
-    if (pounds()) {
-      return 'GBP'
-    } else {
-      return 'USD'
-    }
-  }
 
   const value = () => {
-    if (pounds()) {
-      return charity.raised.fundraisers.gbp
-    } else {
-      return charity.raised.fundraisers.usd
+    switch (currency()) {
+      case "USD":
+        return charity.raised.fundraisers.usd
+      case "EUR":
+        return charity.raised.fundraisers.euro
     }
+    return charity.raised.fundraisers.gbp
   }
 
   return (

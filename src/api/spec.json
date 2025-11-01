@@ -407,13 +407,21 @@
           },
           "usdFormatted": {
             "type": "string"
+          },
+          "euro": {
+            "type": "number"
+          },
+          "euroFormatted": {
+            "type": "string"
           }
         },
         "required": [
           "gbp",
           "gbpFormatted",
           "usd",
-          "usdFormatted"
+          "usdFormatted",
+          "euro",
+          "euroFormatted"
         ]
       },
       "OverviewSchema": {

@@ -1,33 +1,31 @@
-import {type Accessor, createContext, createSignal, type ParentComponent, useContext} from 'solid-js'
+import {type Accessor, createContext, createSignal, type ParentComponent, type Setter, useContext} from 'solid-js'
+import {makePersisted} from "@solid-primitives/storage";
 
 interface CurrencyContextProps {
   pounds: Accessor<boolean>
-  toggle: () => void
-  currency: () => 'GBP' | 'USD'
+  usd: Accessor<boolean>
+  eur: Accessor<boolean>
+  currency: () => 'GBP' | 'USD' | 'EUR'
+  setCurrency: Setter<'GBP' | 'USD' | 'EUR'>
 }
 
 const CurrencyContext = createContext<CurrencyContextProps>()
 
 export const CurrencyProvider: ParentComponent<{}> = props => {
-  const [pounds, set] = createSignal(true)
+  const [currency, setCurrency] = makePersisted(createSignal<'GBP' | 'USD' | 'EUR'>('GBP')) // createSignal<'GBP' | 'USD' | 'EUR'>('GBP')
 
-  const toggle = () => {
-    set(!pounds())
-  }
-
-  const currency = () => {
-    if (pounds()) {
-      return 'GBP'
-    }
-    return 'USD'
-  }
+  const pounds = () => currency() === 'GBP'
+  const usd = () => currency() === 'USD'
+  const eur = () => currency() === 'EUR'
 
   return (
     <CurrencyContext.Provider
       value={{
         pounds,
-        toggle,
-        currency
+        usd,
+        eur,
+        currency,
+        setCurrency
       }}
     >
       {props.children}

@@ -107,7 +107,7 @@ const Live = () => {
 
 export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }> = (props) => {
   const { theme } = useTheme();
-  const {pounds, currency, toggle} = useCurrency()
+  const {pounds, currency} = useCurrency()
 
   const gradient = [
     "bg-gradient-to-br from-red-200 to-red-400",

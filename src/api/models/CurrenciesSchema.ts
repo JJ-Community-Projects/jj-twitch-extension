@@ -43,6 +43,18 @@ export interface CurrenciesSchema {
      * @memberof CurrenciesSchema
      */
     usdFormatted: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CurrenciesSchema
+     */
+    euro: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CurrenciesSchema
+     */
+    euroFormatted: string;
 }
 
 /**
@@ -53,6 +65,8 @@ export function instanceOfCurrenciesSchema(value: object): value is CurrenciesSc
     if (!('gbpFormatted' in value) || value['gbpFormatted'] === undefined) return false;
     if (!('usd' in value) || value['usd'] === undefined) return false;
     if (!('usdFormatted' in value) || value['usdFormatted'] === undefined) return false;
+    if (!('euro' in value) || value['euro'] === undefined) return false;
+    if (!('euroFormatted' in value) || value['euroFormatted'] === undefined) return false;
     return true;
 }
 
@@ -70,6 +84,8 @@ export function CurrenciesSchemaFromJSONTyped(json: any, ignoreDiscriminator: bo
         'gbpFormatted': json['gbpFormatted'],
         'usd': json['usd'],
         'usdFormatted': json['usdFormatted'],
+        'euro': json['euro'],
+        'euroFormatted': json['euroFormatted'],
     };
 }
 
@@ -83,6 +99,8 @@ export function CurrenciesSchemaToJSON(value?: CurrenciesSchema | null): any {
         'gbpFormatted': value['gbpFormatted'],
         'usd': value['usd'],
         'usdFormatted': value['usdFormatted'],
+        'euro': value['euro'],
+        'euroFormatted': value['euroFormatted'],
     };
 }
 

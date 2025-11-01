@@ -21,6 +21,7 @@
     "@astrojs/tailwind": "^5.1.2",
     "@kobalte/core": "^0.13.7",
     "@kobalte/tailwindcss": "^0.7.0",
+    "@solid-primitives/storage": "^4.3.3",
     "@tanstack/solid-query": "^5.90.6",
     "@tanstack/solid-query-devtools": "^5.90.4",
     "astro": "5.14.3",

@@ -11,6 +11,9 @@ import {FaSolidChevronDown, FaSolidChevronUp} from "solid-icons/fa";
 import "./CharityOverviewCollapsable.css";
 import type {CurrenciesSchema, OverviewSchema} from "../../../../api";
 import {CrossFade} from "../../CrossFade.tsx";
+import {CurrencyToggleAlt} from "../../CurrencyToggleAlt.tsx";
+import {CurrencyToggleVert} from "../../CurrencyToggleVert.tsx";
+import {CurrencyToggleDropdown} from "../../CurrencyToggleDropdown.tsx";
 
 // A collapsable version of CharityOverview. When closed, only shows total raised and the currency toggle.
 // When opened, it renders the same details as CharityOverview.
@@ -63,7 +66,7 @@ export const CharityOverviewCollapsable: Component = () => {
 
                   {/* Keep currency toggle outside trigger so it's still clickable without toggling */}
                   <div id={"div2"} class={"absolute right-0 top-0 z-10 p-1"}>
-                    <CurrencyToggle/>
+                    <CurrencyToggleDropdown/>
                   </div>
                 </Accordion.Header>
 
@@ -134,7 +137,7 @@ const BigCurrency: Component<{ values: CurrenciesSchema, text: string }> = (prop
   return (
     <div class="flex flex-col items-center justify-center">
       <p class={twMerge("relative text-base font-bold", raisedTextColor())}>
-        <Currency dollars={props.values.usd} pounds={props.values.gbp}/>
+        <Currency values={props.values}/>
       </p>
       <p class={twMerge("text-xs", darkText())}>
         {props.text}
@@ -150,7 +153,7 @@ const SmallCurrency: Component<{ values: CurrenciesSchema, text: string }> = (pr
   return (
     <div>
       <p class={twMerge("text-xs font-bold", raisedTextColor())}>
-        <Currency dollars={props.values.usd} pounds={props.values.gbp}/>
+        <Currency values={props.values}/>
       </p>
       <p class={twMerge("text-xxs", darkText())}>
         {props.text}
@@ -189,21 +192,25 @@ const SmallValue: Component<{ value: number, text: string }> = (props) => {
   )
 }
 
-const Currency: Component<{ dollars: number, pounds: number; }> = (props) => {
-  const {pounds} = useCurrency();
-  const dollar = () => !pounds();
+const Currency: Component<{ values: CurrenciesSchema }> = (props) => {
+  const {pounds, usd, eur} = useCurrency()
   return (
     <>
-      <Show when={dollar()}>
-        <div id={"usd"}>
-          <Numeric value={props.dollars} numberStyle="currency" currency={"USD"}/>
+      <Show when={usd()}>
+        <div id={'usd'}>
+          <Numeric value={props.values.usd} numberStyle="currency" currency={'USD'}/>
         </div>
       </Show>
-      <Show when={!dollar()}>
-        <div id={"gbp"}>
-          <Numeric value={props.pounds} numberStyle="currency" currency={"GBP"}/>
+      <Show when={pounds()}>
+        <div id={'gbp'}>
+          <Numeric value={props.values.gbp} numberStyle="currency" currency={'GBP'}/>
+        </div>
+      </Show>
+      <Show when={eur()}>
+        <div id={'eur'}>
+          <Numeric value={props.values.euro} numberStyle="currency" currency={'EUR'}/>
         </div>
       </Show>
     </>
-  );
+  )
 };

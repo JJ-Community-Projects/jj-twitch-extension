@@ -6,18 +6,16 @@ import {Numeric} from "solid-i18n";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
 import {CurrencyToggle} from "../../CurrencyToggle.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
+import type {CurrenciesSchema} from "../../../../api";
 
 
 export const CharityOverview: Component = () => {
 
   const {overview} = useBackend()
 
-  const totalYogsPounds = () => overview.data?.raised.yogscast.gbp ?? 0
-  const totalYogs = () => overview.data?.raised.yogscast.usd ?? 0
-  const totalFundraiserPounds = () => overview.data?.raised.fundraisers.gbp ?? 0
-  const totalFundraiser = () => overview.data?.raised.fundraisers.usd ?? 0
-  const totalPounds = () => overview.data?.raised.total.gbp ?? 0
-  const total = () => overview.data?.raised.total.usd ?? 0
+  const totalYogs = () => overview.data?.raised.yogscast
+  const totalFundraiser = () => overview.data?.raised.fundraisers
+  const total = () => overview.data?.raised.total
 
   const {tailwindTextPrimary, theme} = useTheme()
   const raisedTextColor = () => {
@@ -47,7 +45,10 @@ export const CharityOverview: Component = () => {
         <div id={'parent'} class={'relative h-12'}>
           <div id={'div1'} class={'absolute inset-0 flex flex-col items-center justify-center'}>
             <p class={twMerge('relative text-base font-bold', raisedTextColor())}>
-              <Currency dollars={total()} pounds={totalPounds()}/>
+              <Show when={total()}>
+                {(total) => (
+                  <Currency values={total()}/>)}
+              </Show>
             </p>
             <Show when={overview.data}>
               {
@@ -63,13 +64,19 @@ export const CharityOverview: Component = () => {
         <div class={'grid grid-cols-2 gap-1 gap-y-2'}>
           <div>
             <p class={twMerge('text-xs font-bold', raisedTextColor())}>
-              <Currency dollars={totalYogs()} pounds={totalYogsPounds()}/>
+              <Show when={totalYogs()}>
+                {(totalYogs) => (
+                  <Currency values={totalYogs()}/>)}
+              </Show>
             </p>
             <p class={twMerge('text-xxs', darkText())}>Raised by the Yogscast</p>
           </div>
           <div>
             <p class={twMerge('text-xs font-bold', raisedTextColor())}>
-              <Currency dollars={totalFundraiser()} pounds={totalFundraiserPounds()}/>
+              <Show when={totalFundraiser()}>
+                {(totalFundraiser) => (
+                  <Currency values={totalFundraiser()}/>)}
+              </Show>
             </p>
             <p class={twMerge('text-xxs', darkText())}>Raised by Fundraisers</p>
           </div>
@@ -118,24 +125,23 @@ export const CharityOverview: Component = () => {
 }
 
 
-interface CurrencyAnimProps {
-  dollars: number
-  pounds: number
-}
-
-const Currency: Component<CurrencyAnimProps> = props => {
-  const {pounds} = useCurrency()
-  const dollar = () => !pounds()
+const Currency: Component<{ values: CurrenciesSchema }> = props => {
+  const {pounds, usd, eur} = useCurrency()
   return (
     <>
-      <Show when={dollar()}>
+      <Show when={usd()}>
         <div id={'usd'}>
-          <Numeric value={props.dollars} numberStyle="currency" currency={'USD'}/>
+          <Numeric value={props.values.usd} numberStyle="currency" currency={'USD'}/>
         </div>
       </Show>
-      <Show when={!dollar()}>
+      <Show when={pounds()}>
         <div id={'gbp'}>
-          <Numeric value={props.pounds} numberStyle="currency" currency={'GBP'}/>
+          <Numeric value={props.values.gbp} numberStyle="currency" currency={'GBP'}/>
+        </div>
+      </Show>
+      <Show when={eur()}>
+        <div id={'eur'}>
+          <Numeric value={props.values.euro} numberStyle="currency" currency={'EUR'}/>
         </div>
       </Show>
     </>

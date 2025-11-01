@@ -21,7 +21,7 @@ import {useTheme} from "./providers/ThemeProvider.tsx";
 import {twLinkBGHoverColor, twLinkHoverColor} from "../../lib/colorUtil.ts";
 import {BiRegularInfoCircle} from "solid-icons/bi";
 import {useBackend} from "./providers/BackendProvider.tsx";
-import type {GetUserData200Response, JJCampaign, JJCause} from "../../api";
+import type {CurrenciesSchema, GetUserData200Response, JJCampaign, JJCause} from "../../api";
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "./providers/CurrencyProvider.tsx";
 import {CrossFade} from "./CrossFade.tsx";
@@ -136,8 +136,7 @@ const UserCampaignHeader: Component<{
 
             <div class={'h-full flex flex-col items-end justify-start'}>
               <p class={twMerge('text-xs font-bold', raisedTextColor())}>
-                <CurrencyAmount dollars={props.userData.campaign.raised.usd}
-                                pounds={props.userData.campaign.raised.gbp}/>
+                <CurrencyAmount values={props.userData.campaign.raised}/>
               </p>
               <p class={twMerge('text-[10px]', darkText())}>Raised</p>
             </div>
@@ -427,24 +426,23 @@ const ExternalLinks = () => {
 }
 
 
-interface CurrencyAmountProps {
-  dollars: number
-  pounds: number
-}
-
-const CurrencyAmount: Component<CurrencyAmountProps> = (props) => {
-  const {pounds} = useCurrency()
-  const dollar = () => !pounds()
+const CurrencyAmount: Component<{ values: CurrenciesSchema }> = (props) => {
+  const {pounds, usd, eur} = useCurrency()
   return (
     <>
-      <Show when={dollar()}>
+      <Show when={usd()}>
         <div id={'usd'}>
-          <Numeric value={props.dollars} numberStyle="currency" currency={'USD'}/>
+          <Numeric value={props.values.usd} numberStyle="currency" currency={'USD'}/>
         </div>
       </Show>
-      <Show when={!dollar()}>
+      <Show when={pounds()}>
         <div id={'gbp'}>
-          <Numeric value={props.pounds} numberStyle="currency" currency={'GBP'}/>
+          <Numeric value={props.values.gbp} numberStyle="currency" currency={'GBP'}/>
+        </div>
+      </Show>
+      <Show when={eur()}>
+        <div id={'eur'}>
+          <Numeric value={props.values.euro} numberStyle="currency" currency={'EUR'}/>
         </div>
       </Show>
     </>

@@ -16,7 +16,7 @@ interface CharityListItemAltProps {
 export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) => {
   const { charity, i } = props;
 
-  const { pounds } = useCurrency();
+  const { currency } = useCurrency();
   const { theme, tailwindTextPrimary } = useTheme();
 
   const gradient = [
@@ -43,8 +43,15 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
     return tailwindTextPrimary();
   };
 
-  const currency = () => (pounds() ? "GBP" : "USD");
-  const value = () => (pounds() ? charity.raised.fundraisers.gbp : charity.raised.fundraisers.usd);
+  const value = () => {
+    switch (currency()) {
+      case "USD":
+        return charity.raised.fundraisers.usd
+      case "EUR":
+        return charity.raised.fundraisers.euro
+    }
+    return charity.raised.fundraisers.gbp
+  }
 
   const name = () => (charity.name.length > 48 ? charity.name.substring(0, 48) + "…" : charity.name);
 
