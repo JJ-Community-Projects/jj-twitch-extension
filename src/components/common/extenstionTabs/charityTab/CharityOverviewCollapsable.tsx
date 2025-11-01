@@ -46,11 +46,11 @@ export const CharityOverviewCollapsable: Component = () => {
                     <div class="absolute left-0 top-0 m-2 flex h-8 w-8 items-center justify-center">
                       <FaSolidChevronDown class={twMerge(
                         "h-4 w-4 transition-transform rounded-full",
-                        "group-data-[expanded]:rotate-180 group-data-[closed]:rotate-0"
+                        "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0"
                       )}/>
                     </div>
 
-                    <div class={'left-0 top-0 absolute w-full h-full p-1'}>
+                    <div class={'left-0 top-1 absolute w-full h-full p-1'}>
                       <CrossFade show={isOpen()}>
                         <BigCurrency values={overview().raised.total}
                                      text={`Raised in ${DateTime.fromJSDate(overview().date).year}`}/>
