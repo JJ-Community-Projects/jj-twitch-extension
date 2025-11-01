@@ -1,4 +1,4 @@
-import {type Component, For, Show} from "solid-js";
+import {type Component, createSignal, For, Show} from "solid-js";
 import {ColoredScrollbar} from "../../ColoredScrollbar.tsx";
 import {DateTime} from "luxon";
 import {FiExternalLink} from "solid-icons/fi";
@@ -11,6 +11,9 @@ import {CrossFade} from "../../CrossFade.tsx";
 import {Loading} from "../../Loading.tsx";
 import {ErrorPage} from "../../Error.tsx";
 import {CharityOverviewCollapsable} from "../charityTab/CharityOverviewCollapsable.tsx";
+import {CommunitySearchProvider, useCommunitySearch} from "./CommunitySearchProvider.tsx";
+import { FaSolidMagnifyingGlass } from "solid-icons/fa";
+import { TextField } from "@kobalte/core";
 
 
 export const CommunityTab: Component = () => {
@@ -52,16 +55,16 @@ const Body = () => {
           {
             (campaigns) => {
               return (
-                <div class={'flex h-full flex-1 flex-col'}>
-                  <ColoredScrollbar>
-                    <div class={'flex flex-1 flex-col gap-2 mx-2'}>
-                      <FundraiserBody fundraisers={campaigns().campaigns}/>
-                    </div>
-                  </ColoredScrollbar>
-                  <p class={'text-center text-xxs text-black bg-white rounded-full p-1 mt-1 mx-2'}>
-                    Last update, {DateTime.fromJSDate(campaigns().date).toLocaleString(DateTime.DATETIME_MED)}
-                  </p>
-                </div>
+                <CommunitySearchProvider>
+                  <div class={'flex h-full flex-1 flex-col'}>
+                    <ColoredScrollbar>
+                      <div class={'flex flex-1 flex-col gap-2 mx-2'}>
+                        <FundraiserBody/>
+                      </div>
+                    </ColoredScrollbar>
+                    <CommunityBottom date={campaigns().date}/>
+                  </div>
+                </CommunitySearchProvider>
               )
             }
           }
@@ -72,13 +75,14 @@ const Body = () => {
 }
 
 
-const FundraiserBody: Component<{ fundraisers: JJCampaign[] }> = props => {
-  const fundraiser = () => props.fundraisers
+const FundraiserBody: Component<{  }> = props => {
+
+  const {campaigns} = useCommunitySearch()
 
   return (
     <>
       <CharityOverviewCollapsable/>
-      <For each={fundraiser()} fallback={
+      <For each={campaigns()} fallback={
         <p class={'text-center text-white'}>No Fundraisers found.</p>
       }>
         {(c, i) => {
@@ -106,15 +110,50 @@ const JJStreamTeamLink = () => {
 }
 
 
-const TopBar: Component = () => {
+
+export const CommunityBottom: Component<{
+  date: Date
+}> = (props) => {
+
+  const {setSearchTerm} = useCommunitySearch()
+  const [showSearchField, setShowSearchField] = createSignal<boolean>(false)
+  const toggleSearchField = () => {
+    if (showSearchField()) {
+      setSearchTerm('')
+    }
+    setShowSearchField(v => !v)
+  }
+
   return (
-    <div class={'flex flex-row justify-between bg-white p-2 rounded-2xl items-start'}>
-      <a
-        href={'https://twitch.tv/team/jinglejam'}
-        target={'_blank'}
-        class={'text-xs gap-2 flex flex-row justify-between items-center p-2 rounded-2xl text-white bg-accent text-center hover:scale-101 hover:brightness-101 transition-all'}>Jingle
-        Jam Stream Team <FiExternalLink/></a>
-      <CurrencyToggle/>
+    <div class={"flex items-center bg-white text-black rounded-full p-1 mt-1 mx-2"}>
+      <button
+        type="button"
+        class={"shrink-0 flex items-center justify-center h-6 w-6 rounded-full hover:bg-black/5 transition"}
+        onClick={toggleSearchField}
+        aria-label={showSearchField() ? "Hide search" : "Show search"}
+      >
+        <FaSolidMagnifyingGlass/>
+      </button>
+
+      <div class={"relative flex-1 text-center px-2 h-full w-full"}>
+        <CrossFade show={!showSearchField()}>
+          <p class={"text-xxs h-full w-full justify-center items-center flex"}>
+            Last update, {DateTime.fromJSDate(props.date).toLocaleString(DateTime.DATETIME_MED)}
+          </p>
+        </CrossFade>
+        <CrossFade show={showSearchField()}>
+          <TextField.Root class={"h-full w-full px-2"} aria-label="Search fundraisers" onChange={setSearchTerm}>
+            <TextField.Input
+              autofocus
+              placeholder="Search fundraisers..."
+              class={"w-full bg-black/5 text-xs text-center placeholder-black/60 rounded-full px-3 border border-black/10 outline-none focus-visible:ring-2 focus-visible:ring-black/20 focus-visible:bg-black/10 transition"}
+            />
+          </TextField.Root>
+        </CrossFade>
+      </div>
+
+      {/* spacer to keep center content visually centered when icon is present on the left */}
+      <div class={"shrink-0 h-6 w-6"}/>
     </div>
-  )
+  );
 }

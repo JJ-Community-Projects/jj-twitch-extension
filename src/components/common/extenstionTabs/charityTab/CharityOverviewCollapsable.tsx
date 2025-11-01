@@ -7,7 +7,7 @@ import {useCurrency} from "../../providers/CurrencyProvider.tsx";
 import {CurrencyToggle} from "../../CurrencyToggle.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
 import {Accordion} from '@kobalte/core';
-import {FaSolidChevronUp} from "solid-icons/fa";
+import {FaSolidChevronDown, FaSolidChevronUp} from "solid-icons/fa";
 import "./CharityOverviewCollapsable.css";
 import type {CurrenciesSchema, OverviewSchema} from "../../../../api";
 import {CrossFade} from "../../CrossFade.tsx";
@@ -44,7 +44,7 @@ export const CharityOverviewCollapsable: Component = () => {
                   >
                     {/* Left chevron icon */}
                     <div class="absolute left-0 top-0 m-1 flex h-8 w-8 items-center justify-center">
-                      <FaSolidChevronUp class={twMerge(
+                      <FaSolidChevronDown class={twMerge(
                         "h-4 w-4 transition-transform",
                         "group-data-[expanded]:rotate-180 group-data-[closed]:rotate-0"
                       )}/>
