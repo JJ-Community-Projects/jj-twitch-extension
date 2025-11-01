@@ -27,9 +27,13 @@ export const CurrencyToggleDropdown: Component = () => {
   const aria = () => `Select currency. Currently ${currency()}.`;
 
   return (
-    <Select<(typeof options)[number]>
-      value={currency() as (typeof options)[number]}
-      onChange={(v) => setCurrency(v as "GBP" | "USD" | "EUR")}
+    <Select<("GBP" | "USD" | "EUR")>
+      value={currency()}
+      onChange={(v) => {
+        if (v!==null) {
+          setCurrency(v)
+        }
+      }}
       options={[...options]}
       itemComponent={(props) => (
         <Select.Item
@@ -39,7 +43,7 @@ export const CurrencyToggleDropdown: Component = () => {
           )}
           item={props.item}
         >
-          <Select.ItemLabel class="text-xs">{labelFor(props.item.rawValue as (typeof options)[number])}</Select.ItemLabel>
+          <Select.ItemLabel class="text-xs">{labelFor(props.item.rawValue)}</Select.ItemLabel>
           <Select.ItemIndicator>
             <AiOutlineCheck size={12} />
           </Select.ItemIndicator>
@@ -59,7 +63,7 @@ export const CurrencyToggleDropdown: Component = () => {
           tailwindBGPrimary()
         )}
       >
-        <Select.Value<(typeof options)[number]>>{(state) => labelFor((state.selectedOption() as (typeof options)[number]) ?? currency() as (typeof options)[number])}</Select.Value>
+        <Select.Value<("GBP" | "USD" | "EUR")>>{(state) => labelFor((state.selectedOption()) ?? currency())}</Select.Value>
         <Select.Icon class="pointer-events-none ml-2">
           <FaSolidChevronDown/>
         </Select.Icon>
