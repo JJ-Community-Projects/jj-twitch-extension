@@ -43,9 +43,9 @@ export const CharityOverviewCollapsable: Component = () => {
                     aria-label="Toggle charity overview"
                   >
                     {/* Left chevron icon */}
-                    <div class="absolute left-0 top-0 m-1 flex h-8 w-8 items-center justify-center">
+                    <div class="absolute left-0 top-0 m-2 flex h-8 w-8 items-center justify-center">
                       <FaSolidChevronDown class={twMerge(
-                        "h-4 w-4 transition-transform",
+                        "h-4 w-4 transition-transform rounded-full",
                         "group-data-[expanded]:rotate-180 group-data-[closed]:rotate-0"
                       )}/>
                     </div>
