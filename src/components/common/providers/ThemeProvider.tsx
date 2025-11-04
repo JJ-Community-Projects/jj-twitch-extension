@@ -101,6 +101,20 @@ const useThemeHook = () => {
         return 'text-primary-500'
     }
   }
+  const tailwindTextPrimaryDark = () => {
+    switch (theme()) {
+      case 'blue':
+        return 'text-accent-600'
+      case 'dark':
+        return 'text-gray-700'
+      case 'red_light':
+        return 'text-primary-600'
+      case 'blue_light':
+        return 'text-accent-600'
+      default:
+        return 'text-primary-600'
+    }
+  }
 
   return {
     theme,
@@ -110,6 +124,7 @@ const useThemeHook = () => {
     tailwindTextPrimary,
     tailwindBGAccent300,
     tailwindBGPrimary300,
+    tailwindTextPrimaryDark
   }
 }
 
@@ -216,6 +231,20 @@ const useOverlayThemeHook = () => {
     }
   }
 
+  const tailwindTextPrimaryDark = () => {
+    switch (theme()) {
+      case 'blue':
+        return 'text-accent-600'
+      case 'dark':
+        return 'text-gray-700'
+      case 'red_light':
+        return 'text-primary-600'
+      case 'blue_light':
+        return 'text-accent-600'
+      default:
+        return 'text-primary-600'
+    }
+  }
   return {
     theme,
     tailwindBGAccent,
@@ -224,6 +253,7 @@ const useOverlayThemeHook = () => {
     tailwindTextPrimary,
     tailwindBGAccent300,
     tailwindBGPrimary300,
+    tailwindTextPrimaryDark,
   }
 }
 
