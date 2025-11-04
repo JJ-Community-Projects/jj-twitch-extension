@@ -11,6 +11,7 @@ import {AnalyticsProvider} from "../common/providers/AnalyticsProvider.tsx";
 import {OverlayThemeProvider} from "../common/providers/ThemeProvider.tsx";
 import {useLocale} from "@kobalte/core";
 import {QueryClient, QueryClientProvider} from "@tanstack/solid-query";
+import {CurrencyProvider} from "../common/providers/CurrencyProvider.tsx";
 
 
 export const OverlayRoot: Component = () => {
@@ -26,7 +27,9 @@ export const OverlayRoot: Component = () => {
                   <AnalyticsProvider>
                     <OverlayThemeProvider>
                       <SleepProvider>
-                        <OverlayMain/>
+                        <CurrencyProvider>
+                          <OverlayMain/>
+                        </CurrencyProvider>
                       </SleepProvider>
                     </OverlayThemeProvider>
                   </AnalyticsProvider>
