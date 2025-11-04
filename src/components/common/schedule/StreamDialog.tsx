@@ -71,7 +71,7 @@ const Body: Component<BodyProps> = (props) => {
   }
 
   return (
-    <div class={'overflow-auto h-full w-full bg-white flex flex-col gap-2 p-2 rounded-b-2xl'}>
+    <div class={'overflow-auto h-full w-full bg-gradient-to-b from-neutral-50 to-neutral-100 flex flex-col gap-2 p-2 rounded-b-2xl'}>
       <Show when={props.stream.description}>
         <Dialog.Description class="mb-6">{props.stream.description}</Dialog.Description>
       </Show>
@@ -125,7 +125,7 @@ interface VodProps {
 const VodComponent: Component<VodProps> = (props) => {
   return (
       <a
-        class={'flex flex-row p-2 gap-2 hover:scale-101 text-xxs items-center rounded-2xl bg-twitch-500 text-white transition-all '}
+        class={'flex flex-row p-2 gap-2 hover:scale-101 text-xxs items-center rounded-2xl bg-twitch-500 text-white transition-all shadow-lg'}
         target={'_blank'}
         href={props.vod.link}
       >
@@ -156,7 +156,7 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
     <Switch>
       <Match when={hasUrl()}>
         <a
-          class={'hover:scale-101 hover:brightness-105 text-xs flex flex-row items-center p-2 rounded-2xl transition-all gap-2'}
+          class={'hover:scale-101 hover:brightness-105 text-xs flex flex-row items-center p-2 rounded-2xl transition-all gap-2 shadow-lg'}
           style={{
             background: color(),
             color: getTextColor(color())
