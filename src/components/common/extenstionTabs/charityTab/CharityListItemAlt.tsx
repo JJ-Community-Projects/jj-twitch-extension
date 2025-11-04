@@ -59,7 +59,7 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
     <div
       class={twMerge(
         "w-full rounded-2xl shadow-sm hover:shadow-md transition-all duration-200",
-        "hover:brightness-101 hover:scale-101 active:brightness-[0.98]",
+        "hover:brightness-105 hover:scale-101 active:brightness-[0.98] hover:shadow-lg",
         campaignSurface(i)
       )}
     >
