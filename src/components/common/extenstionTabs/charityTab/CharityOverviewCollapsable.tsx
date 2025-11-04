@@ -225,8 +225,8 @@ const OverviewChanger: Component<{ overview: OverviewSchema }> = (props) => {
 }
 
 const BigCurrency: Component<{ values: CurrenciesSchema, text: string }> = (props) => {
-  const {tailwindTextPrimary, theme} = useTheme();
-  const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimary());
+  const {tailwindTextPrimaryDark, theme} = useTheme();
+  const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimaryDark());
   const darkText = () => (theme() === "dark" ? "text-white" : "");
   return (
     <div class="flex flex-col items-center justify-center">
@@ -241,8 +241,8 @@ const BigCurrency: Component<{ values: CurrenciesSchema, text: string }> = (prop
 }
 
 const SmallCurrency: Component<{ values: CurrenciesSchema, text: string }> = (props) => {
-  const {tailwindTextPrimary, theme} = useTheme();
-  const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimary());
+  const {tailwindTextPrimaryDark, theme} = useTheme();
+  const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimaryDark());
   const darkText = () => (theme() === "dark" ? "text-white" : "");
   return (
     <div>
@@ -257,8 +257,8 @@ const SmallCurrency: Component<{ values: CurrenciesSchema, text: string }> = (pr
 }
 
 const BigValue: Component<{ value: number, text: string }> = (props) => {
-  const {tailwindTextPrimary, theme} = useTheme();
-  const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimary());
+  const {tailwindTextPrimaryDark, theme} = useTheme();
+  const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimaryDark());
   const darkText = () => (theme() === "dark" ? "text-white" : "");
   return (
     <div class="flex flex-col items-center justify-center">
@@ -273,8 +273,8 @@ const BigValue: Component<{ value: number, text: string }> = (props) => {
 }
 
 const SmallValue: Component<{ value: number, text: string }> = (props) => {
-  const {tailwindTextPrimary, theme} = useTheme();
-  const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimary());
+  const {tailwindTextPrimaryDark, theme} = useTheme();
+  const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimaryDark());
   const darkText = () => (theme() === "dark" ? "text-white" : "");
   return (
     <div>
