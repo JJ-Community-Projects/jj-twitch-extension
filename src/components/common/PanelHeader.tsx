@@ -35,10 +35,13 @@ export const PanelHeader: Component = () => {
       {
         (config) => {
           return (
-            <Show when={config().hasCampaign}
-                  fallback={<NoUserCampaignHeader/>}
+            <Show
+              when={config().hasCampaign}
+              fallback={<NoUserCampaignHeader/>}
             >
-              <Show when={userData.data}>
+              <Show
+                when={userData.data}
+                fallback={<NoUserCampaignHeader/>}>
                 {
                   (userData) => (
                     <UserCampaignHeader userData={userData()}/>
