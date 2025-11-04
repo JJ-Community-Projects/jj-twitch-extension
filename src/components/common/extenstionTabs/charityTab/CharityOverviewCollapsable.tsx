@@ -21,11 +21,28 @@ export const CharityOverviewCollapsable: Component = () => {
 
   const {theme} = useTheme();
   const darkText = () => (theme() === "dark" ? "text-white" : "");
-  const bgColor = () => (theme() === "dark" ? "bg-gradient-to-br from-gray-500 to-gray-600" : "bg-gradient-to-br from-white to-gray-100");
+  const bgColor = () => {
+    if (theme() === 'dark') {
+      return "bg-gradient-to-b from-white/30 to-white/10 ring-1 ring-white/10 text-white backdrop-blur-sm";
+    }
+    return "bg-gradient-to-b from-neutral-50 to-neutral-100"
+  }
 
   const [open, setOpen] = createSignal<string[]>([])
 
   const isOpen = () => open().includes("overview");
+
+  const chevronHoverColor = () => {
+    if (theme() === 'dark') {
+      return 'group-hover:text-primary-50'
+    }
+
+    if (theme() === 'blue') {
+      return 'group-hover:text-accent-700'
+    }
+
+    return 'group-hover:text-primary-700'
+  }
 
   return (
     <Show when={overview.data}>
@@ -35,11 +52,11 @@ export const CharityOverviewCollapsable: Component = () => {
             <Accordion.Root collapsible value={open()} onChange={setOpen}>
               <Accordion.Item value="overview">
                 {/* Header: whole header acts as trigger, with left chevron and right currency toggle */}
-                <Accordion.Header class="relative h-12 w-full select-none p-1">
+                <Accordion.Header class="hover:brightness-105 relative h-12 w-full select-none p-1">
                   <Accordion.Trigger
                     class={twMerge(
-                      "group absolute inset-0 flex items-center justify-center rounded-2xl transition-colors",
-                      theme() === "dark" ? "text-white hover:bg-white/10" : "text-gray-700 hover:bg-black/5 hover:scale-101"
+                      "hover:brightness-105 group absolute inset-0 flex items-center justify-center rounded-2xl transition-colors",
+                      theme() === "dark" ? "text-white hover:bg-white/10" : "text-gray-700 hover:scale-101"
                     )}
                     aria-label="Toggle charity overview"
                   >
@@ -47,7 +64,8 @@ export const CharityOverviewCollapsable: Component = () => {
                     <div class="absolute left-0 top-0 m-2 flex h-8 w-8 items-center justify-center">
                       <FaSolidChevronDown class={twMerge(
                         "h-4 w-4 transition-transform rounded-full",
-                        "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0"
+                        "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0",
+                        chevronHoverColor()
                       )}/>
                     </div>
 
@@ -79,7 +97,7 @@ export const CharityOverviewCollapsable: Component = () => {
                       <SmallValue value={overview().collections.total - overview().collections.redeemed}
                                   text={'Collections Available'}/>
                     </div>
-                    <div class={"flex flex-1 items-end justify-center pt-1"}>
+                    <div class={"flex flex-1 items-end justify-center pt-2"}>
                       <p class={twMerge("text-xxs text-center", darkText())}>
                         Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
                       </p>

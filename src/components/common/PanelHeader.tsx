@@ -73,7 +73,7 @@ const NoUserCampaignHeader: Component = () => {
 
   return (
     <div class={'px-2'}>
-      <div class={'h-8 flex flex-row bg-white shadow rounded-2xl items-center p-1'}>
+      <div class={'h-8 flex flex-row bg-gradient-to-b from-neutral-50 to bg-neutral-100 shadow rounded-2xl items-center p-1'}>
         <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
           <About/>
         </div>
@@ -114,7 +114,7 @@ const UserCampaignHeader: Component<{
 
   return (
     <div class={'px-2'}>
-      <div class={'flex flex-col bg-white shadow rounded-2xl items-start p-1 gap-1'}>
+      <div class={'flex flex-col bg-gradient-to-b from-neutral-50 to bg-neutral-100  shadow rounded-2xl items-start p-1 gap-1'}>
         <div class={'w-full h-8 flex flex-row items-center p-1'}>
           <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
             <About/>

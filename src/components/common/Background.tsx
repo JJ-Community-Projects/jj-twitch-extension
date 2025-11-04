@@ -9,7 +9,7 @@ export const Background: ParentComponent = (props) => {
       case 'blue':
         return 'from-accent-shade via-accent to-accent-shade '
       case 'dark':
-        return 'from-gray-500 to-gray-800'
+        return 'from-gray-700 to-gray-900'
       case 'red_light':
         return 'from-primary-300 to-primary-600'
       case 'blue_light':
