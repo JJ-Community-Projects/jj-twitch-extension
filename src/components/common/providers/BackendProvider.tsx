@@ -4,7 +4,7 @@ import {useQuery} from "@tanstack/solid-query";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
 import {useTabs} from "./TabsProvider.tsx";
 
-const useBackendHook = () => {
+const useBackendHook = (useConfigPlaceholderData = true) => {
 
   const {auth} = useTwitchAuth()
 
@@ -35,7 +35,7 @@ const useBackendHook = () => {
       refetchInterval: 60_000 * 10,
       refetchOnWindowFocus: false,
       refetchIntervalInBackground: false,
-      placeholderData: (prev) => prev
+      placeholderData: useConfigPlaceholderData ? (prev) => prev : undefined
     })
   )
 
@@ -47,7 +47,7 @@ const useBackendHook = () => {
     refetchInterval: 60_000 * 10,
     refetchOnWindowFocus: false,
     refetchIntervalInBackground: false,
-    placeholderData: (prev) => prev
+    placeholderData: useConfigPlaceholderData ? (prev) => prev : undefined
   }))
 
   const enableOverviewQuery = () => {
@@ -201,8 +201,10 @@ const useBackendHook = () => {
 
 const BackendContext = createContext<ReturnType<typeof useBackendHook>>();
 
-export const BackendProvider: ParentComponent = (props) => {
-  const hook = useBackendHook()
+export const BackendProvider: ParentComponent<{
+  useConfigPlaceholderData?: boolean
+}> = (props) => {
+  const hook = useBackendHook(props.useConfigPlaceholderData)
   return (
     <BackendContext.Provider value={hook}>
       {props.children}

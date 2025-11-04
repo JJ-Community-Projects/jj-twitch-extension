@@ -7,7 +7,6 @@ import {ConfigMain} from "./ConfigMain.tsx";
 import {useLocale} from "@kobalte/core";
 import {TwitchPanelConfigProvider} from "../../common/providers/PanelConfigProvider.tsx";
 import {AnalyticsProvider} from "../../common/providers/AnalyticsProvider.tsx";
-import {BackendProvider} from "../../common/providers/BackendProvider.tsx";
 
 interface ConfigRootProps {
 }
@@ -18,15 +17,15 @@ export const ConfigRoot: Component<ConfigRootProps> = (props) => {
   return (
     <I18nProvider i18n={i18n}>
       <TwitchAuthProvider>
-          <AnalyticsProvider>
-            <TwitchPanelConfigProvider>
-              <ThemeProvider>
-                <Background>
-                  <ConfigMain/>
-                </Background>
-              </ThemeProvider>
-            </TwitchPanelConfigProvider>
-          </AnalyticsProvider>
+        <AnalyticsProvider>
+          <TwitchPanelConfigProvider>
+            <ThemeProvider>
+              <Background>
+                <ConfigMain/>
+              </Background>
+            </ThemeProvider>
+          </TwitchPanelConfigProvider>
+        </AnalyticsProvider>
       </TwitchAuthProvider>
     </I18nProvider>
   );

@@ -1,4 +1,4 @@
-import type { Component } from "solid-js"
+import type {Component} from "solid-js"
 import {useTwitchPanelConfig, useTwitchPanelConfigEdit} from "../../common/providers/PanelConfigProvider.tsx";
 import {Select} from "@kobalte/core/select";
 import {AiOutlineCheck} from "solid-icons/ai";
@@ -11,7 +11,7 @@ const optionsMap = new Map<string, string>([
 ])
 export const ThemeSelection: Component = () => {
   const config = useTwitchPanelConfig()
-  const { setTwitchConfiguration } = useTwitchPanelConfigEdit()
+  const {setTheme} = useTwitchPanelConfigEdit()
 
   const options = () => [...optionsMap.keys()]
 
@@ -23,9 +23,9 @@ export const ThemeSelection: Component = () => {
         value={config.theme}
         placeholder="Select a Theme"
         onChange={v => {
-          setTwitchConfiguration({
-            theme: v as 'red' | 'blue',
-          })
+          if (v !== null) {
+            setTheme(v as ('red' | 'blue' | 'dark' | 'rainbow'))
+          }
         }}
         options={options()}
         itemComponent={props => (
@@ -35,7 +35,7 @@ export const ThemeSelection: Component = () => {
           >
             <Select.ItemLabel>{optionsMap.get(props.item.rawValue)}</Select.ItemLabel>
             <Select.ItemIndicator>
-              <AiOutlineCheck />
+              <AiOutlineCheck/>
             </Select.ItemIndicator>
           </Select.Item>
         )}
@@ -64,7 +64,7 @@ export const ThemeSelection: Component = () => {
         </Select.Trigger>
         <Select.Portal>
           <Select.Content class="bg-accent-500 rounded shadow">
-            <Select.Listbox class="flex flex-col gap-1" />
+            <Select.Listbox class="flex flex-col gap-1"/>
           </Select.Content>
         </Select.Portal>
       </Select>

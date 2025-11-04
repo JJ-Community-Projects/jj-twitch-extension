@@ -1,8 +1,11 @@
 import {type Component, createEffect, createMemo, createSignal, on, type ParentComponent, Show} from "solid-js";
-import {TwitchPanelConfigProvider, useTwitchPanelConfigEdit} from "../../common/providers/PanelConfigProvider.tsx";
+import {
+  TwitchPanelConfigProvider,
+  useTwitchPanelConfig,
+  useTwitchPanelConfigEdit
+} from "../../common/providers/PanelConfigProvider.tsx";
 import {createModalSignal} from "../../../lib/createModalSignal.ts";
 import {ThemeSelection} from "./ThemeSelection.tsx";
-import {PanelRoot} from "../../panel/PanelRoot.tsx";
 import {AlertDialog} from "@kobalte/core/alert-dialog";
 import {CgClose} from "solid-icons/cg";
 import {Button} from "@kobalte/core/button";
@@ -22,15 +25,16 @@ import {Background} from "../../common/Background.tsx";
 
 export const ConfigMain: Component = () => {
   const modalSignal = createModalSignal()
-  const {setTwitchConfiguration, save, validConfig, edited} = useTwitchPanelConfigEdit()
+  const {save, validConfig, edited} = useTwitchPanelConfigEdit()
+
+  const config = useTwitchPanelConfig()
 
   return (
-    <div class={'bg-primary-500 flex flex-row p-1'}>
+    <div class={'flex flex-row p-1'}>
       <div class={'text-white flex-1'}>
         <div class={'p-2'}>
           <ThemeSelection/>
         </div>
-
         <div class={'p-2'}>
           <Button
             class={'bg-accent rounded-2xl p-2 text-white disabled:bg-gray-400'}
@@ -44,30 +48,38 @@ export const ConfigMain: Component = () => {
             Save
           </Button>
         </div>
-        <div class={'p-2 mt-4 space-y-3'}>
+        <div class={'p-2 mt-4 space-y-3 rounded-2xl bg-gray-500/50'}>
           <h2 class={'text-white text-lg font-semibold'}>Next steps</h2>
           <ul class={'list-disc pl-5 space-y-2'}>
             <li class={'text-white'}>
               Create a Jingle Jam Campaign at{' '}
-              <a href="https://jinglejam.tiltify.com/" target="_blank" rel="noopener noreferrer" class={'underline text-white'}>
+              <a href="https://jinglejam.tiltify.com/" target="_blank" rel="noopener noreferrer"
+                 class={'underline text-white'}>
                 jinglejam.tiltify.com
               </a>.
             </li>
             <li class={'text-white'}>
               Connect your Twitch account to your Tiltify account at{' '}
-              <a href="https://app.tiltify.com/profile/setup" target="_blank" rel="noopener noreferrer" class={'underline text-white'}>
+              <a href="https://app.tiltify.com/profile/setup" target="_blank" rel="noopener noreferrer"
+                 class={'underline text-white'}>
                 app.tiltify.com/profile/setup
               </a>.
             </li>
             <li class={'text-white'}>
               To create your own custom Jingle Jam schedule, visit{' '}
-              <a href="https://jinglejam.ostof.dev" target="_blank" rel="noopener noreferrer" class={'underline text-white'}>
+              <a href="https://jinglejam.ostof.dev" target="_blank" rel="noopener noreferrer"
+                 class={'underline text-white'}>
                 jinglejam.ostof.dev
               </a>{' '}and sign up using your Tiltify account.
             </li>
+            <li class={'text-white'}>
+              The preview may not represent the final visuals 100%. You might have to switch between tabs in the preview
+              to make data load.
+            </li>
           </ul>
-          <p class={'text-sm text-gray-200 opacity-80'}>
-            The Jingle Jam Extension and jinglejam.ostof.dev are community projects and is not associated with the Jingle Jam.
+          <p class={'text-sm text-gray-50 opacity-80'}>
+            The Jingle Jam Extension and jinglejam.ostof.dev are community projects and is not associated with the
+            Jingle Jam.
           </p>
         </div>
         <Show when={edited()}>
@@ -102,7 +114,7 @@ export const ConfigMain: Component = () => {
 const PreviewSelection: Component = () => {
 
   const {setPreviewAuth} = useTwitchAuth()
-  const {refetchAll} = useBackend()
+  const {refetchAll, userConfig, config} = useBackend()
   type PreviewKey = 'yogscast' | 'yogs-member' | 'ostofbot' | 'yours'
 
   const [selected, setSelected] = createSignal<PreviewKey>('yours')
@@ -124,7 +136,7 @@ const PreviewSelection: Component = () => {
     },
     'yogs-member': {
       // Using Martyn's channel for a generic "Yogs Member" preview
-      channelId: "12131870",
+      channelId: "46969360",
       clientId: "333",
       token: "test-123",
       userId: "333",
@@ -146,10 +158,22 @@ const PreviewSelection: Component = () => {
 
   createEffect(on(auth, (a) => {
     if (a) {
+      // When selecting a specific preview (e.g., Yogscast/Yogs Member), override auth
       setPreviewAuth(a)
+    } else {
+      // When switching back to "Yours", clear the preview override so real auth is used
+      setPreviewAuth({
+        channelId: "",
+        clientId: "",
+        token: "",
+        userId: "",
+        helixToken: "",
+      })
     }
     refetchAll()
   }))
+
+  const hasConfig = () => !config.isLoading && !userConfig.isLoading
 
   return (
     <div class={'p-2'}>
@@ -202,11 +226,17 @@ const PreviewSelection: Component = () => {
           </Select.Portal>
         </Select>
       </div>
-      <p>{JSON.stringify(auth)}</p>
 
-      <div class={'from-primary-300 to-primary-700 h-[496px] w-[316px] overflow-hidden bg-gradient-to-b'}>
+      <div class={'from-primary-300 to-primary-700 overflow-hidden bg-gradient-to-b'}
+           style={{
+             height: '496px',
+             width: '316px'
+           }}
+      >
         <Background>
-          <PanelMain/>
+          <Show when={hasConfig()} fallback={<div class={'h-full w-full'}>Loading...</div>}>
+            <PanelMain/>
+          </Show>
         </Background>
       </div>
     </div>
@@ -221,7 +251,7 @@ const Preview: ParentComponent<{}> = () => {
       <I18nProvider i18n={i18n}>
         <TwitchAuthProvider>
           <TabsProvider>
-            <BackendProvider>
+            <BackendProvider useConfigPlaceholderData={false}>
               <TwitchPanelConfigProvider>
                 <AnalyticsProvider>
                   <ThemeProvider>

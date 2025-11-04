@@ -1,5 +1,5 @@
 import {createContext, createSignal, onMount, type ParentComponent, useContext} from "solid-js";
-import {defaultConfig, type TwitchConfig} from "../../../lib/model/TwitchConfig.ts";
+import {defaultConfig, type TwitchConfig, type Theme} from "../../../lib/model/TwitchConfig.ts";
 import {createStore} from "solid-js/store";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
 import type {ExtensionConfig} from "../../../api";
@@ -26,14 +26,10 @@ const useTwitchConfigHook = () => {
     if (twitch.configuration.broadcaster) {
       try {
         const config = JSON.parse(twitch.configuration.broadcaster.content)
+        console.log('configOnChanged', config)
         if (typeof config === 'object') {
-          if (config.tab1 === undefined) {
-            setConfig(defaultConfig)
-            setOriginalConfig(defaultConfig)
-          } else {
-            setConfig({...config})
-            setOriginalConfig({...config})
-          }
+          setConfig({...config})
+          setOriginalConfig({...config})
         } else {
           setConfig(defaultConfig)
           setOriginalConfig(defaultConfig)
@@ -71,9 +67,19 @@ const useTwitchConfigHook = () => {
   const setTwitchConfiguration = (newConfig: Partial<TwitchConfig>) => {
     setConfig({...config, ...newConfig})
   }
+
+  const setTheme = (theme: Theme) => {
+    setConfig('theme', theme)
+  }
+
   const save = () => {
-    twitch?.configuration.set('broadcaster', '1', JSON.stringify(config))
-    setOriginalConfig(config)
+    try {
+      twitch?.configuration.set('broadcaster', '1', JSON.stringify(config))
+      console.log('saved', config)
+      setOriginalConfig(config)
+    } catch (e) {
+      console.error('error while saving', e)
+    }
   }
 
   const validConfig = () => {
@@ -89,7 +95,8 @@ const useTwitchConfigHook = () => {
   return {
     twitchConfig: config, edit: {
       save, setTwitchConfiguration, validConfig, edited, channelId,
-      originalConfig
+      originalConfig,
+      setTheme
     }
   }
 }

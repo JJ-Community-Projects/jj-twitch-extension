@@ -58,11 +58,41 @@ const debugDataMap = {
     token: "test-123",
     userId: "333",
     helixToken: "333"
-  }
+  },
+  'mudkipninja': {
+    channelId: "96202541",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'chasedbyvoices': {
+    channelId: "675328467",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'a': {
+    channelId: "333",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
+  'dawnfire': {
+    channelId: "75214953",
+    clientId: "333",
+    token: "test-123",
+    userId: "333",
+    helixToken: "333"
+  },
 }
-const debugChannel = 'brionykay'
+const debugChannel = 'a'
 const debugData = debugDataMap[debugChannel]
-
+// Hey sorry that this is out of nowhere.
+// I’m the person working on the JJ twitch extension and wanted to ask if you can use this image with your channel for the Twitch extension „promo“ page.
+// This year’s update makes it so that the extension automatically adapts to the channel it is being used on. If I recall correctly you had it last year on your channel
 type ChannelsResponse = {
   data: Array<ChannelInfo>;
 };
@@ -96,9 +126,9 @@ export async function fetchCurrentChannelInfo(auth: Twitch.ext.Authorized) {
   return null;
 }
 
-const useTwitchAuthHook = (overwriteTwitchAuth?: Twitch.ext.Authorized) => {
-  // if (!("Twitch" in window) || !window.Twitch.ext) return;
-  const [auth, setAuth] = createStore<Twitch.ext.Authorized>(overwriteTwitchAuth ?? {
+const useTwitchAuthHook = () => {
+
+  const [auth, setAuth] = createStore<Twitch.ext.Authorized>({
     channelId: "",
     clientId: "",
     token: "",
@@ -117,20 +147,6 @@ const useTwitchAuthHook = (overwriteTwitchAuth?: Twitch.ext.Authorized) => {
   const [channelName, setChannelName] = createSignal<string>();
   const twitch = window?.Twitch?.ext;
   onMount(() => {
-    // If an auth object is provided, use it and skip Twitch SDK wiring
-    if (overwriteTwitchAuth) {
-      setAuth(overwriteTwitchAuth)
-      // Try to resolve channel name if possible, otherwise leave undefined
-      fetchCurrentChannelInfo(overwriteTwitchAuth)
-        .then((info) => {
-          if (typeof info?.broadcaster_login === "string") {
-            setChannelName(info.broadcaster_login.toLowerCase())
-          }
-        })
-        .catch(() => void 0)
-      return
-    }
-
     if (twitch) {
       twitch.onAuthorized((auth) => {
         setAuth(auth);
@@ -163,20 +179,18 @@ const useTwitchAuthHook = (overwriteTwitchAuth?: Twitch.ext.Authorized) => {
       return auth
     }
     return previewAuth
-
   }
 
-  return {auth: actualAuth, channelName, setPreviewAuth, }
+  return {auth: actualAuth, channelName, setPreviewAuth,}
 }
 
 interface TwitchAuthProps {
-  overwriteTwitchAuth?: Twitch.ext.Authorized;
 }
 
 const TwitchAuthContext = createContext<ReturnType<typeof useTwitchAuthHook>>();
 
 export const TwitchAuthProvider: ParentComponent<TwitchAuthProps> = (props) => {
-  const hook = useTwitchAuthHook(props.overwriteTwitchAuth)
+  const hook = useTwitchAuthHook()
   return (
     <TwitchAuthContext.Provider value={hook}>
       {props.children}
