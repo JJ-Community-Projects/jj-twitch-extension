@@ -6,6 +6,7 @@ import {YogsStreamUtils} from "../../../lib/YogsStreamUtils.ts";
 import {useNow} from "../../../lib/useNow.ts";
 import {getTextColor} from "../../../lib/textColors.ts";
 import type {Creator, Stream, StreamVodsInner} from "../../../api";
+import {FaBrandsTwitch} from "solid-icons/fa";
 
 interface YogsScheduleDetailDialogProps {
   stream: Stream
@@ -123,15 +124,13 @@ interface VodProps {
 
 const VodComponent: Component<VodProps> = (props) => {
   return (
-    <div class={'flex flex-row py-1'}>
       <a
-        class={'hover:scale-101 text-xxs flex flex-row items-center p-2 rounded-2xl bg-twitch-500 text-white transition-all '}
+        class={'flex flex-row p-2 gap-2 hover:scale-101 text-xxs items-center rounded-2xl bg-twitch-500 text-white transition-all '}
         target={'_blank'}
         href={props.vod.link}
       >
-        {props.vod.label}
+        {props.vod.label} <FaBrandsTwitch/>
       </a>
-    </div>
   )
 }
 
@@ -157,7 +156,7 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
     <Switch>
       <Match when={hasUrl()}>
         <a
-          class={'hover:scale-101 text-xs flex flex-row items-center p-2 rounded-2xl transition-all gap-1'}
+          class={'hover:scale-101 hover:brightness-105 text-xs flex flex-row items-center p-2 rounded-2xl transition-all gap-2'}
           style={{
             background: color(),
             color: getTextColor(color())
@@ -172,11 +171,16 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
             class="rounded-full size-6"
           />
         </Show>
-          <span>{label()}</span>
+          <span>{label()}</span> <FaBrandsTwitch/>
         </a>
       </Match>
       <Match when={!hasUrl()}>
-        <div class={'text-xs flex flex-row py-1 gap-1'}>
+        <div
+          class={'flex flex-row items-center p-2 rounded-2xl text-xs gap-1'}
+          style={{
+            background: color(),
+            color: getTextColor(color())
+          }}>
           <Show when={props.creator.imageUrl}>
             <img
               src={props.creator.imageUrl}
@@ -187,10 +191,6 @@ const CreatorComponent: Component<CreatorComponentProps> = (props) => {
           </Show>
           <p
             class={'text-xxs flex flex-row items-center p-2 rounded-2xl'}
-            style={{
-              background: color(),
-              color: getTextColor(color())
-            }}
           >
             {label()}
           </p>
