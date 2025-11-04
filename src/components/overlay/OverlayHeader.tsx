@@ -7,13 +7,16 @@ import black from '../../assets/JingleJam_Black.png'
 import {TiltifyRoundIcon} from "../common/icons/JJIcons.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {BiRegularInfoCircle} from "solid-icons/bi";
-import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useOverlay} from "../common/providers/OverlayProvider.tsx";
 import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
+import type {CurrenciesSchema, GetUserData200Response, JJCampaign} from "../../api";
+import {Numeric} from "solid-i18n";
+import {useCurrency} from "../common/providers/CurrencyProvider.tsx";
 
 
-export const OverlayHeader: Component = (props) => {
+export const OverlayHeader: Component = () => {
   const {theme} = useTheme()
+  const {userConfig, userData} = useOverlayBackend()
 
   const image = () => {
     switch (theme()) {
@@ -29,16 +32,102 @@ export const OverlayHeader: Component = (props) => {
 
   return (
     <div class={'px-2'}>
-      <div class={'h-8 flex flex-row bg-white shadow rounded-2xl items-center p-1'}>
-        <div class={'flex-1 flex flex-row items-center justify-start px-1 h-full'}>
-        </div>
-        <img src={image()} class={'h-full'} alt={'JJ Logo'}/>
-        <div class={'flex-1 flex flex-row items-center justify-end px-1 h-full'}>
-          <Donate/>
-        </div>
+      <div class={'flex flex-col bg-white shadow rounded-2xl items-start p-1 gap-1'}>
+        <Show when={userConfig.data}
+              fallback={<NoUserCampaignHeader image={image()}/>}
+        >
+          {(config) => (
+            <Show when={config().hasCampaign} fallback={<NoUserCampaignHeader image={image()}/>}
+            >
+              <Show when={userData.data}>
+                {(ud) => <UserCampaignHeader image={image()} userData={ud()}/>}
+              </Show>
+            </Show>
+          )}
+        </Show>
       </div>
     </div>
   );
+}
+
+const NoUserCampaignHeader: Component<{ image: string }> = (props) => {
+  return (
+    <div class={'w-full h-8 flex flex-row items-center p-1'}>
+      <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
+        <About/>
+      </div>
+      <img src={props.image} class={'h-full'} alt={'JJ Logo'}/>
+      <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
+        <Donate/>
+      </div>
+    </div>
+  )
+}
+
+const UserCampaignHeader: Component<{ image: string, userData: GetUserData200Response }> = (props) => {
+  const {theme, tailwindTextPrimary} = useTheme()
+
+  const raisedTextColor = () => {
+    if (theme() === 'dark') return 'text-white'
+    return tailwindTextPrimary()
+  }
+
+  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
+
+  return (
+    <>
+      <div class={'w-full h-8 flex flex-row items-center p-1'}>
+        <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
+          <About/>
+        </div>
+        <img src={props.image} class={'h-full'} alt={'JJ Logo'}/>
+        <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
+          <a href={props.userData.campaign.tiltifyUrl} target={'_blank'}
+             class={'bg-tiltify-500 text-xs pl-2 p-1 text-white rounded-full flex flex-row gap-1 hover:brightness-105 hover:scale-101'}>
+            Donate
+            <TiltifyRoundIcon class={'size-4'}/>
+          </a>
+        </div>
+      </div>
+      <div class={'w-full px-1 pb-1'}>
+        <div class={twMerge('w-full h-full flex flex-row items-start gap-2')}>
+          <img src={props.userData.campaign.twitch?.avatar ?? props.userData.campaign.avatar} alt={'Campaign Avatar'}
+               class={'~w-8/12 ~h-8/12 rounded-xl object-cover'}/>
+
+          <UserCampaignTexts campaign={props.userData.campaign}/>
+
+          <div class={'h-full flex flex-col items-end justify-start'}>
+            <p class={twMerge('text-xs font-bold', raisedTextColor())}>
+              <CurrencyAmount values={props.userData.campaign.raised}/>
+            </p>
+            <p class={twMerge('text-[10px]', darkText())}>Raised</p>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+const UserCampaignTexts: Component<{ campaign: JJCampaign }> = (props) => {
+  const {theme, tailwindTextPrimary} = useTheme()
+  const raisedTextColor = () => {
+    if (theme() === 'dark') return 'text-white'
+    return tailwindTextPrimary()
+  }
+
+  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
+
+  const platformName = () => {
+    const t = props.campaign.twitch
+    return t?.name ?? props.campaign.tiltifyName
+  }
+
+  return (
+    <div class={'relative min-w-0 flex-1 flex flex-col leading-tight'}>
+      <p class={twMerge('text-xs font-bold truncate', raisedTextColor())}>{platformName()}</p>
+      <p class={twMerge('text-[10px] truncate', darkText())}>{props.campaign.campaignName}</p>
+    </div>
+  )
 }
 
 const About = () => {
@@ -70,34 +159,6 @@ const About = () => {
       </button>
     </>
   )
-  /*
-  return (
-    <>
-      <Tooltip placement={'bottom'}>
-        <Tooltip.Trigger
-          onClick={() => {
-            modalSignal.open()
-          }}
-          class={
-            twMerge('w-5 h-5 items-center justify-center flex flex-col',
-            )
-          }>
-          <FaSolidInfo class={'text-black'} size={18}/>
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
-            <Tooltip.Arrow/>
-            <p class={'text-white'}>About</p>
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip>
-      <AboutDialog
-        isOpen={modalSignal.isOpen()}
-        close={modalSignal.close}
-        onOpenChange={modalSignal.toggle}
-      />
-    </>
-  )*/
 }
 
 const Donate = () => {
@@ -141,5 +202,28 @@ const Donate = () => {
         />
       </a>
     </Show>
+  )
+}
+
+const CurrencyAmount: Component<{ values: CurrenciesSchema }> = (props) => {
+  const {pounds, usd, eur} = useCurrency()
+  return (
+    <>
+      <Show when={usd()}>
+        <div id={'usd'}>
+          <Numeric value={props.values.usd} numberStyle="currency" currency={'USD'}/>
+        </div>
+      </Show>
+      <Show when={pounds()}>
+        <div id={'gbp'}>
+          <Numeric value={props.values.gbp} numberStyle="currency" currency={'GBP'}/>
+        </div>
+      </Show>
+      <Show when={eur()}>
+        <div id={'eur'}>
+          <Numeric value={props.values.euro} numberStyle="currency" currency={'EUR'}/>
+        </div>
+      </Show>
+    </>
   )
 }

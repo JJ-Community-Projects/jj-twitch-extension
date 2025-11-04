@@ -7,6 +7,8 @@ import {Numeric} from "solid-i18n";
 import {OverlayHeader} from "./OverlayHeader.tsx";
 import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 import type {JJCause} from "../../api";
+import {OverlayCharityOverviewCollapsable} from "../common/extenstionTabs/charityTab/CharityOverviewCollapsable.tsx";
+import {CharityListItemAlt} from "../common/extenstionTabs/charityTab/CharityListItemAlt.tsx";
 
 
 export const OverlayJJCharities: Component = () => {
@@ -35,10 +37,11 @@ export const OverlayJJCharities: Component = () => {
             'lg:grid lg:grid-cols-2',
             'flex flex-col p-2'
           )}>
+            <OverlayCharityOverviewCollapsable/>
             <Show when={causes.data}>{
               (causes) => {
-                return (<For each={causes().causes}>
-                  {charity => <Item cause={charity}/>}
+                return (<For each={causes().causes }>
+                  {(charity, i) => <CharityListItemAlt charity={charity} i={i()}/>}
                 </For>)
               }
             }</Show>

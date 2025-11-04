@@ -6,6 +6,11 @@ import {Numeric} from "solid-i18n";
 import {FiExternalLink} from "solid-icons/fi";
 import {OverlayHeader} from "./OverlayHeader.tsx";
 import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
+import {
+  CharityOverviewCollapsable,
+  OverlayCharityOverviewCollapsable
+} from "../common/extenstionTabs/charityTab/CharityOverviewCollapsable.tsx";
+import {CommunityListItemAlt} from "../common/extenstionTabs/communityTab/CommunityListItem.tsx";
 
 
 export const OverlayCommunityFundraiser: Component = (props) => {
@@ -49,20 +54,11 @@ export const OverlayCommunityFundraiser: Component = (props) => {
             'lg:grid lg:grid-cols-2',
             'flex flex-col p-2'
           )}>
+            <OverlayCharityOverviewCollapsable/>
             <For each={campaigns.data?.campaigns}>
               {(d, i) => {
-
                 return (
-                  <Child
-                    i={i()}
-                    img={'img()'}
-                    title={d?.twitch?.name ?? d.tiltifyName}
-                    subtitle={d.tiltifyName}
-                    desc={d.tiltifyDescription ?? ''}
-                    isLive={false}
-                    raised={d.raised.gbp}
-                    url={'url()'}
-                  />
+                  <CommunityListItemAlt campaign={d} i={i()}/>
                 )
               }}
             </For>
