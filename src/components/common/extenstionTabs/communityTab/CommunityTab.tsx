@@ -1,20 +1,18 @@
-import {type Component, createSignal, For, Show} from "solid-js";
+import {type Component, createSignal, Show} from "solid-js";
 import {ColoredScrollbar} from "../../ColoredScrollbar.tsx";
 import {DateTime} from "luxon";
 import {FiExternalLink} from "solid-icons/fi";
 import {InvisibleBodyAlt} from "../../InvisibleBody.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
-import type {JJCampaign} from "../../../../api";
 import {CommunityListItemAlt} from "./CommunityListItem.tsx";
-import {CurrencyToggle} from "../../CurrencyToggle.tsx";
 import {CrossFade} from "../../CrossFade.tsx";
 import {Loading} from "../../Loading.tsx";
 import {ErrorPage} from "../../Error.tsx";
 import {CharityOverviewCollapsable} from "../charityTab/CharityOverviewCollapsable.tsx";
 import {CommunitySearchProvider, useCommunitySearch} from "./CommunitySearchProvider.tsx";
-import { FaSolidMagnifyingGlass } from "solid-icons/fa";
-import { TextField } from "@kobalte/core";
-
+import {FaSolidMagnifyingGlass} from "solid-icons/fa";
+import {TextField} from "@kobalte/core";
+import {Key} from "@solid-primitives/keyed";
 
 export const CommunityTab: Component = () => {
   const {config} = useBackend()
@@ -75,25 +73,25 @@ const Body = () => {
 }
 
 
-const FundraiserBody: Component<{  }> = props => {
+const FundraiserBody: Component = () => {
 
   const {campaigns} = useCommunitySearch()
 
   return (
     <>
       <CharityOverviewCollapsable/>
-      <For each={campaigns()} fallback={
+      <Key each={campaigns()} by={(c) => `${c.tiltifyUrl}`} fallback={
         <p class={'text-center text-white'}>No Fundraisers found.</p>
       }>
         {(c, i) => {
           return (
             <CommunityListItemAlt
               i={i()}
-              campaign={c}
+              campaign={c()}
             />
           )
         }}
-      </For>
+      </Key>
     </>
   )
 }
@@ -108,7 +106,6 @@ const JJStreamTeamLink = () => {
       <FiExternalLink/></a>
   )
 }
-
 
 
 export const CommunityBottom: Component<{
