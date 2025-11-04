@@ -11,11 +11,90 @@ import "./CharityOverviewCollapsable.css";
 import type {CurrenciesSchema, OverviewSchema} from "../../../../api";
 import {CrossFade} from "../../CrossFade.tsx";
 import {CurrencyToggleDropdown} from "../../CurrencyToggleDropdown.tsx";
+import {useOverlayBackend} from "../../providers/OverlayBackendProvider.tsx";
 
 // A collapsable version of CharityOverview. When closed, only shows total raised and the currency toggle.
 // When opened, it renders the same details as CharityOverview.
 export const CharityOverviewCollapsable: Component = () => {
   const {overview} = useBackend();
+
+
+  const {theme} = useTheme();
+  const darkText = () => (theme() === "dark" ? "text-white" : "");
+  const bgColor = () => (theme() === "dark" ? "bg-gradient-to-br from-gray-500 to-gray-600" : "bg-gradient-to-br from-white to-gray-100");
+
+  const [open, setOpen] = createSignal<string[]>([])
+
+  const isOpen = () => open().includes("overview");
+
+  return (
+    <Show when={overview.data}>
+      {(overview) => (
+        <div class={"text-center text-xs"}>
+          <div class={twMerge("flex h-full w-full flex-col gap-1 rounded-2xl shadow-xl p-1", bgColor())}>
+            <Accordion.Root collapsible value={open()} onChange={setOpen}>
+              <Accordion.Item value="overview">
+                {/* Header: whole header acts as trigger, with left chevron and right currency toggle */}
+                <Accordion.Header class="relative h-12 w-full select-none p-1">
+                  <Accordion.Trigger
+                    class={twMerge(
+                      "group absolute inset-0 flex items-center justify-center rounded-2xl transition-colors",
+                      theme() === "dark" ? "text-white hover:bg-white/10" : "text-gray-700 hover:bg-black/5 hover:scale-101"
+                    )}
+                    aria-label="Toggle charity overview"
+                  >
+                    {/* Left chevron icon */}
+                    <div class="absolute left-0 top-0 m-2 flex h-8 w-8 items-center justify-center">
+                      <FaSolidChevronDown class={twMerge(
+                        "h-4 w-4 transition-transform rounded-full",
+                        "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0"
+                      )}/>
+                    </div>
+
+                    <div class={'left-0 top-1 absolute w-full h-full p-1'}>
+                      <CrossFade show={isOpen()}>
+                        <BigCurrency values={overview().raised.total}
+                                     text={`Raised in ${DateTime.fromJSDate(overview().date).year}`}/>
+                      </CrossFade>
+                      <CrossFade show={!isOpen()}>
+                        <OverviewChanger overview={overview()}/>
+                      </CrossFade>
+                    </div>
+                  </Accordion.Trigger>
+
+                  {/* Keep currency toggle outside trigger so it's still clickable without toggling */}
+                  <div id={"div2"} class={"absolute right-0 top-0 z-10 p-1"}>
+                    <CurrencyToggleDropdown/>
+                  </div>
+                </Accordion.Header>
+
+                {/* Body: animated open/close */}
+                <Accordion.Content
+                  class="jj-accordion__content">
+                  <div class="overflow-hidden">
+                    <div class={"grid grid-cols-2 gap-1 gap-y-2 pt-1"}>
+                      <SmallCurrency values={overview().raised.yogscast} text={"Raised by the Yogscast"}/>
+                      <SmallCurrency values={overview().raised.fundraisers} text={"Raised by Fundraisers"}/>
+                      <SmallValue value={overview().collections.redeemed} text={'Collections Sold'}/>
+                      <SmallValue value={overview().collections.total - overview().collections.redeemed}
+                                  text={'Collections Available'}/>
+                    </div>
+                    <div class={"flex flex-1 items-end justify-center pt-1"}>
+                      <p class={twMerge("text-xxs text-center", darkText())}>
+                        Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
+                      </p>
+                    </div>
+                  </div>
+                </Accordion.Content>
+              </Accordion.Item>
+            </Accordion.Root>
+          </div>
+        </div>)}
+    </Show>
+  );
+};
+export const OverlayCharityOverviewCollapsable: Component = () => {
+  const {overview} = useOverlayBackend();
 
 
   const {theme} = useTheme();
