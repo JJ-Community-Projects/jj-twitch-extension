@@ -107,7 +107,7 @@ const Live = () => {
 
 export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }> = (props) => {
   const { theme } = useTheme();
-  const {pounds, currency} = useCurrency()
+  const {eur, currency, usd} = useCurrency()
 
   const gradient = [
     "bg-gradient-to-br from-red-200 to-red-400",
@@ -136,18 +136,22 @@ export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }
   const isLive = () => props.campaign.twitch?.isLive ?? false;
 
   const name = () => props.campaign.twitch?.name ?? props.campaign.tiltifyName
+
   const raised = () => {
-    if (pounds()) {
-      return props.campaign.raised.gbp
+    if (usd()) {
+      return props.campaign.raised.usd
     }
-    return props.campaign.raised.usd
+    if (eur()) {
+      return props.campaign.raised.euro
+    }
+    return props.campaign.raised.gbp
   }
 
   return (
     <div
       class={twMerge(
         "w-full rounded-2xl shadow-sm hover:shadow-md transition-all duration-200",
-        "hover:brightness-101 hover:scale-101",
+        "hover:brightness-105 hover:scale-101",
         campaignSurface(props.i)
       )}
     >
