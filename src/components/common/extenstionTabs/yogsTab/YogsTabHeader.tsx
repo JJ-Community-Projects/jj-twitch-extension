@@ -33,7 +33,7 @@ export const YogsTabHeader: Component = () => {
     <div
       class={'h-full flex-1 px-2'}
     >
-      <div class={'w-full rounded-2xl shadow-xl hover:shadow-2xl bg-white flex h-full flex-col items-center justify-center'}>
+      <div class={'w-full rounded-2xl shadow-xl hover:shadow-2xl bg-gradient-to-b from-neutral-50 to-neutral-100 flex h-full flex-col items-center justify-center'}>
         <h3 class={'text-center text-xl'}>{schedule.title}</h3>
         <Switch>
           <Match when={isEmpty()}>

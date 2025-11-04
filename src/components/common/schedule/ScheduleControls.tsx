@@ -67,7 +67,7 @@ export const ScheduleControls: Component = () => {
       <div class={'flex flex-col justify-center px-2 pb-0 pt-2'}>
         <Switch>
           <Match when={isEmpty()}>
-            <div class={`h-full w-full rounded-2xl shadow-xl hover:shadow-2xl bg-white flex flex-row justify-between`}>
+            <div class={`h-full w-full rounded-2xl shadow-xl hover:shadow-2xl bg-gradient-to-b from-neutral-50 to-neutral-100 flex flex-row justify-between`}>
               <button class={twMerge('rounded-l-2xl', link)} onClick={previousDay}>
                 <div class={twMerge(
                   'flex flex-row items-center justify-center gap-0.5',
@@ -169,7 +169,7 @@ export const ScheduleControls: Component = () => {
             </div>
           </Match>
           <Match when={!isEmpty()}>
-            <div class={`w-full rounded-2xl shadow-xl hover:shadow-2xl bg-white flex h-full flex-row`}>
+            <div class={`w-full rounded-2xl shadow-xl hover:shadow-2xl bg-gradient-to-b from-neutral-50 to-neutral-100 flex h-full flex-row`}>
               <button class={twMerge('rounded-l-2xl', link)} onClick={modalSignal.open}>
                 <div class={twMerge(
                   'flex flex-row items-center justify-center gap-0.5',
