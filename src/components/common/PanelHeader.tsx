@@ -28,26 +28,34 @@ import {CrossFade} from "./CrossFade.tsx";
 
 export const PanelHeader: Component = () => {
 
-  const {userData, userConfig} = useBackend()
+  const {userData, userConfig, config} = useBackend()
 
   return (
-    <Show when={userConfig.data}>
+    <Show when={config.data}>
       {
         (config) => {
           return (
-            <Show
-              when={config().hasCampaign}
-              fallback={<NoUserCampaignHeader/>}
-            >
-              <Show
-                when={userData.data}
-                fallback={<NoUserCampaignHeader/>}>
-                {
-                  (userData) => (
-                    <UserCampaignHeader userData={userData()}/>
+            <Show when={userConfig.data}>
+              {
+                (userConfig) => {
+                  return (
+                    <Show
+                      when={userConfig().hasCampaign && config().showUserFundraiser}
+                      fallback={<NoUserCampaignHeader/>}
+                    >
+                      <Show
+                        when={userData.data}
+                        fallback={<NoUserCampaignHeader/>}>
+                        {
+                          (userData) => (
+                            <UserCampaignHeader userData={userData()}/>
+                          )
+                        }
+                      </Show>
+                    </Show>
                   )
                 }
-              </Show>
+              }
             </Show>
           )
         }

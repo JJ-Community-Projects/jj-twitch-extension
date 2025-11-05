@@ -16,7 +16,7 @@ import {useCurrency} from "../common/providers/CurrencyProvider.tsx";
 
 export const OverlayHeader: Component = () => {
   const {theme} = useTheme()
-  const {userConfig, userData} = useOverlayBackend()
+  const {userConfig, userData, config} = useOverlayBackend()
 
   const image = () => {
     switch (theme()) {
@@ -33,17 +33,26 @@ export const OverlayHeader: Component = () => {
   return (
     <div class={'px-2'}>
       <div class={'flex flex-col bg-white shadow rounded-2xl items-start p-1 gap-1'}>
-        <Show when={userConfig.data}
-              fallback={<NoUserCampaignHeader image={image()}/>}
-        >
-          {(config) => (
-            <Show when={config().hasCampaign} fallback={<NoUserCampaignHeader image={image()}/>}
-            >
-              <Show when={userData.data}>
-                {(ud) => <UserCampaignHeader image={image()} userData={ud()}/>}
-              </Show>
-            </Show>
-          )}
+        <Show when={config.data}>
+          {
+            (config) => {
+              return (
+                <Show when={userConfig.data}
+                      fallback={<NoUserCampaignHeader image={image()}/>}
+                >
+                  {(userConfig) => (
+                    <Show when={userConfig().hasCampaign && config().showUserFundraiser}
+                          fallback={<NoUserCampaignHeader image={image()}/>}
+                    >
+                      <Show when={userData.data}>
+                        {(ud) => <UserCampaignHeader image={image()} userData={ud()}/>}
+                      </Show>
+                    </Show>
+                  )}
+                </Show>
+              )
+            }
+          }
         </Show>
       </div>
     </div>

@@ -16,7 +16,7 @@ import {useOverlayBackend} from "../../providers/OverlayBackendProvider.tsx";
 // A collapsable version of CharityOverview. When closed, only shows total raised and the currency toggle.
 // When opened, it renders the same details as CharityOverview.
 export const CharityOverviewCollapsable: Component = () => {
-  const {overview} = useBackend();
+  const {overview, config} = useBackend();
 
 
   const {theme} = useTheme();
@@ -102,6 +102,23 @@ export const CharityOverviewCollapsable: Component = () => {
                         Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
                       </p>
                     </div>
+                    <Show when={config.data}>
+                      {
+                        (config) => {
+                          return <Show when={config().donationTrackerUrl}>
+                            {
+                              (url) => {
+                                return (
+                                  <div class={twMerge("flex flex-1 items-end justify-center", darkText())}>
+                                    <a class={'underline'} href={url()}>Live Donation Tracker</a>
+                                  </div>
+                                )
+                              }
+                            }
+                          </Show>
+                        }
+                      }
+                    </Show>
                   </div>
                 </Accordion.Content>
               </Accordion.Item>

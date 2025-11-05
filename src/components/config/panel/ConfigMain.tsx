@@ -22,69 +22,83 @@ import {Select} from "@kobalte/core/select";
 import {AiOutlineCheck} from "solid-icons/ai";
 import {PanelMain} from "../../panel/PanelMain.tsx";
 import {Background} from "../../common/Background.tsx";
+import {useIsJJ, useJJStartCountdown} from "../../../lib/useJJDates.ts";
 
 export const ConfigMain: Component = () => {
   const modalSignal = createModalSignal()
   const {save, validConfig, edited} = useTwitchPanelConfigEdit()
 
   const config = useTwitchPanelConfig()
+  const jjCountdown = useJJStartCountdown()
+  const isJJ = useIsJJ()
 
   return (
     <div class={'flex flex-row p-1'}>
       <div class={'text-white flex-1'}>
-        <div class={'p-2'}>
-          <ThemeSelection/>
+        <div class={'pt-2 px-2 flex flex-row gap-2'}>
+          <div class={'w-full'}>
+            <Show when={!isJJ()}>
+              <div class={'rounded-2xl border border-white/10 bg-black/30 p-2 h-full'}>
+                <p class={'text-base md:text-lg text-white/80'}>The Jingle Jam starts in</p>
+                <p class={'font-mono text-2xl'}>{jjCountdown().toFormat("dd'd' hh'h' mm'm' ss's'")}</p>
+              </div>
+            </Show>
+          </div>
+          <div class={'flex flex-row gap-1 items-end rounded-2xl border border-white/10 bg-black/30 p-2'}>
+            <ThemeSelection/>
+            <Button
+              class={'bg-accent rounded-2xl p-2 text-white disabled:bg-gray-400'}
+              onClick={() => {
+                save()
+                modalSignal.toggle()
+                // log('config_save', config)
+              }}
+              disabled={!validConfig()}
+            >
+              Save
+            </Button>
+          </div>
         </div>
-        <div class={'p-2'}>
-          <Button
-            class={'bg-accent rounded-2xl p-2 text-white disabled:bg-gray-400'}
-            onClick={() => {
-              save()
-              modalSignal.toggle()
-              // log('config_save', config)
-            }}
-            disabled={!validConfig()}
-          >
-            Save
-          </Button>
+        <div class={'px-2'}>
+          <div class={'p-2 mt-4 space-y-3 rounded-2xl border border-white/10 bg-black/30'}>
+            <h2 class={'text-white text-lg font-semibold'}>Next steps</h2>
+            <ul class={'list-disc pl-5 space-y-2'}>
+              <li class={'text-white'}>
+                Create a Jingle Jam Campaign at{' '}
+                <a href="https://jinglejam.tiltify.com/" target="_blank" rel="noopener noreferrer"
+                   class={'underline text-white'}>
+                  jinglejam.tiltify.com
+                </a>.
+              </li>
+              <li class={'text-white'}>
+                Connect your Twitch account to your Tiltify account at{' '}
+                <a href="https://app.tiltify.com/profile/setup" target="_blank" rel="noopener noreferrer"
+                   class={'underline text-white'}>
+                  app.tiltify.com/profile/setup
+                </a>.
+              </li>
+              <li class={'text-white'}>
+                To create your own custom Jingle Jam schedule, visit{' '}
+                <a href="https://jinglejam.ostof.dev" target="_blank" rel="noopener noreferrer"
+                   class={'underline text-white'}>
+                  jinglejam.ostof.dev
+                </a>{' '}and sign up using your Tiltify account.
+              </li>
+              <li class={'text-white'}>
+                This years Fundraisers and Charities will be available shortly after the Jingle Jam has started.
+              </li>
+              <li class={'text-white'}>
+                The preview may not represent the final visuals 100%. You might have to switch between tabs in the
+                preview
+                to make data load.
+              </li>
+            </ul>
+            <p class={'text-sm text-gray-50 opacity-80'}>
+              The Jingle Jam Extension and jinglejam.ostof.dev are community projects and is not associated with the
+              Jingle Jam.
+            </p>
+          </div>
         </div>
-        <div class={'p-2 mt-4 space-y-3 rounded-2xl bg-gray-500/50'}>
-          <h2 class={'text-white text-lg font-semibold'}>Next steps</h2>
-          <ul class={'list-disc pl-5 space-y-2'}>
-            <li class={'text-white'}>
-              Create a Jingle Jam Campaign at{' '}
-              <a href="https://jinglejam.tiltify.com/" target="_blank" rel="noopener noreferrer"
-                 class={'underline text-white'}>
-                jinglejam.tiltify.com
-              </a>.
-            </li>
-            <li class={'text-white'}>
-              Connect your Twitch account to your Tiltify account at{' '}
-              <a href="https://app.tiltify.com/profile/setup" target="_blank" rel="noopener noreferrer"
-                 class={'underline text-white'}>
-                app.tiltify.com/profile/setup
-              </a>.
-            </li>
-            <li class={'text-white'}>
-              To create your own custom Jingle Jam schedule, visit{' '}
-              <a href="https://jinglejam.ostof.dev" target="_blank" rel="noopener noreferrer"
-                 class={'underline text-white'}>
-                jinglejam.ostof.dev
-              </a>{' '}and sign up using your Tiltify account.
-            </li>
-            <li class={'text-white'}>
-              The preview may not represent the final visuals 100%. You might have to switch between tabs in the preview
-              to make data load.
-            </li>
-          </ul>
-          <p class={'text-sm text-gray-50 opacity-80'}>
-            The Jingle Jam Extension and jinglejam.ostof.dev are community projects and is not associated with the
-            Jingle Jam.
-          </p>
-        </div>
-        <Show when={edited()}>
-          <p>You have unsaved changes</p>
-        </Show>
       </div>
       <Preview/>
       <AlertDialog open={modalSignal.isOpen()} onOpenChange={modalSignal.setOpen}>
@@ -176,68 +190,71 @@ const PreviewSelection: Component = () => {
   const hasConfig = () => !config.isLoading && !userConfig.isLoading
 
   return (
-    <div class={'p-2'}>
-      <p class={'text-white'}>Preview</p>
-      <div class={'mb-2'}>
-        <Select<PreviewKey>
-          class="row col w-52 gap-4 p-2 text-white"
-          value={selected()}
-          placeholder="Select a Preview"
-          onChange={(v) => setSelected(v as PreviewKey)}
-          options={options()}
-          itemComponent={(props) => (
-            <Select.Item
-              class={'flex w-full flex-row justify-between p-1 text-white hover:cursor-pointer'}
-              item={props.item}
+    <div class={'pt-2 px-1'}>
+      <div class={'flex flex-col gap-1 rounded-2xl border border-white/10 bg-black/30 p-1'}>
+        <div class={'flex flex-row gap-1 items-center'}>
+          <p class={'text-white'}>Preview</p>
+          <div class={''}>
+            <Select<PreviewKey>
+              class="row col w-52 gap-4 p-2 text-white"
+              value={selected()}
+              placeholder="Select a Preview"
+              onChange={(v) => setSelected(v as PreviewKey)}
+              options={options()}
+              itemComponent={(props) => (
+                <Select.Item
+                  class={'flex w-full flex-row justify-between p-1 text-white hover:cursor-pointer'}
+                  item={props.item}
+                >
+                  <Select.ItemLabel>{labelMap.get(props.item.rawValue as PreviewKey)}</Select.ItemLabel>
+                  <Select.ItemIndicator>
+                    <AiOutlineCheck/>
+                  </Select.ItemIndicator>
+                </Select.Item>
+              )}
             >
-              <Select.ItemLabel>{labelMap.get(props.item.rawValue as PreviewKey)}</Select.ItemLabel>
-              <Select.ItemIndicator>
-                <AiOutlineCheck/>
-              </Select.ItemIndicator>
-            </Select.Item>
-          )}
+              <Select.Trigger class="flex w-52 flex-row items-center justify-between" aria-label="Preview as">
+                <Select.Value<PreviewKey>>{(state) => labelMap.get(state.selectedOption() as PreviewKey)}</Select.Value>
+                <Select.Icon class="select__icon">
+                  <svg
+                    fill="currentColor"
+                    stroke-width="0"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    height="2em"
+                    width="2em"
+                    style="overflow: visible; --darkreader-inline-fill: currentColor;"
+                    data-darkreader-inline-fill=""
+                  >
+                    <path
+                      fill="currentColor"
+                      d="m12 15-4.243-4.242 1.415-1.414L12 12.172l2.828-2.828 1.415 1.414L12 15.001Z"
+                      data-darkreader-inline-fill=""
+                      style="--darkreader-inline-fill: currentColor;"
+                    ></path>
+                  </svg>
+                </Select.Icon>
+              </Select.Trigger>
+              <Select.Portal>
+                <Select.Content class="bg-accent-500 rounded shadow">
+                  <Select.Listbox class="flex flex-col gap-1"/>
+                </Select.Content>
+              </Select.Portal>
+            </Select>
+          </div>
+        </div>
+        <div class={'from-primary-300 to-primary-700 overflow-hidden bg-gradient-to-b'}
+             style={{
+               height: '496px',
+               width: '316px'
+             }}
         >
-          <Select.Trigger class="flex w-52 flex-row items-center justify-between" aria-label="Preview as">
-            <Select.Value<PreviewKey>>{(state) => labelMap.get(state.selectedOption() as PreviewKey)}</Select.Value>
-            <Select.Icon class="select__icon">
-              <svg
-                fill="currentColor"
-                stroke-width="0"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                height="2em"
-                width="2em"
-                style="overflow: visible; --darkreader-inline-fill: currentColor;"
-                data-darkreader-inline-fill=""
-              >
-                <path
-                  fill="currentColor"
-                  d="m12 15-4.243-4.242 1.415-1.414L12 12.172l2.828-2.828 1.415 1.414L12 15.001Z"
-                  data-darkreader-inline-fill=""
-                  style="--darkreader-inline-fill: currentColor;"
-                ></path>
-              </svg>
-            </Select.Icon>
-          </Select.Trigger>
-          <Select.Portal>
-            <Select.Content class="bg-accent-500 rounded shadow">
-              <Select.Listbox class="flex flex-col gap-1"/>
-            </Select.Content>
-          </Select.Portal>
-        </Select>
-      </div>
-
-      <div class={'from-primary-300 to-primary-700 overflow-hidden bg-gradient-to-b'}
-           style={{
-             height: '496px',
-             width: '316px'
-           }}
-      >
-        <Background>
-          <Show when={hasConfig()} fallback={<div class={'h-full w-full'}>Loading...</div>}>
-            <PanelMain/>
-          </Show>
-        </Background>
+          <Background>
+            <Show when={hasConfig()} fallback={<div class={'h-full w-full text-white'}>Loading...</div>}>
+              <PanelMain/>
+            </Show>
+          </Background>
+        </div>
       </div>
     </div>
   );

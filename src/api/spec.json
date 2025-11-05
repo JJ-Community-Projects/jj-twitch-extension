@@ -310,6 +310,9 @@
           "showFundraisers": {
             "type": "boolean"
           },
+          "showUserFundraiser": {
+            "type": "boolean"
+          },
           "refreshInterval": {
             "type": "object",
             "properties": {
@@ -360,6 +363,7 @@
           "showYogsSchedule",
           "showCharities",
           "showFundraisers",
+          "showUserFundraiser",
           "refreshInterval",
           "donationLink",
           "donationTrackerUrl",
