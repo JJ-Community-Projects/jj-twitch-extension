@@ -1,5 +1,5 @@
 import {type Component, createEffect, Show} from "solid-js";
-import {FaSolidHeart, FaSolidInfo, FaSolidPeopleGroup} from "solid-icons/fa";
+import {FaSolidCalendarWeek, FaSolidHeart, FaSolidInfo, FaSolidPeopleGroup} from "solid-icons/fa";
 import {YogsIcon} from "../common/icons/YogsIcon.tsx";
 import {Tooltip} from "@kobalte/core/tooltip";
 import './OverlaySideNav.css'
@@ -11,14 +11,15 @@ import {useChat} from "../common/providers/ChatProvider.tsx";
 import {Button} from "@kobalte/core/button";
 import {JJIcon} from "../common/icons/JJIcons.tsx";
 import {useTwitchAuth} from "../common/providers/TwitchAuthProvider.tsx";
+import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 export const OverlaySideNav: Component = () => {
 
   const {start} = useChat()
-  const config = useOverlayConfig()
   const twitchConfig = useTwitchOverlayConfig()
   const {theme, tailwindBGPrimary} = useTheme()
   const {auth, channelName} = useTwitchAuth()
+  const {config, userConfig} = useOverlayBackend()
   createEffect(() => {
     console.log('OverlaySideNav', channelName())
   })
@@ -27,16 +28,36 @@ export const OverlaySideNav: Component = () => {
     toggleCharities,
     toggleCommunity,
     toggleSchedule,
+    toggleUserSchedule,
     toggleAbout,
     jj,
     charities,
     community,
-    schedule,
+    yogsSchedule,
+    userSchedule,
     about
   } = useOverlay()
 
   const showYogsSchedule = () => {
-    return true
+    if (config.data && userConfig.data) {
+      return config.data.showYogsSchedule && userConfig.data.tabs.includes('yogs')
+    }
+    return false
+    /*
+    if (import.meta.env.DEV) {
+      return true
+    }
+    if (!config.yogsScheduleChannel) {
+      return false
+    }
+    return config.yogsScheduleChannel.includes(channelName()?.toLowerCase() ?? '')
+     */
+  }
+  const showUserSchedule = () => {
+    if ( userConfig.data) {
+      return  userConfig.data.tabs.includes('user-schedule')
+    }
+    return false
     /*
     if (import.meta.env.DEV) {
       return true
@@ -160,8 +181,8 @@ export const OverlaySideNav: Component = () => {
             class={
               twMerge('hover:scale-105 border-4 transition-all aspect-square rounded-2xl shadow-xl p-2 items-center justify-center flex flex-col',
                 buttonColor(),
-                schedule() ? 'scale-105' : '',
-                schedule() ? buttonBorderHoverColor() : buttonBorderColor()
+                yogsSchedule() ? 'scale-105' : '',
+                yogsSchedule() ? buttonBorderHoverColor() : buttonBorderColor()
               )
             }
           >
@@ -171,6 +192,28 @@ export const OverlaySideNav: Component = () => {
             <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
               <Tooltip.Arrow/>
               <p class={'text-white'}>The Yogscast Jingle Jam Schedule</p>
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip>
+      </Show>
+      <Show when={showUserSchedule()}>
+        <Tooltip placement={'right'}>
+          <Tooltip.Trigger
+            onClick={toggleUserSchedule}
+            class={
+              twMerge('hover:scale-105 border-4 transition-all aspect-square rounded-2xl shadow-xl p-2 items-center justify-center flex flex-col',
+                buttonColor(),
+                userSchedule() ? 'scale-105' : '',
+                userSchedule() ? buttonBorderHoverColor() : buttonBorderColor()
+              )
+            }
+          >
+            <FaSolidCalendarWeek class={'text-white'} size={24}/>
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
+              <Tooltip.Arrow/>
+              <p class={'text-white'}>Schedule</p>
             </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip>

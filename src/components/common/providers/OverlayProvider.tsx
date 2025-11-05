@@ -45,6 +45,15 @@ const useOverlayHook = () => {
     }
   }
 
+  const toggleUserSchedule = () => {
+    if (window() === 'user_schedule') {
+      setWindow('none')
+    } else {
+      setStream(undefined)
+      setWindow('user_schedule')
+    }
+  }
+
   const toggleAbout = () => {
     if (window() === 'about') {
       setWindow('none')
@@ -61,7 +70,8 @@ const useOverlayHook = () => {
   const jj = () => window() === 'jj'
   const charities = () => window() === 'charities'
   const community = () => window() === 'community'
-  const schedule = () => window() === 'yogs_schedule'
+  const yogsSchedule = () => window() === 'yogs_schedule'
+  const userSchedule = () => window() === 'user_schedule'
   const about = () => window() === 'about'
   const showStream = () => stream() !== undefined
 
@@ -81,13 +91,15 @@ const useOverlayHook = () => {
     toggleCharities,
     toggleCommunity,
     toggleSchedule,
+    toggleUserSchedule,
     toggleAbout,
     hide,
     window,
     jj,
     charities,
     community,
-    schedule,
+    yogsSchedule,
+    userSchedule,
     about,
     none,
     shows,

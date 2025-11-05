@@ -35,7 +35,7 @@ export const OverlayJJCharities: Component = () => {
           <div class={twMerge(
             'h-full w-full gap-2',
             'lg:grid lg:grid-cols-2',
-            'flex flex-col p-2'
+            'flex flex-col px-2'
           )}>
             <OverlayCharityOverviewCollapsable/>
             <Show when={causes.data}>{

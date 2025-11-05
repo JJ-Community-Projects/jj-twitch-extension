@@ -12,7 +12,7 @@ const useBackendHook = () => {
   const {
     charities,
     community,
-    schedule,} = useOverlay()
+    yogsSchedule,} = useOverlay()
 
   const isAuthInit = () => auth().channelId !== undefined && auth().userId !== undefined
     && auth().channelId !== '' && auth().userId !== ''
@@ -132,11 +132,11 @@ const useBackendHook = () => {
     placeholderData: (prev) => prev
   }))
 
-  /*
   const enableUserScheduleQuery = () => {
-    return isAuthInit() && userConfigQuery.data !== undefined
-      && userConfigQuery.data.hasSchedule
-      && currentTab() === 'user-schedule'
+    // Fetch when auth is initialized and user has a schedule configured.
+    // We intentionally do not gate this behind a specific overlay window
+    // to keep the component simple to mount.
+    return isAuthInit() && userConfigQuery.data !== undefined && userConfigQuery.data.hasSchedule
   }
 
   const userScheduleQuery = useQuery(() => ({
@@ -149,12 +149,11 @@ const useBackendHook = () => {
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
-  */
 
   const enableYogsScheduleQuery = () => {
     return isAuthInit() && userConfigQuery.data !== undefined
       && configQuery.data !== undefined && configQuery.data.showYogsSchedule &&
-      schedule()
+      yogsSchedule()
   }
 
   const yogsScheduleQuery = useQuery(() => ({
@@ -191,7 +190,7 @@ const useBackendHook = () => {
     userData: userDataQuery,
     userRelatedSchedule: userRelatedScheduleQuery,
     userRelations: userRelationsQuery,
-    // userSchedule: userScheduleQuery,
+    userSchedule: userScheduleQuery,
     yogsSchedule: yogsScheduleQuery,
     refetchAll,
   }

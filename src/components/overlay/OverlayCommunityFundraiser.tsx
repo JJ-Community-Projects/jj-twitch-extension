@@ -32,27 +32,18 @@ export const OverlayCommunityFundraiser: Component = (props) => {
 
   return (
     <div class={twMerge('h-full flex flex-col gap-2 p-2 rounded-2xl shadow-xl', backgroundColor())}>
-
       <OverlayHeader/>
-      <div class={'w-full px-2 flex flex-row'}>
-        <a
-          href={'https://twitch.tv/team/jinglejam'}
-          target={'_blank'}
-          class={'flex flex-row justify-between items-center gap-1 bg-twitch text-white p-2 rounded-2xl full text-center w-full transition-all hover:scale-101'}>
-          Jingle Jam Stream Team <FiExternalLink/></a>
-      </div>
       <Show when={campaigns.data?.campaigns.length === 0}>
         <div class={'h-full w-full flex items-center justify-center'}>
           <p class={'text-lg text-center text-black bg-white rounded-2xl p-2'}>No fundraisers found.</p>
         </div>
       </Show>
-
       <div class={'h-full w-full overflow-hidden overscroll-none'}>
         <ColoredScrollbar>
           <div class={twMerge(
             'h-full w-full gap-2',
             'lg:grid lg:grid-cols-2',
-            'flex flex-col p-2'
+            'flex flex-col px-2'
           )}>
             <OverlayCharityOverviewCollapsable/>
             <For each={campaigns.data?.campaigns}>

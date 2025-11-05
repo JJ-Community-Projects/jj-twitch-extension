@@ -5,12 +5,12 @@ import {AiOutlineClose} from "solid-icons/ai";
 import {YogsStreamUtils} from "../../lib/YogsStreamUtils.ts";
 import {useNow} from "../../lib/useNow.ts";
 import {getTextColor} from "../../lib/textColors.ts";
-import type {Creator, StreamVodsInner} from "../../api/index.ts";
+import type {Creator, StreamVodsInner} from "../../api";
 
 
 export const OverlayStreamDialog: Component = (props) => {
 
-  const {stream, setStream, toggleSchedule} = useOverlay()
+  const {stream, setStream, hide} = useOverlay()
   const now = useNow()
 
   const background = () => {
@@ -32,6 +32,7 @@ export const OverlayStreamDialog: Component = (props) => {
     }
     return true
   }
+
   return (
     <div
       class="bg-white rounded-2xl shadow-xl w-full h-full">
@@ -43,7 +44,7 @@ export const OverlayStreamDialog: Component = (props) => {
       >
         <button class={'rounded-full hover:bg-accent-200/10 aspect-square'} onClick={() => {
           setStream(undefined)
-          toggleSchedule()
+          hide()
         }}>
           <AiOutlineClose size={24}/>
         </button>
