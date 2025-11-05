@@ -88,7 +88,7 @@ const debugDataMap = {
     helixToken: "333"
   },
 }
-const debugChannel = 'a'
+const debugChannel = 'ostofbot'
 const debugData = debugDataMap[debugChannel]
 // Hey sorry that this is out of nowhere.
 // I’m the person working on the JJ twitch extension and wanted to ask if you can use this image with your channel for the Twitch extension „promo“ page.
@@ -168,9 +168,11 @@ const useTwitchAuthHook = () => {
         setAuth(debugData)
       }
     } else {
+      if (import.meta.env.DEV) {
+        setChannelName(debugChannel)
+        setAuth(debugData)
+      }
       console.error("Twitch not available")
-      setChannelName(debugChannel)
-      setAuth(debugData)
     }
   })
 
