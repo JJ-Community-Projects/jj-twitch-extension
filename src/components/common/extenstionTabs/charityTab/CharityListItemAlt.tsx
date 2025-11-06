@@ -1,4 +1,4 @@
-import {type Component} from "solid-js";
+import {type Component, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
@@ -6,6 +6,7 @@ import {useTheme} from "../../providers/ThemeProvider.tsx";
 import type {JJCause} from "../../../../api";
 import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
 import {TiltifyIcon} from "../../icons/JJIcons.tsx";
+import {useBackend} from "../../providers/BackendProvider.tsx";
 
 interface CharityListItemAltProps {
   charity: JJCause;
@@ -15,6 +16,13 @@ interface CharityListItemAltProps {
 // Alternative charity list item with subtle surface treatment and clear link affordances
 export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) => {
   const {charity, i} = props;
+  const {config} = useBackend()
+  const showDonateButtons = () => {
+    if (config.data) {
+      return config.data.donationLink.visible
+    }
+    return false
+  }
 
   const {currency} = useCurrency();
   const {theme, tailwindTextPrimary} = useTheme();
@@ -50,11 +58,11 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
   const value = () => {
     switch (currency()) {
       case "USD":
-        return charity.raised.fundraisers.usd
+        return charity.raised.total.usd
       case "EUR":
-        return charity.raised.fundraisers.euro
+        return charity.raised.total.euro
     }
-    return charity.raised.fundraisers.gbp
+    return charity.raised.total.gbp
   }
 
   const name = () => (charity.name.length > 48 ? charity.name.substring(0, 48) + "…" : charity.name);
@@ -114,18 +122,32 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
 
         {/* Actions */}
         <div class={"flex gap-2"}>
-          <a
-            target={"_blank"}
-            href={props.charity.donateUrl}
-            class={twMerge(
-              "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
-              donateButtonColors(),
-              "transition-all duration-200 hover:brightness-105 hover:ring-2 hover:ring-black/5 dark:hover:ring-white/10"
-            )}
+          <Show
+            when={showDonateButtons()}
+            fallback={
+              <div
+                class={twMerge(
+                  "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
+                  "bg-gray-500 text-white",
+                )}
+              >
+                <span class={"text-xxs"}>Donate</span>
+                <TiltifyIcon class={'size-3'}/>
+              </div>
+            }
           >
-            <span class={"text-xxs"}>Donate</span>
-            <TiltifyIcon class={'size-3'}/>
-          </a>
+            <a
+              target={"_blank"}
+              href={props.charity.donateUrl}
+              class={twMerge(
+                "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
+                donateButtonColors(),
+                "transition-all duration-200 hover:brightness-105 hover:ring-2 hover:ring-black/5 dark:hover:ring-white/10"
+              )}
+            >
+              <span class={"text-xxs"}>Donate</span>
+              <TiltifyIcon class={'size-3'}/>
+            </a></Show>
           <a
             target={"_blank"}
             href={props.charity.url}
