@@ -119,6 +119,7 @@ const UserCampaignHeader: Component<{
 
   const darkText = () => (theme() === 'dark' ? 'text-white' : '')
 
+  const {config} = useBackend()
 
   return (
     <div class={'px-2'}>
@@ -129,13 +130,23 @@ const UserCampaignHeader: Component<{
           </div>
           <img src={image()} class={'h-full'} alt={'JJ Logo'}/>
           <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
-            <a href={props.userData.campaign.tiltifyUrl} target={'_blank'}
-               class={'bg-tiltify-500 text-xs pl-2 p-1 text-white rounded-full flex flex-row gap-1 hover:brightness-105 hover:scale-101'}>Donate
-              <TiltifyRoundIcon
-                class={twMerge(
-                  'size-4',
-                )}
-              /></a>
+            <Show when={config.data}>
+              {
+                (config) => {
+                  return (
+                    <Show when={config().donationLink.visible}>
+                      <a href={props.userData.campaign.tiltifyUrl} target={'_blank'}
+                         class={'bg-tiltify-500 text-xs pl-2 p-1 text-white rounded-full flex flex-row gap-1 hover:brightness-105 hover:scale-101'}>Donate
+                        <TiltifyRoundIcon
+                          class={twMerge(
+                            'size-4',
+                          )}
+                        /></a>
+                    </Show>
+                  )
+                }
+              }
+            </Show>
           </div>
         </div>
         <div class={'w-full px-1 pb-1'}>

@@ -6,6 +6,7 @@ import {Numeric} from "solid-i18n";
 import {FaBrandsTwitch, FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
 import {TiltifyIcon} from "../../icons/JJIcons.tsx";
+import {useBackend} from "../../providers/BackendProvider.tsx";
 
 interface FundraiserItemProps {
   i: number
@@ -108,6 +109,14 @@ const Live = () => {
 export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }> = (props) => {
   const { theme } = useTheme();
   const {eur, currency, usd} = useCurrency()
+
+  const {config} = useBackend()
+  const showDonateButtons = () => {
+    if (config.data) {
+      return config.data.donationLink.visible
+    }
+    return false
+  }
 
   const gradient = [
     "bg-gradient-to-b from-red-200 to-red-400",
@@ -220,18 +229,33 @@ export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }
 
         {/* Actions */}
         <div class={"flex gap-2"}>
-          <a
-            target={"_blank"}
-            href={props.campaign.tiltifyUrl}
-            class={twMerge(
-              "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
-              donateButtonColor(),
-              "transition-all duration-200 hover:brightness-105 hover:ring-2 hover:ring-black/5 dark:hover:ring-white/10"
-            )}
+          <Show
+            when={showDonateButtons()}
+            fallback={
+              <div
+                class={twMerge(
+                  "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
+                  "bg-gray-500 text-white",
+                )}
+              >
+                <span class={"text-xxs"}>Donate</span>
+                <TiltifyIcon class={'size-3'}/>
+              </div>
+            }
           >
-            <span class={"text-xxs"}>Donate</span>
-            <TiltifyIcon class={'size-3'}/>
-          </a>
+            <a
+              target={"_blank"}
+              href={props.campaign.tiltifyUrl}
+              class={twMerge(
+                "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
+                donateButtonColor(),
+                "transition-all duration-200 hover:brightness-105 hover:ring-2 hover:ring-black/5 dark:hover:ring-white/10"
+              )}
+            >
+              <span class={"text-xxs"}>Donate</span>
+              <TiltifyIcon class={'size-3'}/>
+            </a>
+          </Show>
           <Show when={twitchUrl()}>
             <a
               target={"_blank"}
