@@ -90,9 +90,6 @@ const debugDataMap = {
 }
 const debugChannel = 'ostofbot'
 const debugData = debugDataMap[debugChannel]
-// Hey sorry that this is out of nowhere.
-// I’m the person working on the JJ twitch extension and wanted to ask if you can use this image with your channel for the Twitch extension „promo“ page.
-// This year’s update makes it so that the extension automatically adapts to the channel it is being used on. If I recall correctly you had it last year on your channel
 type ChannelsResponse = {
   data: Array<ChannelInfo>;
 };
