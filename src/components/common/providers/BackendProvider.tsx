@@ -115,6 +115,7 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     placeholderData: (prev) => prev
   }))
 
+  /*
   const userRelatedScheduleQuery = useQuery(() => ({
     queryKey: ['user-related-schedule', channelId(), userId()],
     queryFn: () => api.getUserRelatedSchedule(requestAuth()),
@@ -126,12 +127,14 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     queryFn: () => api.getUserRelations(requestAuth()),
     enabled: false, // isAuthInit(),
     placeholderData: (prev) => prev
-  }))
+  }))*/
 
   const enableUserScheduleQuery = () => {
     return isAuthInit() && userConfigQuery.data !== undefined
       && userConfigQuery.data.hasSchedule
       && currentTab() === 'user-schedule'
+      && configQuery.data !== undefined
+      && configQuery.data.showUserSchedule
   }
 
 
@@ -191,8 +194,10 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     causes: causesQuery,
     overview: overviewQuery,
     userData: userDataQuery,
+    /*
     userRelatedSchedule: userRelatedScheduleQuery,
     userRelations: userRelationsQuery,
+    */
     userSchedule: userScheduleQuery,
     yogsSchedule: yogsScheduleQuery,
     refetchAll,

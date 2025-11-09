@@ -313,6 +313,9 @@
           "showUserFundraiser": {
             "type": "boolean"
           },
+          "showUserSchedule": {
+            "type": "boolean"
+          },
           "refreshInterval": {
             "type": "object",
             "properties": {
@@ -364,6 +367,7 @@
           "showCharities",
           "showFundraisers",
           "showUserFundraiser",
+          "showUserSchedule",
           "refreshInterval",
           "donationLink",
           "donationTrackerUrl",

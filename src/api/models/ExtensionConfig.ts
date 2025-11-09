@@ -64,6 +64,12 @@ export interface ExtensionConfig {
     showUserFundraiser: boolean;
     /**
      * 
+     * @type {boolean}
+     * @memberof ExtensionConfig
+     */
+    showUserSchedule: boolean;
+    /**
+     * 
      * @type {ExtensionConfigRefreshInterval}
      * @memberof ExtensionConfig
      */
@@ -97,6 +103,7 @@ export function instanceOfExtensionConfig(value: object): value is ExtensionConf
     if (!('showCharities' in value) || value['showCharities'] === undefined) return false;
     if (!('showFundraisers' in value) || value['showFundraisers'] === undefined) return false;
     if (!('showUserFundraiser' in value) || value['showUserFundraiser'] === undefined) return false;
+    if (!('showUserSchedule' in value) || value['showUserSchedule'] === undefined) return false;
     if (!('refreshInterval' in value) || value['refreshInterval'] === undefined) return false;
     if (!('donationLink' in value) || value['donationLink'] === undefined) return false;
     if (!('donationTrackerUrl' in value) || value['donationTrackerUrl'] === undefined) return false;
@@ -119,6 +126,7 @@ export function ExtensionConfigFromJSONTyped(json: any, ignoreDiscriminator: boo
         'showCharities': json['showCharities'],
         'showFundraisers': json['showFundraisers'],
         'showUserFundraiser': json['showUserFundraiser'],
+        'showUserSchedule': json['showUserSchedule'],
         'refreshInterval': ExtensionConfigRefreshIntervalFromJSON(json['refreshInterval']),
         'donationLink': ExtensionConfigDonationLinkFromJSON(json['donationLink']),
         'donationTrackerUrl': json['donationTrackerUrl'],
@@ -137,6 +145,7 @@ export function ExtensionConfigToJSON(value?: ExtensionConfig | null): any {
         'showCharities': value['showCharities'],
         'showFundraisers': value['showFundraisers'],
         'showUserFundraiser': value['showUserFundraiser'],
+        'showUserSchedule': value['showUserSchedule'],
         'refreshInterval': ExtensionConfigRefreshIntervalToJSON(value['refreshInterval']),
         'donationLink': ExtensionConfigDonationLinkToJSON(value['donationLink']),
         'donationTrackerUrl': value['donationTrackerUrl'],

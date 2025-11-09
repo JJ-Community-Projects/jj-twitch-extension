@@ -7,31 +7,46 @@ import {StreamStripeCard} from "../../schedule/StreamCard.tsx";
 import {CrossFade} from "../../CrossFade.tsx";
 import {ErrorPage} from "../../Error.tsx";
 import {Loading} from "../../Loading.tsx";
+import {InvisibleBodyAlt} from "../../InvisibleBody.tsx";
 
 export const UserScheduleTab: Component = (props) => {
-  const {userSchedule} = useBackend()
+  const {userSchedule, config} = useBackend()
+
 
   return (
-    <>
-      <CrossFade show={userSchedule.isError}>
-        <ErrorPage message={'Failed to load schedule.'}/>
-      </CrossFade>
-      <CrossFade show={userSchedule.isPending}>
-        <Loading/>
-      </CrossFade>
-      <CrossFade show={userSchedule.isSuccess}>
-        <Show when={userSchedule.data}>
-          {
-            (schedule) => {
-              return (
-                <Body schedule={schedule()}/>
-              )
-            }
-          }
-        </Show>
-      </CrossFade>
-
-    </>
+    <Show when={config.data}>
+      {
+        (config) => {
+          return (
+            <Show when={config().showUserSchedule} fallback={
+              <InvisibleBodyAlt
+                text={'The Schedule will be available'}
+              />
+            }>
+              <>
+                <CrossFade show={userSchedule.isError}>
+                  <ErrorPage message={'Failed to load schedule.'}/>
+                </CrossFade>
+                <CrossFade show={userSchedule.isPending}>
+                  <Loading/>
+                </CrossFade>
+                <CrossFade show={userSchedule.isSuccess}>
+                  <Show when={userSchedule.data}>
+                    {
+                      (schedule) => {
+                        return (
+                          <Body schedule={schedule()}/>
+                        )
+                      }
+                    }
+                  </Show>
+                </CrossFade>
+              </>
+            </Show>
+          )
+        }
+      }
+    </Show>
   );
 }
 
