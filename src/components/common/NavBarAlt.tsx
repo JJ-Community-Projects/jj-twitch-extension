@@ -6,7 +6,6 @@ import {Tabs} from "@kobalte/core/tabs";
 import {YogsIcon} from "./icons/YogsIcon.tsx";
 import {useBackend} from "./providers/BackendProvider.tsx";
 import type {UserExtensionConfigTabsEnum} from "../../api";
-import {JJIcon} from "./icons/JJIcons.tsx";
 import {useTabs} from "./providers/TabsProvider.tsx";
 
 export const NavBarAlt: Component = () => {
@@ -42,6 +41,7 @@ export const NavBarAlt: Component = () => {
                         <TabC
                           tabType={tab}
                           class={classes()}
+                          tabCount={tabCount}
                         />
                       )
                     }
@@ -78,6 +78,7 @@ const TabIcon: Component<{ tab: UserExtensionConfigTabsEnum }> = props => {
 const TabC: Component<{
   tabType: UserExtensionConfigTabsEnum;
   class?: string,
+  tabCount: number,
 }> = props => {
   const {theme} = useTheme()
   const {currentTab, setCurrentTab} = useTabs()
@@ -119,18 +120,21 @@ const TabC: Component<{
         return 'hover:bg-accent-300'
     }
   }
+
+  const largeTabs = () => props.tabCount < 4
+
   return (
     <Tabs.Trigger
       class={twMerge(
         // base layout
         'group flex h-full none min-w-0 items-center justify-center border-2 border-white text-white transition-all duration-300',
         // padding and rounding
-        'py-1 px-8',
+        'py-1',
+        largeTabs() ? 'px-8' : 'px-4',
         // when the tab is active we give it a bit more horizontal padding so it "extends"
-        '[&.active]:pl-4 [&.active]:pr-4',
+        '[&.active]:px-4',
         // make the active tab take all the remaining space
         '[&.active]:flex-1 [&.active]:basis-0',
-
         active(),
         hover(),
         props.class,
