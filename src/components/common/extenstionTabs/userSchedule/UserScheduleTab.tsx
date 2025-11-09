@@ -20,7 +20,7 @@ export const UserScheduleTab: Component = (props) => {
           return (
             <Show when={config().showUserSchedule} fallback={
               <InvisibleBodyAlt
-                text={'The Schedule will be available'}
+                text={'The Schedule will be available soon.'}
               />
             }>
               <>
