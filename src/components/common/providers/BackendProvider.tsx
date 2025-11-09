@@ -22,7 +22,7 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
   })
 
   const apiConfig = new Configuration({
-    basePath: 'https://beta.jinglejam.ostof.dev/api/public'
+    basePath: 'https://jinglejam.ostof.dev/api/public'
   })
 
   const api = new TwitchExtensionApi(apiConfig)
