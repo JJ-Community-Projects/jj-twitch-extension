@@ -110,7 +110,7 @@ export const CharityOverviewCollapsable: Component = () => {
                               (url) => {
                                 return (
                                   <div class={twMerge("flex flex-1 items-end justify-center", darkText())}>
-                                    <a class={'underline'} href={url()}>Live Donation Tracker</a>
+                                    <a class={'underline'} href={url()} target={'_blank'}>Live Donation Tracker</a>
                                   </div>
                                 )
                               }
