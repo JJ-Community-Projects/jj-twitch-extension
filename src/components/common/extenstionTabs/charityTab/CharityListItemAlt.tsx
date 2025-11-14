@@ -97,24 +97,7 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
             <Numeric value={value()} numberStyle="currency" currency={currency()}/>
           </div>
         </div>
-        <p class={"line-clamp-2 text-xxs opacity-90"}>{charity.description}</p>
-
-
-        {/* Actions */}
-        <div class={"flex gap-2"}>
-          <a
-            target={"_blank"}
-            href={props.charity.url}
-            class={twMerge(
-              "inline-flex items-center justify-center gap-1 rounded-xl px-3 py-1.5",
-              websiteButtonColors(),
-              "transition-all duration-200 hover:brightness-105 hover:ring-2 hover:ring-black/5 dark:hover:ring-white/10"
-            )}
-          >
-            <span class={"text-xxs"}>Website</span>
-            <FaSolidArrowUpRightFromSquare size={10}/>
-          </a>
-        </div>
+        <p class={"line-clamp-3 text-xxs opacity-90"}>{charity.description}</p>
       </div>
     </div>
   );
