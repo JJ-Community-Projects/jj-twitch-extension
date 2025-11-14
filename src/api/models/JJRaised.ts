@@ -31,13 +31,13 @@ export interface JJRaised {
      * @type {CurrenciesSchema}
      * @memberof JJRaised
      */
-    yogscast: CurrenciesSchema;
+    yogscast?: CurrenciesSchema;
     /**
      * 
      * @type {CurrenciesSchema}
      * @memberof JJRaised
      */
-    fundraisers: CurrenciesSchema;
+    fundraisers?: CurrenciesSchema;
     /**
      * 
      * @type {CurrenciesSchema}
@@ -50,8 +50,6 @@ export interface JJRaised {
  * Check if a given object implements the JJRaised interface.
  */
 export function instanceOfJJRaised(value: object): value is JJRaised {
-    if (!('yogscast' in value) || value['yogscast'] === undefined) return false;
-    if (!('fundraisers' in value) || value['fundraisers'] === undefined) return false;
     if (!('total' in value) || value['total'] === undefined) return false;
     return true;
 }
@@ -66,8 +64,8 @@ export function JJRaisedFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'yogscast': CurrenciesSchemaFromJSON(json['yogscast']),
-        'fundraisers': CurrenciesSchemaFromJSON(json['fundraisers']),
+        'yogscast': json['yogscast'] == null ? undefined : CurrenciesSchemaFromJSON(json['yogscast']),
+        'fundraisers': json['fundraisers'] == null ? undefined : CurrenciesSchemaFromJSON(json['fundraisers']),
         'total': CurrenciesSchemaFromJSON(json['total']),
     };
 }

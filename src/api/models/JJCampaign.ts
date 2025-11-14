@@ -37,6 +37,12 @@ export interface JJCampaign {
      * @type {string}
      * @memberof JJCampaign
      */
+    tiltifySlug: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof JJCampaign
+     */
     campaignName: string;
     /**
      * 
@@ -58,10 +64,10 @@ export interface JJCampaign {
     tiltifyDescription?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof JJCampaign
      */
-    tiltifyCauseId?: number;
+    tiltifyCauseId?: string;
     /**
      * 
      * @type {string}
@@ -92,6 +98,7 @@ export interface JJCampaign {
  * Check if a given object implements the JJCampaign interface.
  */
 export function instanceOfJJCampaign(value: object): value is JJCampaign {
+    if (!('tiltifySlug' in value) || value['tiltifySlug'] === undefined) return false;
     if (!('campaignName' in value) || value['campaignName'] === undefined) return false;
     if (!('tiltifyUrl' in value) || value['tiltifyUrl'] === undefined) return false;
     if (!('tiltifyName' in value) || value['tiltifyName'] === undefined) return false;
@@ -111,6 +118,7 @@ export function JJCampaignFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
+        'tiltifySlug': json['tiltifySlug'],
         'campaignName': json['campaignName'],
         'tiltifyUrl': json['tiltifyUrl'],
         'tiltifyName': json['tiltifyName'],
@@ -129,6 +137,7 @@ export function JJCampaignToJSON(value?: JJCampaign | null): any {
     }
     return {
         
+        'tiltifySlug': value['tiltifySlug'],
         'campaignName': value['campaignName'],
         'tiltifyUrl': value['tiltifyUrl'],
         'tiltifyName': value['tiltifyName'],

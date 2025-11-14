@@ -13,12 +13,12 @@
  */
 
 import { mapValues } from '../runtime';
-import type { JJRaised } from './JJRaised';
+import type { CurrenciesSchema } from './CurrenciesSchema';
 import {
-    JJRaisedFromJSON,
-    JJRaisedFromJSONTyped,
-    JJRaisedToJSON,
-} from './JJRaised';
+    CurrenciesSchemaFromJSON,
+    CurrenciesSchemaFromJSONTyped,
+    CurrenciesSchemaToJSON,
+} from './CurrenciesSchema';
 
 /**
  * 
@@ -28,10 +28,10 @@ import {
 export interface JJCause {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof JJCause
      */
-    id: number;
+    id: string;
     /**
      * 
      * @type {string}
@@ -70,10 +70,10 @@ export interface JJCause {
     donateUrl: string;
     /**
      * 
-     * @type {JJRaised}
+     * @type {CurrenciesSchema}
      * @memberof JJCause
      */
-    raised: JJRaised;
+    raised: CurrenciesSchema;
 }
 
 /**
@@ -107,7 +107,7 @@ export function JJCauseFromJSONTyped(json: any, ignoreDiscriminator: boolean): J
         'color': json['color'] == null ? undefined : json['color'],
         'url': json['url'],
         'donateUrl': json['donateUrl'],
-        'raised': JJRaisedFromJSON(json['raised']),
+        'raised': CurrenciesSchemaFromJSON(json['raised']),
     };
 }
 
@@ -124,7 +124,7 @@ export function JJCauseToJSON(value?: JJCause | null): any {
         'color': value['color'],
         'url': value['url'],
         'donateUrl': value['donateUrl'],
-        'raised': JJRaisedToJSON(value['raised']),
+        'raised': CurrenciesSchemaToJSON(value['raised']),
     };
 }
 

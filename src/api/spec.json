@@ -34,8 +34,6 @@
           }
         },
         "required": [
-          "yogscast",
-          "fundraisers",
           "total"
         ]
       },
@@ -43,7 +41,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "number"
+            "type": "string"
           },
           "name": {
             "type": "string"
@@ -67,7 +65,7 @@
             "format": "uri"
           },
           "raised": {
-            "$ref": "#/components/schemas/JJRaised"
+            "$ref": "#/components/schemas/CurrenciesSchema"
           }
         },
         "required": [
@@ -132,6 +130,9 @@
       "JJCampaign": {
         "type": "object",
         "properties": {
+          "tiltifySlug": {
+            "type": "string"
+          },
           "campaignName": {
             "type": "string"
           },
@@ -145,7 +146,7 @@
             "type": "string"
           },
           "tiltifyCauseId": {
-            "type": "number"
+            "type": "string"
           },
           "avatar": {
             "type": "string"
@@ -181,6 +182,7 @@
           }
         },
         "required": [
+          "tiltifySlug",
           "campaignName",
           "tiltifyUrl",
           "tiltifyName",

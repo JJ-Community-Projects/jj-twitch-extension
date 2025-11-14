@@ -51,11 +51,11 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
   const value = () => {
     switch (currency()) {
       case "USD":
-        return charity.raised.total.usd
+        return charity.raised.usd
       case "EUR":
-        return charity.raised.total.euro
+        return charity.raised.euro
     }
-    return charity.raised.total.gbp
+    return charity.raised.gbp
   }
 
   const name = () => (charity.name.length > 48 ? charity.name.substring(0, 48) + "…" : charity.name);

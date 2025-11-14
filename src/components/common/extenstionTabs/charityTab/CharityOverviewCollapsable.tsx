@@ -1,4 +1,4 @@
-import {type Component, createSignal, onCleanup, Show} from "solid-js";
+import {type Component, createMemo, createSignal, For, onCleanup, Show} from "solid-js";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {DateTime} from "luxon";
@@ -91,8 +91,21 @@ export const CharityOverviewCollapsable: Component = () => {
                   class="jj-accordion__content">
                   <div class="overflow-hidden">
                     <div class={"grid grid-cols-2 gap-1 gap-y-2 pt-1"}>
-                      <SmallCurrency values={overview().raised.yogscast} text={"Raised by the Yogscast"}/>
-                      <SmallCurrency values={overview().raised.fundraisers} text={"Raised by Fundraisers"}/>
+                      <Show when={overview().raised.yogscast}>
+                        {
+                          (c) => {
+                            return <SmallCurrency values={c()} text={"Raised by the Yogscast"}/>
+
+                          }
+                        }
+                      </Show>
+                      <Show when={overview().raised.fundraisers}>
+                        {
+                          (c) => {
+                            return <SmallCurrency values={c()} text={"Raised by Fundraisers"}/>
+                          }
+                        }
+                      </Show>
                       <SmallValue value={overview().collections.redeemed} text={'Collections Sold'}/>
                       <SmallValue value={overview().collections.total - overview().collections.redeemed}
                                   text={'Collections Available'}/>
@@ -186,8 +199,21 @@ export const OverlayCharityOverviewCollapsable: Component = () => {
                   class="jj-accordion__content">
                   <div class="overflow-hidden">
                     <div class={"grid grid-cols-2 gap-1 gap-y-2 pt-1"}>
-                      <SmallCurrency values={overview().raised.yogscast} text={"Raised by the Yogscast"}/>
-                      <SmallCurrency values={overview().raised.fundraisers} text={"Raised by Fundraisers"}/>
+                      <Show when={overview().raised.yogscast}>
+                        {
+                          (c) => {
+                            return <SmallCurrency values={c()} text={"Raised by the Yogscast"}/>
+
+                          }
+                        }
+                      </Show>
+                      <Show when={overview().raised.fundraisers}>
+                        {
+                          (c) => {
+                            return <SmallCurrency values={c()} text={"Raised by Fundraisers"}/>
+                          }
+                        }
+                      </Show>
                       <SmallValue value={overview().collections.redeemed} text={'Collections Sold'}/>
                       <SmallValue value={overview().collections.total - overview().collections.redeemed}
                                   text={'Collections Available'}/>
@@ -208,38 +234,56 @@ export const OverlayCharityOverviewCollapsable: Component = () => {
 };
 
 const OverviewChanger: Component<{ overview: OverviewSchema }> = (props) => {
-  const [v, setV] = createSignal<number>(0)
+  const [v, setV] = createSignal<number>(0);
+
+  // Build slides dynamically depending on optional fields
+  const slides = createMemo(() => {
+    const s: Array<
+      | { kind: "currency"; values: CurrenciesSchema; text: string }
+      | { kind: "value"; value: number; text: string }
+    > = [];
+
+    // Only push these if present
+    if (props.overview.raised.fundraisers) {
+      s.push({ kind: "currency", values: props.overview.raised.fundraisers, text: "Raised by Fundraisers" });
+    }
+    if (props.overview.raised.yogscast) {
+      s.push({ kind: "currency", values: props.overview.raised.yogscast, text: "Raised by the Yogscast" });
+    }
+
+    // Always include these
+    s.push({ kind: "currency", values: props.overview.raised.total, text: `Raised in ${DateTime.fromJSDate(props.overview.date).year}` });
+    s.push({ kind: "value", value: props.overview.collections.redeemed, text: "Collections Sold" });
+    s.push({ kind: "value", value: props.overview.collections.total - props.overview.collections.redeemed, text: "Collections Available" });
+
+    return s;
+  });
 
   const t = setInterval(() => {
-    setV(i => (i + 1) % 5)
-  }, 8000)
+    const len = slides().length || 1; // safety, though slides is never empty due to fallbacks
+    setV((i) => (i + 1) % len);
+  }, 8000);
 
   onCleanup(() => {
-    clearTimeout(t)
-  })
+    clearInterval(t);
+  });
 
   return (
     <>
-      <CrossFade show={v() === 0}>
-        <BigCurrency values={props.overview.raised.fundraisers} text={"Raised by Fundraisers"}/>
-      </CrossFade>
-      <CrossFade show={v() === 1}>
-        <BigCurrency values={props.overview.raised.yogscast} text={"Raised by the Yogscast"}/>
-      </CrossFade>
-      <CrossFade show={v() === 2}>
-        <BigCurrency values={props.overview.raised.total}
-                     text={`Raised in ${DateTime.fromJSDate(props.overview.date).year}`}/>
-      </CrossFade>
-      <CrossFade show={v() === 3}>
-        <BigValue value={props.overview.collections.redeemed} text={'Collections Sold'}/>
-      </CrossFade>
-      <CrossFade show={v() === 4}>
-        <BigValue value={props.overview.collections.total - props.overview.collections.redeemed}
-                  text={'Collections Available'}/>
-      </CrossFade>
+      <For each={slides()}>
+        {(s, i) => (
+          <CrossFade show={v() === i()}>
+            {s.kind === "currency" ? (
+              <BigCurrency values={s.values} text={s.text} />
+            ) : (
+              <BigValue value={s.value} text={s.text} />
+            )}
+          </CrossFade>
+        )}
+      </For>
     </>
-  )
-}
+  );
+};
 
 const BigCurrency: Component<{ values: CurrenciesSchema, text: string }> = (props) => {
   const {tailwindTextPrimaryDark, theme} = useTheme();
