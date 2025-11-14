@@ -16,13 +16,6 @@ interface CharityListItemAltProps {
 // Alternative charity list item with subtle surface treatment and clear link affordances
 export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) => {
   const {charity, i} = props;
-  const {config} = useBackend()
-  const showDonateButtons = () => {
-    if (config.data) {
-      return config.data.donationLink.visible
-    }
-    return false
-  }
 
   const {currency} = useCurrency();
   const {theme, tailwindTextPrimary} = useTheme();
@@ -67,19 +60,6 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
 
   const name = () => (charity.name.length > 48 ? charity.name.substring(0, 48) + "…" : charity.name);
 
-
-  const donateButtonColors = () => {
-    if (theme() === 'dark') {
-      return "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
-    }
-
-    if (theme() === 'blue') {
-      return "bg-accent-500 text-white"
-    }
-
-    return "bg-primary-500 text-white"
-  }
-
   const websiteButtonColors = () => {
     if (theme() === 'dark') {
       return "bg-gradient-to-b from-gray-700 to-gray-800 text-white"
@@ -122,32 +102,6 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
 
         {/* Actions */}
         <div class={"flex gap-2"}>
-          <Show
-            when={showDonateButtons()}
-            fallback={
-              <div
-                class={twMerge(
-                  "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
-                  "bg-gray-500 text-white",
-                )}
-              >
-                <span class={"text-xxs"}>Donate</span>
-                <TiltifyIcon class={'size-3'}/>
-              </div>
-            }
-          >
-            <a
-              target={"_blank"}
-              href={props.charity.donateUrl}
-              class={twMerge(
-                "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
-                donateButtonColors(),
-                "transition-all duration-200 hover:brightness-105 hover:ring-2 hover:ring-black/5 dark:hover:ring-white/10"
-              )}
-            >
-              <span class={"text-xxs"}>Donate</span>
-              <TiltifyIcon class={'size-3'}/>
-            </a></Show>
           <a
             target={"_blank"}
             href={props.charity.url}

@@ -110,14 +110,6 @@ export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }
   const { theme } = useTheme();
   const {eur, currency, usd} = useCurrency()
 
-  const {config} = useBackend()
-  const showDonateButtons = () => {
-    if (config.data) {
-      return config.data.donationLink.visible
-    }
-    return false
-  }
-
   const gradient = [
     "bg-gradient-to-b from-red-200 to-red-400",
     "bg-gradient-to-b from-orange-200 to-orange-400",
@@ -172,19 +164,6 @@ export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }
     return "bg-accent-500 text-white"
   }
 
-  const donateButtonColor = () => {
-    if (theme() === 'dark') {
-      return "bg-gradient-to-b from-gray-800 to-gray-900 text-white"
-    }
-
-    if (theme() === 'blue') {
-      return "bg-accent-500 text-white"
-    }
-
-    return "bg-primary-500 text-white"
-  }
-
-
   return (
     <div
       class={twMerge(
@@ -229,33 +208,6 @@ export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }
 
         {/* Actions */}
         <div class={"flex gap-2"}>
-          <Show
-            when={showDonateButtons()}
-            fallback={
-              <div
-                class={twMerge(
-                  "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
-                  "bg-gray-500 text-white",
-                )}
-              >
-                <span class={"text-xxs"}>Donate</span>
-                <TiltifyIcon class={'size-3'}/>
-              </div>
-            }
-          >
-            <a
-              target={"_blank"}
-              href={props.campaign.tiltifyUrl}
-              class={twMerge(
-                "flex-1 inline-flex items-center justify-center gap-2 rounded-xl px-3 py-1.5",
-                donateButtonColor(),
-                "transition-all duration-200 hover:brightness-105 hover:ring-2 hover:ring-black/5 dark:hover:ring-white/10"
-              )}
-            >
-              <span class={"text-xxs"}>Donate</span>
-              <TiltifyIcon class={'size-3'}/>
-            </a>
-          </Show>
           <Show when={twitchUrl()}>
             <a
               target={"_blank"}
