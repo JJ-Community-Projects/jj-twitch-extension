@@ -55,6 +55,9 @@
           "description": {
             "type": "string"
           },
+          "color": {
+            "type": "string"
+          },
           "url": {
             "type": "string",
             "format": "uri"

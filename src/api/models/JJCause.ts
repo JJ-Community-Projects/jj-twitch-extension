@@ -55,6 +55,12 @@ export interface JJCause {
      * @type {string}
      * @memberof JJCause
      */
+    color?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof JJCause
+     */
     url: string;
     /**
      * 
@@ -98,6 +104,7 @@ export function JJCauseFromJSONTyped(json: any, ignoreDiscriminator: boolean): J
         'name': json['name'],
         'logo': json['logo'],
         'description': json['description'],
+        'color': json['color'] == null ? undefined : json['color'],
         'url': json['url'],
         'donateUrl': json['donateUrl'],
         'raised': JJRaisedFromJSON(json['raised']),
@@ -114,6 +121,7 @@ export function JJCauseToJSON(value?: JJCause | null): any {
         'name': value['name'],
         'logo': value['logo'],
         'description': value['description'],
+        'color': value['color'],
         'url': value['url'],
         'donateUrl': value['donateUrl'],
         'raised': JJRaisedToJSON(value['raised']),
