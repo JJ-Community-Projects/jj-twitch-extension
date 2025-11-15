@@ -71,8 +71,11 @@ export const CharityOverviewCollapsable: Component = () => {
 
                     <div class={'left-0 top-1 absolute w-full h-full p-1'}>
                       <CrossFade show={isOpen()}>
-                        <BigCurrency values={overview().raised.total}
-                                     text={`Raised in ${DateTime.fromJSDate(overview().date).year}`}/>
+                        <BigCurrency
+                          values={overview().raised.total}
+                          text={`Raised in ${DateTime.fromJSDate(overview().date).year}`}
+                          // text={`Raised in 2024`}
+                        />
                       </CrossFade>
                       <CrossFade show={!isOpen()}>
                         <OverviewChanger overview={overview()}/>
@@ -252,7 +255,12 @@ const OverviewChanger: Component<{ overview: OverviewSchema }> = (props) => {
     }
 
     // Always include these
-    s.push({ kind: "currency", values: props.overview.raised.total, text: `Raised in ${DateTime.fromJSDate(props.overview.date).year}` });
+    s.push({
+      kind: "currency",
+      values: props.overview.raised.total,
+      text: `Raised in ${DateTime.fromJSDate(props.overview.date).year}`
+      // text: `Raised in 2024`
+    });
     s.push({ kind: "value", value: props.overview.collections.redeemed, text: "Collections Sold" });
     s.push({ kind: "value", value: props.overview.collections.total - props.overview.collections.redeemed, text: "Collections Available" });
 
