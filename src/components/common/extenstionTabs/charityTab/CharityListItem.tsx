@@ -53,11 +53,11 @@ export const CharityListItem: Component<CharityListItemProps> = (props) => {
   const value = () => {
     switch (currency()) {
       case "USD":
-        return charity.raised.fundraisers.usd
+        return charity.raised.usd
       case "EUR":
-        return charity.raised.fundraisers.euro
+        return charity.raised.euro
     }
-    return charity.raised.fundraisers.gbp
+    return charity.raised.gbp
   }
 
   return (

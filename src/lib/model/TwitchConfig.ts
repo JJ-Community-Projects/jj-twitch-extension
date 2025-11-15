@@ -38,7 +38,7 @@ export interface TwitchOverlayChatConfig {
 }
 
 export interface TwitchOverlayChatCommand {
-  tiltifyId: number
+  tiltifyId: string
   command: string
   name: string
 }
@@ -57,43 +57,43 @@ export const defaultOverlayConfig: TwitchOverlayConfig = {
     position: 'bottom',
     commands: [
       {
-        tiltifyId: 588,
+        tiltifyId: '588',
         command: 'warchild',
         name: 'War Child',
       },
       {
-        tiltifyId: 575,
+        tiltifyId: '575',
         command: 'calm',
         name: 'Calm',
       },
       {
-        tiltifyId: 582,
+        tiltifyId: '582',
         command: 'autistica',
         name: 'Autistica',
       },
       {
-        tiltifyId: 1227,
+        tiltifyId: '1227',
         command: 'coolearth',
         name: 'Cool Earth',
       },
       {
-        tiltifyId: 1228,
+        tiltifyId: '1228',
         command: 'sacroma',
         name: 'Sacroma UK',
       },
       {
-        tiltifyId: 1229,
+        tiltifyId: '1229',
         command: 'trevor',
         name: 'The Trevor Project',
       },
       {
-        tiltifyId: 565,
+        tiltifyId: '565',
         name: 'Wallace and Gromit’s Grand Appeal',
         command: 'wallace',
       },
       {
         name: 'Whale and Dolphin Conservation',
-        tiltifyId: 574,
+        tiltifyId: '574',
         command: 'wdc',
       }
     ]

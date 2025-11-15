@@ -109,7 +109,7 @@ export const OverlaySideNav: Component = () => {
     <div class={'flex flex-col h-full w-12 py-20 gap-4 justify-center items-center'}>
       <Show when={isDev}>
         <Button class={'bg-red-500 text-white'} onClick={() => {
-          start(582)
+          start('582')
         }}>Test chat</Button>
       </Show>
       <Tooltip placement={'right'}>

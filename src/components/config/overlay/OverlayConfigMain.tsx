@@ -58,7 +58,7 @@ export const OverlayConfigMain: Component = () => {
 const Preview = () => {
   const twitchConfig = useTwitchOverlayConfig()
   return (
-    <ChatProvider initCauseId={582}>
+    <ChatProvider initCauseId={'582'}>
       <div class={'aspect-video bg-gray-700 py-[5rem] pr-[7rmm]'}>
         <div class={'w-full h-full'}>
           <LocalStorageProvider>

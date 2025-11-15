@@ -11,7 +11,7 @@ const useCommunitySearchHook = () => {
   const causes = () => causesQuery.data?.causes ?? []
 
 
-  const findCause = (causeId?: number) => causes().find(c => c.id === causeId)
+  const findCause = (causeId?: string) => causes().find(c => c.id === causeId)
 
 
   const campaignsFiltered = () => {
