@@ -10,7 +10,7 @@ import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {OverlayHeader} from "./OverlayHeader.tsx";
 import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
-import type { Stream } from "../../api/index.ts";
+import type {Stream} from "../../api/index.ts";
 import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 export const OverlayYogsSchedule: Component = () => {
@@ -30,7 +30,8 @@ export const OverlayYogsSchedule: Component = () => {
   }
 
   return (
-    <div class={twMerge('h-full w-full flex flex-col gap-2 p-2 rounded-2xl overflow-hidden overscroll-none', backgroundColor())}>
+    <div
+      class={twMerge('h-full w-full flex flex-col gap-2 p-2 rounded-2xl overflow-hidden overscroll-none', backgroundColor())}>
       <OverlayHeader/>
       <Header/>
       <ColoredScrollbar>
@@ -52,18 +53,18 @@ const Header: Component = () => {
       {
         (schedule) => {
           return (
-            <div class={'w-full px-2'}>
-              <div class={'bg-white rounded-2xl p-2 text-center flex flex-row items-center justify-between'}>
-                <h1 class={'~text-base/xl'}>{schedule().title}</h1>
-                <a
-                  class={'hover:scale-105 hover:bg-text-500 transition-all'}
-                  target={'_blank'}
-                  href={'https://jinglejam.ostof.dev/yogs'}
-                >
+            <a
+              class={'hover:scale-101 hover:brightness-105 transition-all'}
+              target={'_blank'}
+              href={'https://jinglejam.ostof.dev/yogs'}
+            >
+              <div class={'w-full px-2'}>
+                <div class={'bg-white rounded-2xl p-2 text-center flex flex-row items-center justify-between'}>
+                  <h1 class={'~text-base/xl'}>{schedule().title}</h1>
                   <FaSolidArrowUpRightFromSquare class={'~text-base/xl'}/>
-                </a>
+                </div>
               </div>
-            </div>
+            </a>
           )
         }
       }
