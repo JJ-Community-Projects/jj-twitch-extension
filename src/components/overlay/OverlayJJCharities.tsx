@@ -30,7 +30,7 @@ export const OverlayJJCharities: Component = () => {
   return (
     <div class={twMerge('h-full flex flex-col gap-2 p-2 rounded-2xl shadow-xl', backgroundColor())}>
       <OverlayHeader/>
-      <div class={'w-full px-2'}>
+      <div class={'w-full px-2 z-20'}>
         <OverlayCharityOverviewCollapsable/>
       </div>
       <div class={'h-full w-full overflow-hidden overscroll-none'}>
@@ -42,7 +42,7 @@ export const OverlayJJCharities: Component = () => {
           )}>
             <Show when={causes.data}>{
               (causes) => {
-                return (<For each={causes().causes }>
+                return (<For each={causes().causes}>
                   {(charity, i) => <CharityListItemAlt charity={charity} i={i()}/>}
                 </For>)
               }
@@ -53,7 +53,6 @@ export const OverlayJJCharities: Component = () => {
     </div>
   );
 }
-
 
 
 const Item: Component<{ cause: JJCause }> = (props) => {
