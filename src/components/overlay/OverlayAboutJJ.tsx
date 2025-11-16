@@ -64,13 +64,7 @@ const ExternalLinks = () => {
         href={'https://jinglejam.co.uk'}
         aria-label={'Jingle Jam Website'}>
         <GlobeIcon class={'~w-4/8 ~h-4/8'}/>
-      </a><a
-      class={'hover:scale-110 transition-all'}
-      target={'_blank'}
-      href={url()}
-      aria-label={'Donate'}>
-      <TiltifyRoundIcon class={'~w-4/8 ~h-4/8'}/>
-    </a>
+      </a>
       <a
         class={'hover:scale-110 transition-all'}
         href={'https://twitch.tv/team/jinglejam'}

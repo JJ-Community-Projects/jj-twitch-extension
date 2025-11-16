@@ -30,6 +30,9 @@ export const OverlayJJCharities: Component = () => {
   return (
     <div class={twMerge('h-full flex flex-col gap-2 p-2 rounded-2xl shadow-xl', backgroundColor())}>
       <OverlayHeader/>
+      <div class={'w-full px-2'}>
+        <OverlayCharityOverviewCollapsable/>
+      </div>
       <div class={'h-full w-full overflow-hidden overscroll-none'}>
         <ColoredScrollbar>
           <div class={twMerge(
@@ -37,7 +40,6 @@ export const OverlayJJCharities: Component = () => {
             'lg:grid lg:grid-cols-2',
             'flex flex-col px-2'
           )}>
-            <OverlayCharityOverviewCollapsable/>
             <Show when={causes.data}>{
               (causes) => {
                 return (<For each={causes().causes }>

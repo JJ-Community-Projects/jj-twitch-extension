@@ -5,17 +5,15 @@ import {Tooltip} from "@kobalte/core/tooltip";
 import './OverlaySideNav.css'
 import {useOverlay} from "../common/providers/OverlayProvider.tsx";
 import {twMerge} from "tailwind-merge";
-import {useOverlayConfig, useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
+import {useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
-import {useChat} from "../common/providers/ChatProvider.tsx";
-import {Button} from "@kobalte/core/button";
 import {JJIcon} from "../common/icons/JJIcons.tsx";
 import {useTwitchAuth} from "../common/providers/TwitchAuthProvider.tsx";
 import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
 
 export const OverlaySideNav: Component = () => {
 
-  const {start} = useChat()
+  // const {start} = useChat()
   const twitchConfig = useTwitchOverlayConfig()
   const {theme, tailwindBGPrimary} = useTheme()
   const {auth, channelName} = useTwitchAuth()
@@ -107,11 +105,11 @@ export const OverlaySideNav: Component = () => {
 
   return (
     <div class={'flex flex-col h-full w-12 py-20 gap-4 justify-center items-center'}>
-      <Show when={isDev}>
+      {/**<Show when={isDev}>
         <Button class={'bg-red-500 text-white'} onClick={() => {
           start('582')
         }}>Test chat</Button>
-      </Show>
+      </Show>**/}
       <Tooltip placement={'right'}>
         <Tooltip.Trigger
           onClick={toggleAboutJJ}

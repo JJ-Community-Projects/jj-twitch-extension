@@ -1,5 +1,4 @@
 import type { Component } from "solid-js"
-import {useTwitchPanelConfig, useTwitchPanelConfigEdit} from "../../common/providers/PanelConfigProvider.tsx";
 import {Select} from "@kobalte/core/select";
 import {AiOutlineCheck} from "solid-icons/ai";
 import {useTwitchOverlayConfig, useTwitchOverlayConfigEdit} from "../../common/providers/OverlayConfigProvider.tsx";
@@ -24,9 +23,11 @@ export const OverlayThemeSelection: Component = () => {
         value={config.theme}
         placeholder="Select a Theme"
         onChange={v => {
-          setTwitchOverlayConfiguration({
-            theme: v as 'red' | 'blue',
-          })
+          if (v !== null) {
+            setTwitchOverlayConfiguration({
+              theme: v as 'red' | 'blue' | 'dark',
+            })
+          }
         }}
         options={options()}
         itemComponent={props => (

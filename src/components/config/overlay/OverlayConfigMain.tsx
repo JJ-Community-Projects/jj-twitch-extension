@@ -1,17 +1,15 @@
 import {type Component, For, Show} from "solid-js";
 import {createModalSignal} from "../../../lib/createModalSignal.ts";
-import {TextField} from "@kobalte/core/text-field";
 import {Button} from "@kobalte/core/button";
+import {TextField} from "@kobalte/core/text-field";
 import {useTwitchOverlayConfig, useTwitchOverlayConfigEdit} from "../../common/providers/OverlayConfigProvider.tsx";
 import {OverlayThemeSelection} from "./OverlayThemeSelection.tsx";
 import {Checkbox} from "@kobalte/core/checkbox";
 import {FaSolidCheck} from "solid-icons/fa";
-import {ColoredScrollbar} from "../../common/ColoredScrollbar.tsx";
 import {useTheme} from "../../common/providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {AlertDialog} from "@kobalte/core/alert-dialog";
 import {CgClose} from "solid-icons/cg";
-import {Tabs} from "@kobalte/core/tabs";
 import {SleepProvider} from "../../common/providers/SleepProvider.tsx";
 import {OverlayProvider} from "../../common/providers/OverlayProvider.tsx";
 import {LocalStorageProvider} from "../../common/providers/LocalStorageProvider.tsx";
@@ -21,148 +19,149 @@ import {Select} from "@kobalte/core/select";
 import {AiOutlineCheck} from "solid-icons/ai";
 import {OverlayCharityBanner} from "../../overlay/OverlayCharityBanner.tsx";
 import {OverlayCharitySideBanner} from "../../overlay/OverlayCharitySideBanner.tsx";
-import {ChatProvider} from "../../common/providers/ChatProvider.tsx";
+import {useIsJJ, useJJStartCountdown} from "../../../lib/useJJDates.ts";
 
 
 export const OverlayConfigMain: Component = () => {
-  const {theme} = useTheme()
-
-  const background = () => {
-    switch (theme()) {
-      case 'blue':
-      case 'blue_light':
-        return 'bg-accent-500'
-      case 'dark':
-        return 'bg-grey-800'
-      default:
-        return 'bg-primary-500'
-    }
-  }
-  return (
-    <Tabs class={twMerge('text-white p-2 w-full h-full', background())}>
-      <Tabs.List class={'w-full flex flex-row items-center justify-center gap-4'}>
-        <Tabs.Trigger value={'config'}>Config</Tabs.Trigger>
-        <Tabs.Trigger value={'preview'}>Preview</Tabs.Trigger>
-      </Tabs.List>
-      <Tabs.Content value={'config'} class={'w-full h-full'}>
-        <OverlayConfigBody/>
-      </Tabs.Content>
-      <Tabs.Content value={'preview'} class={'w-full h-full text-black'}>
-        <Preview/>
-      </Tabs.Content>
-    </Tabs>
-  );
-}
-
-
-const Preview = () => {
-  const twitchConfig = useTwitchOverlayConfig()
-  return (
-    <ChatProvider initCauseId={'582'}>
-      <div class={'aspect-video bg-gray-700 py-[5rem] pr-[7rmm]'}>
-        <div class={'w-full h-full'}>
-          <LocalStorageProvider>
-            <SleepProvider>
-              <OverlayProvider>
-                <div class={'h-full w-full relative'}>
-                  <div
-                    class={twMerge(
-                      'h-full w-full absolute top-0 left-0',
-                    )}
-                  >
-                    <div class={'h-full flex flex-row pl-2 pr-28'}>
-                      <OverlaySideNav/>
-                      <OverlayBody/>
-                    </div>
-                  </div>
-
-                  <Show when={twitchConfig.chat.enabled}>
-                    <Show when={twitchConfig.chat.position === 'top'}>
-                      <div class={'pl-20 pr-[7rem] pb-2 absolute top-0 right-0 px-2 w-full h-16'}>
-                        <OverlayCharityBanner/>
-                      </div>
-                    </Show>
-
-                    <Show when={twitchConfig.chat.position === 'bottom'}>
-                      <div class={'pl-20 pr-[7rem] pb-2 absolute bottom-0 right-0 px-2 w-full h-16'}>
-                        <OverlayCharityBanner/>
-                      </div>
-                    </Show>
-
-                    <Show when={twitchConfig.chat.position === 'right'}>
-                      <div class={'h-full absolute top-0 right-0 pr-[7rem]'}>
-                        <OverlayCharitySideBanner/>
-                      </div>
-                    </Show>
-                  </Show>
-
-                </div>
-              </OverlayProvider>
-            </SleepProvider>
-          </LocalStorageProvider>
-        </div>
-      </div>
-    </ChatProvider>
-  )
-}
-
-
-const OverlayConfigBody: Component = () => {
-  const twitchConfig = useTwitchOverlayConfig()
-  const modalSignal = createModalSignal()
-  const {setTwitchOverlayConfiguration, save, edited} = useTwitchOverlayConfigEdit()
-
-  const {theme} = useTheme()
-
+  const {theme} = useTheme();
 
   const saveButtonBackground = () => {
     switch (theme()) {
       case 'blue':
       case 'blue_light':
-        return 'bg-primary-500'
+        return 'bg-primary-500';
       case 'dark':
-        return 'bg-grey-800'
+        return 'bg-grey-800';
       default:
-        return 'bg-accent-500'
+        return 'bg-accent-500';
     }
-  }
+  };
+
+  return (
+    <OverlayConfigBody saveButtonBackground={saveButtonBackground} />
+  );
+}
+
+
+const Preview = () => {
+  return (
+    <div class={'aspect-video bg-gray-700 py-[5rem] pr-[7rmm]'}>
+      <div class={'w-full h-full'}>
+        <LocalStorageProvider>
+          <SleepProvider>
+            <OverlayProvider>
+              <div class={'h-full w-full relative'}>
+                <div
+                  class={twMerge(
+                    'h-full w-full absolute top-0 left-0',
+                  )}
+                >
+                  <div class={'h-full flex flex-row pl-2 pr-28'}>
+                    <OverlaySideNav/>
+                    <OverlayBody/>
+                  </div>
+                </div>
+                {/**<OverlayBanner/>**/}
+              </div>
+            </OverlayProvider>
+          </SleepProvider>
+        </LocalStorageProvider>
+      </div>
+    </div>
+  )
+}
+
+
+const OverlayConfigBody: Component<{ saveButtonBackground: () => string }> = (props) => {
+  const modalSignal = createModalSignal();
+  const { save, edited } = useTwitchOverlayConfigEdit();
+
+  const jjCountdown = useJJStartCountdown();
+  const isJJ = useIsJJ();
 
   return (
     <>
-      <ColoredScrollbar>
-        <div class={'flex flex-col items-start  gap-6 p-2'}>
+      <div class={'flex flex-col p-1'}>
+        {/* Left column (controls) */}
+        <div class={'text-white flex-1'}>
+          <div class={'pt-2 px-2 flex flex-row gap-2'}>
+            <div class={'w-full'}>
+              <Show when={!isJJ()}>
+                <div class={'rounded-2xl border border-white/10 bg-black/30 p-2 h-full'}>
+                  <p class={'text-base md:text-lg text-white/80'}>The Jingle Jam starts in</p>
+                  <p class={'font-mono text-2xl'}>{jjCountdown().toFormat("dd'd' hh'h' mm'm' ss's'")}</p>
+                </div>
+              </Show>
+            </div>
+            <div class={'flex flex-row gap-1 items-end rounded-2xl border border-white/10 bg-black/30 p-2'}>
+              <OverlayThemeSelection />
+              <Button
+                class={`rounded-2xl p-2 text-white disabled:bg-gray-400 ${props.saveButtonBackground()}`}
+                onClick={() => {
+                  save();
+                  modalSignal.toggle();
+                }}
+                disabled={!edited()}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
 
-          <OverlayThemeSelection/>
-
-          <ViewsSelection/>
-
-          <ChatCommands/>
-
-          <Show when={edited()}>
-            <p>You have unsaved changes</p>
-          </Show>
-          <Button
-            class={twMerge('rounded-2xl p-2 text-white disabled:bg-gray-400', saveButtonBackground())}
-            onClick={() => {
-              save()
-              modalSignal.toggle()
-              // log('config_save', config)
-            }}
-          >
-            Save
-          </Button>
+          {/* Next steps section */}
+          <div class={'px-2'}>
+            <div class={'p-2 mt-4 space-y-3 rounded-2xl border border-white/10 bg-black/30'}>
+              <h2 class={'text-white text-lg font-semibold'}>Next steps</h2>
+              <ul class={'list-disc pl-5 space-y-2'}>
+                <li class={'text-white'}>
+                  Create a Jingle Jam Campaign at{' '}
+                  <a href="https://jinglejam.tiltify.com/" target="_blank" rel="noopener noreferrer" class={'underline text-white'}>
+                    jinglejam.tiltify.com
+                  </a>.
+                </li>
+                <li class={'text-white'}>
+                  Connect your Twitch account to your Tiltify account at{' '}
+                  <a href="https://app.tiltify.com/profile/setup" target="_blank" rel="noopener noreferrer" class={'underline text-white'}>
+                    app.tiltify.com/profile/setup
+                  </a>.
+                </li>
+                <li class={'text-white'}>
+                  To create your own custom Jingle Jam schedule, visit{' '}
+                  <a href="https://jinglejam.ostof.dev" target="_blank" rel="noopener noreferrer" class={'underline text-white'}>
+                    jinglejam.ostof.dev
+                  </a>{' '}and sign up using your Tiltify account.
+                </li>
+                <li class={'text-white'}>
+                  This years Fundraisers and Charities will be available shortly after the Jingle Jam has started.
+                </li>
+                <li class={'text-white'}>
+                  The preview may not represent the final visuals 100%. You might have to switch between tabs in the
+                  preview to make data load.
+                </li>
+              </ul>
+              <p class={'text-sm text-gray-50 opacity-80'}>
+                The Jingle Jam Extension and jinglejam.ostof.dev are community projects and is not associated with the
+                Jingle Jam.
+              </p>
+            </div>
+          </div>
         </div>
-      </ColoredScrollbar>
+        {/* Preview */}
+        <div class={'px-2 pt-2'}>
+          <Preview />
+        </div>
+      </div>
+
+      {/* Saved dialog */}
       <AlertDialog open={modalSignal.isOpen()} onOpenChange={modalSignal.setOpen}>
         <AlertDialog.Portal>
-          <AlertDialog.Overlay class="fixed inset-0 z-50 bg-black bg-opacity-20"/>
+          <AlertDialog.Overlay class="fixed inset-0 z-50 bg-black bg-opacity-20" />
           <div class="fixed inset-0 z-50 flex items-center justify-center">
-            <AlertDialog.Content
-              class="z-50 max-w-[min(calc(100vw_-_16px),500px)] rounded-md border border-solid border-zinc-300 bg-[white] p-4 shadow-lg">
+            <AlertDialog.Content class="z-50 max-w-[min(calc(100vw_-_16px),500px)] rounded-md border border-solid border-zinc-300 bg-[white] p-4 shadow-lg">
               <div class="mb-3 flex items-baseline justify-between">
                 <AlertDialog.Title class="text-xl font-medium text-zinc-900">Configuration Saved</AlertDialog.Title>
                 <AlertDialog.CloseButton class="h-4 w-4 text-zinc-600">
-                  <CgClose size={24}/>
+                  <CgClose size={24} />
                 </AlertDialog.CloseButton>
               </div>
               <AlertDialog.Description class=" text-base text-zinc-700">
@@ -173,7 +172,7 @@ const OverlayConfigBody: Component = () => {
         </AlertDialog.Portal>
       </AlertDialog>
     </>
-  )
+  );
 }
 
 
@@ -338,5 +337,31 @@ export const OverlayChatPosition: Component = () => {
         </Select.Portal>
       </Select>
     </div>
+  )
+}
+
+
+const OverlayBanner: Component = () => {
+  const twitchConfig = useTwitchOverlayConfig()
+  return (
+    <Show when={twitchConfig.chat.enabled}>
+      <Show when={twitchConfig.chat.position === 'top'}>
+        <div class={'pl-20 pr-[7rem] pb-2 absolute top-0 right-0 px-2 w-full h-16'}>
+          <OverlayCharityBanner/>
+        </div>
+      </Show>
+
+      <Show when={twitchConfig.chat.position === 'bottom'}>
+        <div class={'pl-20 pr-[7rem] pb-2 absolute bottom-0 right-0 px-2 w-full h-16'}>
+          <OverlayCharityBanner/>
+        </div>
+      </Show>
+
+      <Show when={twitchConfig.chat.position === 'right'}>
+        <div class={'h-full absolute top-0 right-0 pr-[7rem]'}>
+          <OverlayCharitySideBanner/>
+        </div>
+      </Show>
+    </Show>
   )
 }

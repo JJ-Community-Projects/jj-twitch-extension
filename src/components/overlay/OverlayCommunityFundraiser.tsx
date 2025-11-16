@@ -38,6 +38,9 @@ export const OverlayCommunityFundraiser: Component = (props) => {
           <p class={'text-lg text-center text-black bg-white rounded-2xl p-2'}>No fundraisers found.</p>
         </div>
       </Show>
+      <div class={'w-full px-2'}>
+        <OverlayCharityOverviewCollapsable/>
+      </div>
       <div class={'h-full w-full overflow-hidden overscroll-none'}>
         <ColoredScrollbar>
           <div class={twMerge(
@@ -45,7 +48,6 @@ export const OverlayCommunityFundraiser: Component = (props) => {
             'lg:grid lg:grid-cols-2',
             'flex flex-col px-2'
           )}>
-            <OverlayCharityOverviewCollapsable/>
             <For each={campaigns.data?.campaigns}>
               {(d, i) => {
                 return (

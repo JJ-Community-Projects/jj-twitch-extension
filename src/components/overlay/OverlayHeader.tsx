@@ -67,7 +67,6 @@ const NoUserCampaignHeader: Component<{ image: string }> = (props) => {
       </div>
       <img src={props.image} class={'h-full'} alt={'JJ Logo'}/>
       <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
-        <Donate/>
       </div>
     </div>
   )
@@ -91,11 +90,6 @@ const UserCampaignHeader: Component<{ image: string, userData: GetUserData200Res
         </div>
         <img src={props.image} class={'h-full'} alt={'JJ Logo'}/>
         <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
-          <a href={props.userData.campaign.tiltifyUrl} target={'_blank'}
-             class={'bg-tiltify-500 text-xs pl-2 p-1 text-white rounded-full flex flex-row gap-1 hover:brightness-105 hover:scale-101'}>
-            Donate
-            <TiltifyRoundIcon class={'size-4'}/>
-          </a>
         </div>
       </div>
       <div class={'w-full px-1 pb-1'}>

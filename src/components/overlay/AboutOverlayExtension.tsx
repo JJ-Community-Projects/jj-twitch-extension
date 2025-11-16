@@ -29,7 +29,6 @@ export const AboutOverlayExtension: Component = () => {
         <p>The Jingle Jam Community Extension shows information about the Charities and Community Fundraisers.</p>
         <p>This is a community project and not affiliated with the Jingle Jam.</p>
       </span>
-      <ChatSettings/>
       <a
         class={'text-xs flex flex-row gap-1 justify-center items-center hover:scale-105 transition-all'}
         href={'https://github.com/orgs/JJ-Community-Projects/repositories'}
