@@ -38,7 +38,7 @@ export const OverlayCommunityFundraiser: Component = (props) => {
           <p class={'text-lg text-center text-black bg-white rounded-2xl p-2'}>No fundraisers found.</p>
         </div>
       </Show>
-      <div class={'w-full px-2'}>
+      <div class={'w-full px-2 z-20'}>
         <OverlayCharityOverviewCollapsable/>
       </div>
       <div class={'h-full w-full overflow-hidden overscroll-none'}>
