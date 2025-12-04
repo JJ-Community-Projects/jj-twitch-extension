@@ -83,7 +83,7 @@ export const ScheduleControls: Component = () => {
                     'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
                     'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-0.5 group-hover:pr-1 group-hover:delay-150',
                   )}>
-                    Previous
+                    Before
                   </p>
                 </div>
               </button>
@@ -143,7 +143,7 @@ export const ScheduleControls: Component = () => {
                     'transition-[max-width,opacity,padding] duration-300 delay-0 ease-in-out',
                     'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-0.5 group-hover:pr-1 group-hover:delay-150',
                   )}>
-                    Website
+                    Web
                   </p>
                 </div>
               </a>
