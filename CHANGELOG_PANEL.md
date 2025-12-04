@@ -1,4 +1,25 @@
-3.0.0 - Submition 2 (2025-11-15)
+3.0.1 - Submition 1 (2025-12-04)
+
+General Info:
+The Jingle Jam is a yearly charity event hosted by the Jingle Jam Charity. https://www.jinglejam.co.uk/
+
+Depending on the channel, there are 4 tabs shown.
+- User Schedule
+- Yogs Schedule
+- Charity (always shown)
+- Fundraisers (always shown)
+
+The test channel shows all tabs for testing purposes.
+
+Bug fixes
+- Updated the live indicator on schedules (User and Yogs)
+  - Live streams now show correctly if they are live
+- Added "Last fetched" label below yogs schedule
+- Update refetch intervals for schedules
+
+---
+
+- 3.0.0 - Submition 2 (2025-11-15)
 Fixed issues mentioned in the Review
 - The User Schedule loads, this was a backend issue.
 - As per 4.6.3 - Remove all Tiltify links and links to the charities websites. The extension now only links to participating Twitch channels.
