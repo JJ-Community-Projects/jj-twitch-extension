@@ -13,9 +13,12 @@ The test channel shows all tabs for testing purposes.
 
 Bug fixes
 - Updated the live indicator on schedules (User and Yogs)
-  - Live streams now show correctly if they are live
-- Added "Last fetched" label below yogs schedule
+  - Streams now show correctly if they are currently live
+- Added "Last fetched" label below yogs schedule (scroll)
 - Update refetch intervals for schedules
+- Update "Previous" and "Website" labels on the yogs schedule controls
+  - "Previous" is now "Before"
+  - "Website" is now "Web"
 
 ---
 
