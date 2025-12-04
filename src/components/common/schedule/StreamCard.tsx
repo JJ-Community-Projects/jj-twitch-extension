@@ -139,6 +139,7 @@ export const StreamStripeCard: Component<SlotCardProps> = props => {
     minute: 'numeric',
     timeZoneName: 'short',
   }
+
   const isLive = () => {
     return YogsStreamUtils.isLive(props.stream, now())
   }
@@ -204,12 +205,12 @@ export const StreamStripeCard: Component<SlotCardProps> = props => {
           <Show when={props.stream.subtitle && props.stream.subtitle.length > 0}>
             <p class={'line-clamp-1 text-xs uppercase'}>{props.stream.subtitle}</p>
           </Show>
-          <Show when={props.showTime && isOver()}>
+          <Show when={props.showTime && isOver() && !isLive()}>
             <p class={'line-clamp-1 text-xs'}>
               {start().toLocaleString(startFormat)}
             </p>
           </Show>
-          <Show when={props.showCountdown && isBefore()}>
+          <Show when={props.showCountdown && isBefore() && !isLive()}>
             <p class={'line-clamp-1 text-xs'}>
               <span class={'font-mono'}>{countdownFormat()}</span>,{' '}
               {start().toLocaleString(startFormat)}
