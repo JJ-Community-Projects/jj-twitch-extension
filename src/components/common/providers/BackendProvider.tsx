@@ -1,8 +1,9 @@
-import {createContext, createEffect, on, type ParentComponent, useContext} from "solid-js";
+import {createContext, createEffect, createSignal, on, type ParentComponent, useContext} from "solid-js";
 import {Configuration, TwitchExtensionApi} from "../../../api";
 import {useQuery} from "@tanstack/solid-query";
 import {useTwitchAuth} from "./TwitchAuthProvider.tsx";
 import {useTabs} from "./TabsProvider.tsx";
+import {DateTime} from "luxon";
 
 const useBackendHook = (useConfigPlaceholderData = true) => {
 
@@ -34,7 +35,7 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
       enabled: isAuthInit(),
       staleTime: 60_000,
       refetchInterval: 60_000 * 10,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
       refetchIntervalInBackground: false,
       placeholderData: useConfigPlaceholderData ? (prev) => prev : undefined
     })
@@ -46,7 +47,7 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     enabled: isAuthInit(),
     staleTime: 60_000,
     refetchInterval: 60_000 * 10,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: useConfigPlaceholderData ? (prev) => prev : undefined
   }))
@@ -59,9 +60,9 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     queryKey: ['overview', channelId(), userId()],
     queryFn: () => api.getOverview(requestAuth()),
     enabled: enableOverviewQuery(),
-    staleTime: 60_000,
+    staleTime: 30_000,
     refetchInterval: 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -76,9 +77,9 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     queryKey: ['campaigns', channelId(), userId()],
     queryFn: () => api.getCampaigns(requestAuth()),
     enabled: enableCampaignsQuery(),
-    staleTime: 60_000,
+    staleTime: 30_000,
     refetchInterval: () => configQuery.data?.refreshInterval.fundraisers ?? 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -94,9 +95,9 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     queryKey: ['causes', channelId(), userId()],
     queryFn: () => api.getCauses(requestAuth()),
     enabled: enableCausesQuery(),
-    staleTime: 60_000,
+    staleTime: 30_000,
     refetchInterval: () => configQuery.data?.refreshInterval.charities ?? 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -111,7 +112,7 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     enabled: enableUserDataQuery(),
     staleTime: 60_000,
     refetchInterval: 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -144,7 +145,7 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     queryFn: () => api.getUserSchedule(requestAuth()),
     enabled: enableUserScheduleQuery(),
     staleTime: 60_000,
-    refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 15,
+    refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 5,
     refetchOnWindowFocus: false,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
@@ -160,9 +161,9 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     queryKey: ['yogs-schedule', channelId(), userId()],
     queryFn: () => api.getYogsSchedule(requestAuth()),
     enabled: enableYogsScheduleQuery(),
-    staleTime: 60_000 * 5,
-    refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 10,
-    refetchOnWindowFocus: false,
+    staleTime: 60_000,
+    refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 5,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
