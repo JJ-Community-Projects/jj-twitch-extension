@@ -33,3 +33,4 @@ firebase.json
 .firebaserc
 
 .firebase/
+/scripts/
