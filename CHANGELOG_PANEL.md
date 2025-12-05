@@ -1,4 +1,4 @@
-3.0.1 - Submition 1 (2025-12-04)
+3.0.1 - Submition 1 (2025-12-05)
 
 General Info:
 The Jingle Jam is a yearly charity event hosted by the Jingle Jam Charity. https://www.jinglejam.co.uk/
@@ -14,11 +14,22 @@ The test channel shows all tabs for testing purposes.
 Bug fixes
 - Updated the live indicator on schedules (User and Yogs)
   - Streams now show correctly if they are currently live
+
+Changes:
+Yogs Schedule Tab:
 - Added "Last fetched" label below yogs schedule (scroll)
-- Update refetch intervals for schedules
 - Update "Previous" and "Website" labels on the yogs schedule controls
-  - "Previous" is now "Before"
-  - "Website" is now "Web"
+    - "Previous" is now "Before"
+    - "Website" is now "Web"
+
+Backend:
+- Update refetch intervals for schedules
+
+Charity/Fundraiser Tab:
+- Updated "Collections Sold" label to "Collections"
+
+Other
+- Updated Extension Icon
 
 ---
 
