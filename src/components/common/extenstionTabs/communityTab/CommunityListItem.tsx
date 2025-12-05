@@ -184,7 +184,7 @@ export const CommunityListItemAlt: Component<{ i: number; campaign: JJCampaign }
           <div class={"min-w-0 flex-1"}>
             <div class={"flex flex-row gap-1 items-center"}>
               <Show when={isLive()}>
-                <div class={"rounded-full bg-accent-500 px-1.5 text-center justify-center items-center py-0.5 shadow text-[8px] text-white"}>
+                <div class={"rounded-full bg-red-500 px-1.5 text-center justify-center items-center py-0.5 shadow text-[8px] text-white"}>
                   LIVE
                 </div>
               </Show>
