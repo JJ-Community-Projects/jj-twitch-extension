@@ -27,6 +27,7 @@ Backend:
 
 Charity/Fundraiser Tab:
 - Updated "Collections Sold" label to "Collections"
+- Change the Live Indicator for fundraisers to be red
 
 Other
 - Updated Extension Icon
