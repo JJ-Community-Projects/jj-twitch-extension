@@ -109,7 +109,7 @@ export const CharityOverviewCollapsable: Component = () => {
                           }
                         }
                       </Show>
-                      <SmallValue value={overview().collections.redeemed} text={'Collections Sold'}/>
+                      <SmallValue value={overview().collections.redeemed} text={'Collections'}/>
                       <SmallValue value={overview().collections.total - overview().collections.redeemed}
                                   text={'Collections Available'}/>
                     </div>
@@ -217,7 +217,7 @@ export const OverlayCharityOverviewCollapsable: Component = () => {
                           }
                         }
                       </Show>
-                      <SmallValue value={overview().collections.redeemed} text={'Collections Sold'}/>
+                      <SmallValue value={overview().collections.redeemed} text={'Collections'}/>
                       <SmallValue value={overview().collections.total - overview().collections.redeemed}
                                   text={'Collections Available'}/>
                     </div>
@@ -261,7 +261,7 @@ const OverviewChanger: Component<{ overview: OverviewSchema }> = (props) => {
       text: `Raised in ${DateTime.fromJSDate(props.overview.date).year}`
       // text: `Raised in 2024`
     });
-    s.push({ kind: "value", value: props.overview.collections.redeemed, text: "Collections Sold" });
+    s.push({ kind: "value", value: props.overview.collections.redeemed, text: "Collections" });
     s.push({ kind: "value", value: props.overview.collections.total - props.overview.collections.redeemed, text: "Collections Available" });
 
     return s;

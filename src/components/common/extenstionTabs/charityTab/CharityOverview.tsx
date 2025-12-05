@@ -90,7 +90,7 @@ export const CharityOverview: Component = () => {
                 )
               }
             </Show>
-            <p class={twMerge('text-xxs', darkText())}>Collections Sold</p>
+            <p class={twMerge('text-xxs', darkText())}>Collections</p>
           </div>
           <div>
             <Show when={overview.data}>
