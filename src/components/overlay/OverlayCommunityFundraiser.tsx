@@ -10,7 +10,7 @@ import {
   CharityOverviewCollapsable,
   OverlayCharityOverviewCollapsable
 } from "../common/extenstionTabs/charityTab/CharityOverviewCollapsable.tsx";
-import {CommunityListItemAlt} from "../common/extenstionTabs/communityTab/CommunityListItem.tsx";
+import {CommunityListItem} from "../common/extenstionTabs/communityTab/listItem/CommunityListItem.tsx";
 
 
 export const OverlayCommunityFundraiser: Component = (props) => {
@@ -51,7 +51,7 @@ export const OverlayCommunityFundraiser: Component = (props) => {
             <For each={campaigns.data?.campaigns}>
               {(d, i) => {
                 return (
-                  <CommunityListItemAlt campaign={d} i={i()}/>
+                  <CommunityListItem campaign={d} i={i()}/>
                 )
               }}
             </For>

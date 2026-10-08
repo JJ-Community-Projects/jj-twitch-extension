@@ -4,7 +4,7 @@ import {DateTime} from "luxon";
 import {FiExternalLink} from "solid-icons/fi";
 import {InvisibleBodyAlt} from "../../InvisibleBody.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
-import {CommunityListItemAlt} from "./CommunityListItem.tsx";
+import {CommunityListItem} from "./listItem/CommunityListItem.tsx";
 import {CrossFade} from "../../CrossFade.tsx";
 import {Loading} from "../../Loading.tsx";
 import {ErrorPage} from "../../Error.tsx";
@@ -22,7 +22,7 @@ export const CommunityTab: Component = () => {
       {
         (config) => {
           return (
-            <Show when={config().showFundraisers} fallback={
+            <Show when={true} fallback={
               <InvisibleBodyAlt text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'}>
                 <JJStreamTeamLink/>
               </InvisibleBodyAlt>
@@ -85,7 +85,7 @@ const FundraiserBody: Component = () => {
       }>
         {(c, i) => {
           return (
-            <CommunityListItemAlt
+            <CommunityListItem
               i={i()}
               campaign={c()}
             />
