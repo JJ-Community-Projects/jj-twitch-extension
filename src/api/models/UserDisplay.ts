@@ -60,6 +60,12 @@ export interface UserDisplay {
      * @type {string}
      * @memberof UserDisplay
      */
+    youtubeUrl?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDisplay
+     */
     tiltifySlug: string;
     /**
      * 
@@ -114,6 +120,7 @@ export function UserDisplayFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'username': json['username'],
         'profileImage': json['profileImage'],
         'twitchLogin': json['twitchLogin'],
+        'youtubeUrl': json['youtubeUrl'] == null ? undefined : json['youtubeUrl'],
         'tiltifySlug': json['tiltifySlug'],
         'tiltifyUrl': json['tiltifyUrl'],
         'primaryColor': json['primaryColor'],
@@ -133,6 +140,7 @@ export function UserDisplayToJSON(value?: UserDisplay | null): any {
         'username': value['username'],
         'profileImage': value['profileImage'],
         'twitchLogin': value['twitchLogin'],
+        'youtubeUrl': value['youtubeUrl'],
         'tiltifySlug': value['tiltifySlug'],
         'tiltifyUrl': value['tiltifyUrl'],
         'primaryColor': value['primaryColor'],

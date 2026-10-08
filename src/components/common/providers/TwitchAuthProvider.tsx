@@ -88,7 +88,7 @@ const debugDataMap = {
     helixToken: "333"
   },
 }
-const debugChannel = 'ostofbot'
+const debugChannel = 'yogscast'
 const debugData = debugDataMap[debugChannel]
 type ChannelsResponse = {
   data: Array<ChannelInfo>;

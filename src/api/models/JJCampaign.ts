@@ -92,6 +92,18 @@ export interface JJCampaign {
      * @memberof JJCampaign
      */
     twitch?: JJCampaignTwitch;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof JJCampaign
+     */
+    hasActiveDonationMatch?: boolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof JJCampaign
+     */
+    donationMatchStartsAt?: Date | null;
 }
 
 /**
@@ -128,6 +140,8 @@ export function JJCampaignFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'raised': CurrenciesSchemaFromJSON(json['raised']),
         'goal': CurrenciesSchemaFromJSON(json['goal']),
         'twitch': json['twitch'] == null ? undefined : JJCampaignTwitchFromJSON(json['twitch']),
+        'hasActiveDonationMatch': json['hasActiveDonationMatch'] == null ? undefined : json['hasActiveDonationMatch'],
+        'donationMatchStartsAt': json['donationMatchStartsAt'] == null ? undefined : (new Date(json['donationMatchStartsAt'])),
     };
 }
 
@@ -147,6 +161,8 @@ export function JJCampaignToJSON(value?: JJCampaign | null): any {
         'raised': CurrenciesSchemaToJSON(value['raised']),
         'goal': CurrenciesSchemaToJSON(value['goal']),
         'twitch': JJCampaignTwitchToJSON(value['twitch']),
+        'hasActiveDonationMatch': value['hasActiveDonationMatch'],
+        'donationMatchStartsAt': value['donationMatchStartsAt'] == null ? undefined : ((value['donationMatchStartsAt'] as any).toISOString()),
     };
 }
 

@@ -179,6 +179,23 @@
               "isLive",
               "url"
             ]
+          },
+          "hasActiveDonationMatch": {
+            "type": "boolean",
+            "default": false
+          },
+          "donationMatchStartsAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "x-native-type": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
           }
         },
         "required": [
@@ -607,6 +624,16 @@
             "type": "string"
           },
           "twitchLogin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "youtubeUrl": {
             "anyOf": [
               {
                 "type": "string"
