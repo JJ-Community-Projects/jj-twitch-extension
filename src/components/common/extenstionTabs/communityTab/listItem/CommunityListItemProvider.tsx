@@ -14,7 +14,7 @@ const useCommunityListItemHook = (props: FundraiserItemProps) => {
   const {eur, usd} = useCurrency()
 
   const donoMatch = () => {
-    return props.i ===0; props.campaign.hasActiveDonationMatch
+    return props.campaign.hasActiveDonationMatch
   }
 
   const gradient = [
