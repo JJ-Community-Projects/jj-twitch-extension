@@ -63,7 +63,8 @@ const Body: Component = () => {
             <p class={"truncate text-ellipsis text-xxs font-bold"}>Dono Matching</p>
           </Show>
         </div>
-        <div class={twMerge("flex flex-col items-end self-start text-[9px] leading-3 font-bold", raisedColor())}>
+        {/* Not twMerge: it doesn't know the custom text-xxs size and drops it in favour of the text colour */}
+        <div class={`flex flex-col items-end self-start text-xxs font-bold ${raisedColor()}`}>
           <p>Raised</p>
           <Numeric value={raised()} numberStyle="currency" currency={currency()}/>
         </div>
