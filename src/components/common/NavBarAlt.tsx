@@ -90,7 +90,7 @@ const TabC: Component<{
       case 'charities':
         return 'Charities';
       case 'fundraisers':
-        return 'Fundraisers';
+        return 'Community';
       case 'user-schedule':
         return 'Schedule';
       default:
