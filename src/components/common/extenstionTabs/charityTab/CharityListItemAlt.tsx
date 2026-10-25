@@ -4,9 +4,9 @@ import {Numeric} from "solid-i18n";
 import {useCurrency} from "../../providers/CurrencyProvider.tsx";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import type {JJCause} from "../../../../api";
-import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
-import {TiltifyIcon} from "../../icons/JJIcons.tsx";
-import {useBackend} from "../../providers/BackendProvider.tsx";
+import {Accordion} from "@kobalte/core";
+import {FaSolidChevronDown} from "solid-icons/fa";
+import "./CharityOverviewCollapsable.css";
 
 interface CharityListItemAltProps {
   charity: JJCause;
@@ -60,45 +60,52 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
 
   const name = () => (charity.name.length > 48 ? charity.name.substring(0, 48) + "…" : charity.name);
 
-  const websiteButtonColors = () => {
-    if (theme() === 'dark') {
-      return "bg-gradient-to-b from-gray-700 to-gray-800 text-white"
-    }
-
-    if (theme() === 'blue') {
-      return "bg-primary-500 text-white"
-    }
-
-    return "bg-accent-500 text-white"
-  }
-
   return (
     <div
       class={twMerge(
-        "w-full rounded-2xl shadow-sm hover:shadow-md transition-all duration-200",
+        "w-full self-start rounded-2xl shadow-sm hover:shadow-md transition-all duration-200",
         "hover:brightness-105 hover:scale-101 active:brightness-[0.98] hover:shadow-lg",
         campaignSurface(i)
       )}
     >
-      <div class={"flex h-full w-full flex-col gap-2 p-2.5"}>
-        {/* Header */}
-        <div class={"flex flex-row items-start h-full gap-2"}>
-          <img
-            class={"size-8 rounded-lg ring-1 ring-black/10 dark:ring-white/10"}
-            alt={charity.name}
-            src={charity.logo}
-            loading={"lazy"}
-          />
-          <div class={"min-w-0 flex-1 h-full"}>
-            <p class={"truncate text-ellipsis text-sm font-semibold"}>{name()}</p>
-          </div>
-          <div class={twMerge("flex flex-col items-end text-xs font-bold", raisedColor())}>
-            <p>Raised</p>
-            <Numeric value={value()} numberStyle="currency" currency={currency()}/>
-          </div>
-        </div>
-        <p class={"line-clamp-3 text-xxs opacity-90"}>{charity.description}</p>
-      </div>
+      <Accordion.Root collapsible class={"h-full w-full p-2.5"}>
+        <Accordion.Item value="charity">
+          <Accordion.Header>
+            <Accordion.Trigger
+              class={"group flex w-full flex-row items-center gap-2 text-left"}
+              aria-label={`Toggle ${charity.name} details`}
+            >
+              <img
+                class={twMerge(
+                  "size-6 rounded-lg ring-1 ring-black/10 dark:ring-white/10 transition-all duration-200",
+                  "group-data-[expanded]:size-8"
+                )}
+                alt={charity.name}
+                src={charity.logo}
+                loading={"lazy"}
+              />
+              <div class={"min-w-0 flex-1"}>
+                <p class={"truncate text-ellipsis text-xs font-semibold transition-all duration-200 group-data-[expanded]:text-sm"}>
+                  {name()}
+                </p>
+              </div>
+              <div class={twMerge("flex flex-row items-center gap-1.5", raisedColor())}>
+                <div class={"flex flex-col items-end text-xxs font-bold transition-all duration-200 group-data-[expanded]:text-xs"}>
+                  <p>Raised</p>
+                  <Numeric value={value()} numberStyle="currency" currency={currency()}/>
+                </div>
+                <FaSolidChevronDown class={twMerge(
+                  "h-3 w-3 shrink-0 transition-transform",
+                  "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0"
+                )}/>
+              </div>
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content class="jj-accordion__content">
+            <p class={"line-clamp-3 pt-2 text-xxs opacity-90"}>{charity.description}</p>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion.Root>
     </div>
   );
 };
