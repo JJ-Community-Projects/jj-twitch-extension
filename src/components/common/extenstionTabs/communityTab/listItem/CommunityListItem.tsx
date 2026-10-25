@@ -57,7 +57,7 @@ const Body: Component = () => {
         <div class={"min-w-0 flex-1"}>
           <p class={"truncate text-ellipsis text-xs font-semibold"}>{name()}</p>
           <Show when={twitchUrl()}>
-            <p class={"truncate text-ellipsis text-xxs opacity-80"}>{isLive() ? "Watch Live" : "Visit Twitch"}</p>
+            <p class={"truncate text-ellipsis text-xxxs opacity-80"}>{isLive() ? "Watch Live" : "Visit Twitch"}</p>
           </Show>
           <Show when={donoMatch()}>
             <p class={"truncate text-ellipsis text-xxs font-bold"}>Dono Matching</p>

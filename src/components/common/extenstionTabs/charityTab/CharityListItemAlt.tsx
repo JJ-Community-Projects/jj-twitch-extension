@@ -77,6 +77,15 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
         <p class={"truncate text-ellipsis text-xs font-semibold transition-all duration-200 group-data-[expanded]:text-sm"}>
           {name()}
         </p>
+        {/* One-line teaser of the description; collapses away once opened, where the full description shows */}
+        <Show when={chevron}>
+          <p class={twMerge(
+            "max-h-2 truncate text-xxxs opacity-80 transition-all duration-200",
+            "group-data-[expanded]:max-h-0 group-data-[expanded]:opacity-0"
+          )}>
+            {charity.description}
+          </p>
+        </Show>
       </div>
       <div class={twMerge("flex flex-row items-center gap-2", raisedColor())}>
         <div class={"flex flex-col items-end text-xxs font-bold transition-all duration-200 group-data-[expanded]:text-xs"}>
