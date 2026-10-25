@@ -3,7 +3,7 @@ import {useBackend} from "../../providers/BackendProvider.tsx";
 import type {UserScheduleSchema} from "../../../../api";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
-import {StreamStripeCard} from "../../schedule/StreamCard.tsx";
+import {ScheduleSlot} from "../../schedule/ScheduleSlotDialog.tsx";
 import {CrossFade} from "../../CrossFade.tsx";
 import {ErrorPage} from "../../Error.tsx";
 import {Loading} from "../../Loading.tsx";
@@ -90,19 +90,7 @@ export const Body: Component<BodyProps> = (props) => {
         <div class={'flex min-h-full flex-col gap-2 px-2'}>
           <For each={props.schedule.streams}>
             {stream => (
-              <StreamStripeCard
-                stream={stream}
-                showCountdown={true}
-                showTime={true}
-                startFormat={{
-                  hour: 'numeric',
-                  minute: 'numeric',
-                  timeZoneName: 'short',
-                  month: 'short',
-                  day: 'numeric',
-                }}
-
-              />
+              <ScheduleSlot stream={stream} showCountdown={true} showDate={true}/>
             )}
           </For>
         </div>

@@ -33,11 +33,12 @@ export const YogsTabHeader: Component = () => {
     <div
       class={'h-full flex-1 px-2'}
     >
-      <div class={'w-full rounded-2xl shadow-xl hover:shadow-2xl bg-gradient-to-b from-neutral-50 to-neutral-100 flex h-full flex-col items-center justify-center'}>
-        <h3 class={'text-center text-xl'}>{schedule.title}</h3>
+      {/* Single row: schedule title on the left, day (or active filter) on the right */}
+      <div class={'w-full rounded-2xl px-3 py-1.5 shadow-sm ring-1 ring-black/5 bg-gradient-to-b from-neutral-50 to-neutral-100 flex h-full flex-row items-center justify-between gap-2'}>
+        <h3 class={'min-w-0 truncate text-xs font-bold'}>{schedule.title}</h3>
         <Switch>
           <Match when={isEmpty()}>
-            <h3 class={'text-md text-center'}>
+            <h3 class={'shrink-0 text-xs opacity-80'}>
               {date().toLocaleString({
                 weekday: 'short',
                 day: '2-digit',
@@ -48,10 +49,10 @@ export const YogsTabHeader: Component = () => {
           <Match when={!isEmpty()}>
             <Switch>
               <Match when={singleLabel()}>
-                <h3 class={'text-center text-lg'}>Streams with {singleLabel()}</h3>
+                <h3 class={'min-w-0 truncate text-xs opacity-80'}>Streams with {singleLabel()}</h3>
               </Match>
               <Match when={moreThenOne()}>
-                <h3 class={'text-md text-center'}>
+                <h3 class={'min-w-0 truncate text-xs opacity-80'}>
                   Streams with {label()} or {filter().length - 1} more
                 </h3>
               </Match>

@@ -6,10 +6,11 @@ import { OverlayHeader } from "./OverlayHeader.tsx";
 import { CrossFade } from "../common/CrossFade.tsx";
 import { ErrorPage } from "../common/Error.tsx";
 import { Loading } from "../common/Loading.tsx";
-import { StreamStripeCard } from "../common/schedule/StreamCard.tsx";
 import type { UserScheduleSchema } from "../../api";
 import { useOverlayBackend } from "../common/providers/OverlayBackendProvider.tsx";
-import {OverlayStreamStripeCard} from "./OverlayStreamStripeCard.tsx";
+import { useOverlay } from "../common/providers/OverlayProvider.tsx";
+import { useAnalytics } from "../common/providers/AnalyticsProvider.tsx";
+import { ScheduleSlotListItem } from "../common/schedule/ScheduleSlotListItem.tsx";
 
 export const OverlayUserSchedule: Component = () => {
   const { theme } = useTheme();
@@ -41,6 +42,9 @@ interface BodyProps {
 }
 
 const Body: Component<BodyProps> = (props) => {
+  const { setStream } = useOverlay();
+  const { logSlotClick } = useAnalytics();
+
   return (
     <>
       <Header title={props.schedule.title} />
@@ -48,16 +52,13 @@ const Body: Component<BodyProps> = (props) => {
         <div class={"flex min-h-full flex-col gap-2 px-2 pb-2"}>
           <For each={props.schedule.streams}>
             {(stream) => (
-              <OverlayStreamStripeCard
+              <ScheduleSlotListItem
                 stream={stream}
                 showCountdown={true}
-                showTime={true}
-                startFormat={{
-                  hour: "numeric",
-                  minute: "numeric",
-                  timeZoneName: "short",
-                  month: "short",
-                  day: "numeric",
+                showDate={true}
+                onClick={() => {
+                  logSlotClick(stream);
+                  setStream(stream);
                 }}
               />
             )}

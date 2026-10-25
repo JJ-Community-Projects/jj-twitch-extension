@@ -5,7 +5,7 @@ import {useOverlay} from "../common/providers/OverlayProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {OverlayAboutJJ} from "./OverlayAboutJJ.tsx";
 import {AboutOverlayExtension} from "./AboutOverlayExtension.tsx";
-import {OverlayStreamDialog} from "./OverlayStreamDialog.tsx";
+import {OverlayScheduleSlotDialog} from "./OverlayScheduleSlotDialog.tsx";
 import {OverlayCommunityFundraiser} from "./OverlayCommunityFundraiser.tsx";
 import {OverlayUserSchedule} from "./OverlayUserSchedule.tsx";
 import {CrossFade} from "../common/CrossFade.tsx";
@@ -85,7 +85,7 @@ export const OverlayBody: Component = () => {
               "absolute inset-0 h-full w-[50vw] transition-opacity duration-500",
             )}
           >
-            <OverlayStreamDialog/>
+            <OverlayScheduleSlotDialog/>
           </div>
         </CrossFade>
       </div>
