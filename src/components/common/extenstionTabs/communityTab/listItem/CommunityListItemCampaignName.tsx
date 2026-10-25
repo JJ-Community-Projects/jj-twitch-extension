@@ -12,10 +12,9 @@ export const CommunityListItemCampaignName: Component = () => {
     return campaign.campaignName
   }
 
-
   return (
     <Show when={text()}>
-      {(d) => <p class={"truncate text-ellipsis text-[11px] opacity-80"}>{d()}</p>}
+      {(d) => <p class={"truncate text-ellipsis text-xxs opacity-80"}>{d()}</p>}
     </Show>
   );
 };

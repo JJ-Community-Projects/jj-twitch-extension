@@ -334,7 +334,7 @@ const AboutDialog: Component<AboutDialogProps> = (props) => {
           </Dialog.Title>
           <div
             class={twMerge('flex flex-col items-center gap-2 p-4')}>
-            <p class={'text-lg text-center'}>About the Jingle Jam</p>
+            <p class={'text-lg text-center'}>About Jingle Jam</p>
             <span class={' ~text-xs/base text-center'}>
               <p>Jingle Jam is a registered charity in England and Wales (1200061).</p>
               <p>The Jingle Jam fundraising event is organised by Jingle Jam Promotions on behalf of Jingle Jam to raise funds for our charity partners.</p>

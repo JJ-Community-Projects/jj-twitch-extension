@@ -10,11 +10,13 @@ export const CommunityListItemHeader: Component = () => {
   const {currency} = useCurrency()
 
   return (
-    <div class={"items-start justify-center rounded-2xl px-1 pt-1"}>
+    <div class={twMerge("items-start justify-center rounded-2xl px-1 pt-1",
+      donoMatch() &&  "px-2 pt-2",
+      )}>
       <div class={twMerge(
-        "flex items-center justify-center gap-2 rounded-xl px-2 py-1",
+        "flex items-center justify-center gap-2 rounded-xl p-1",
         headerBackground(),
-        donoMatch() &&  "text-white",
+        donoMatch() &&  "text-white p-2",
       )}>
         <img
           class={twMerge(
@@ -26,15 +28,15 @@ export const CommunityListItemHeader: Component = () => {
         />
         <div class={"min-w-0 flex-1"}>
           <div class={"flex flex-row gap-1 items-center"}>
-            <p class={"truncate text-ellipsis text-sm font-semibold"}>
+            <p class={"truncate text-ellipsis text-xs font-semibold"}>
               {name()}
             </p>
           </div>
           <CommunityListItemCampaignName/>
         </div>
-        <div class={twMerge("flex flex-col items-end text-xs font-bold", raisedColor())}>
-          <p>Raised</p>
-          <Numeric value={raised()} numberStyle="currency" currency={currency()}/>
+        <div class={twMerge("flex flex-col items-end justify-center font-bold", raisedColor())}>
+          <p class={'text-xxs '}>Raised</p>
+          <Numeric class={'text-xs'} value={raised()} numberStyle="currency" currency={currency()}/>
         </div>
       </div>
     </div>

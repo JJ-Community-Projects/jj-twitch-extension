@@ -1,11 +1,12 @@
-import type {JJCampaign} from "../../../../../api";
+import type {JJCampaign, JJCause} from "../../../../../api";
 import {useTheme} from "../../../providers/ThemeProvider.tsx";
 import {useCurrency} from "../../../providers/CurrencyProvider.tsx";
-import {createContext, type ParentComponent, useContext} from "solid-js";
+import {createContext, createMemo, type ParentComponent, useContext} from "solid-js";
 
 export interface FundraiserItemProps {
   i: number
   campaign: JJCampaign
+  cause?: JJCause
 }
 
 const useCommunityListItemHook = (props: FundraiserItemProps) => {
@@ -13,7 +14,7 @@ const useCommunityListItemHook = (props: FundraiserItemProps) => {
   const {eur, usd} = useCurrency()
 
   const donoMatch = () => {
-    return  props.campaign.hasActiveDonationMatch
+    return props.campaign.hasActiveDonationMatch
   }
 
   const gradient = [
@@ -84,9 +85,37 @@ const useCommunityListItemHook = (props: FundraiserItemProps) => {
 
   const isLive = () => props.campaign.twitch?.isLive ?? false;
 
+  const raisedGoalPair = createMemo(() => {
+    if (usd()) {
+      return {raised: props.campaign.raised.usd, goal: props.campaign.goal.usd}
+    }
+    if (eur()) {
+      return {raised: props.campaign.raised.euro, goal: props.campaign.goal.euro}
+    }
+    return {raised: props.campaign.raised.gbp, goal: props.campaign.goal.gbp}
+  })
+
+  // Same currency on both figures, or the percentage lies.
+  const goalRatio = createMemo(() => {
+    const pair = raisedGoalPair()
+    if (!Number.isFinite(pair.raised) || !Number.isFinite(pair.goal) || pair.goal <= 0) return null;
+    return Math.max(0, pair.raised / pair.goal);
+  });
+
+  const goalPercent = () => {
+    const ratio = goalRatio();
+    return ratio === null ? null : Math.round(ratio * 100);
+  };
+
+  // Off the un-rounded ratio: 99.6% rounds up to 100 but has not reached the goal.
+  const reached = () => (goalRatio() ?? 0) >= 1;
+  const progressFill = () => (theme() === "dark" ? "bg-primary-500" : "bg-primary-600");
+  const progressTrack = () => (theme() === "dark" ? "bg-white/15" : "bg-black/10");
+
   return {
     campaign: props.campaign,
     index: props.i,
+    cause: props.cause,
     campaignSurface,
     raisedColor,
     twitchUrl,
@@ -96,6 +125,11 @@ const useCommunityListItemHook = (props: FundraiserItemProps) => {
     isLive,
     headerBackground,
     donoMatch,
+    goalRatio,
+    goalPercent,
+    reached,
+    progressFill,
+    progressTrack,
   }
 }
 

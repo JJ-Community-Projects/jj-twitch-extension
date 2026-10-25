@@ -1,6 +1,5 @@
-import {type Component, createSignal, Show} from "solid-js";
+import {type Component, Show} from "solid-js";
 import {ColoredScrollbar} from "../../ColoredScrollbar.tsx";
-import {DateTime} from "luxon";
 import {FiExternalLink} from "solid-icons/fi";
 import {InvisibleBodyAlt} from "../../InvisibleBody.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
@@ -10,9 +9,8 @@ import {Loading} from "../../Loading.tsx";
 import {ErrorPage} from "../../Error.tsx";
 import {CharityOverviewCollapsable} from "../charityTab/CharityOverviewCollapsable.tsx";
 import {CommunitySearchProvider, useCommunitySearch} from "./CommunitySearchProvider.tsx";
-import {FaSolidMagnifyingGlass} from "solid-icons/fa";
-import {TextField} from "@kobalte/core";
 import {Key} from "@solid-primitives/keyed";
+import {CommunityBottom} from "./CommunityBottom.tsx";
 
 export const CommunityTab: Component = () => {
   const {config} = useBackend()
@@ -22,11 +20,14 @@ export const CommunityTab: Component = () => {
       {
         (config) => {
           return (
-            <Show when={true} fallback={
-              <InvisibleBodyAlt text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'}>
-                <JJStreamTeamLink/>
-              </InvisibleBodyAlt>
-            }>
+            <Show
+              when={config().showFundraisers}
+              fallback={
+                <InvisibleBodyAlt
+                  text={'The Community Fundraisers will be shown soon after the Jingle Jam has started.'}>
+                  <JJStreamTeamLink/>
+                </InvisibleBodyAlt>
+              }>
               <Body/>
             </Show>
 
@@ -80,14 +81,19 @@ const FundraiserBody: Component = () => {
   return (
     <>
       <CharityOverviewCollapsable/>
-      <Key each={campaigns()} by={(c) => `${c.tiltifyUrl}`} fallback={
-        <p class={'text-center text-white'}>No Fundraisers found.</p>
-      }>
+      <Key
+        each={campaigns()}
+        by={(c) => `${c.campaign.tiltifyUrl}`}
+        fallback={
+          <p class={'text-center text-white'}>No Fundraisers
+            found.</p>
+        }>
         {(c, i) => {
           return (
             <CommunityListItem
               i={i()}
-              campaign={c()}
+              campaign={c().campaign}
+              cause={c().cause}
             />
           )
         }}
@@ -105,52 +111,4 @@ const JJStreamTeamLink = () => {
       Jam Stream Team
       <FiExternalLink/></a>
   )
-}
-
-
-export const CommunityBottom: Component<{
-  date: Date
-}> = (props) => {
-
-  const {setSearchTerm} = useCommunitySearch()
-  const [showSearchField, setShowSearchField] = createSignal<boolean>(false)
-  const toggleSearchField = () => {
-    if (showSearchField()) {
-      setSearchTerm('')
-    }
-    setShowSearchField(v => !v)
-  }
-
-  return (
-    <div class={"flex items-center bg-white text-black rounded-full p-1 mt-1 mx-2"}>
-      <button
-        type="button"
-        class={"shrink-0 flex items-center justify-center h-6 w-6 rounded-full hover:bg-black/5 transition"}
-        onClick={toggleSearchField}
-        aria-label={showSearchField() ? "Hide search" : "Show search"}
-      >
-        <FaSolidMagnifyingGlass/>
-      </button>
-
-      <div class={"relative flex-1 text-center px-2 h-full w-full"}>
-        <CrossFade show={!showSearchField()}>
-          <p class={"text-xxs h-full w-full justify-center items-center flex"}>
-            Last update, {DateTime.fromJSDate(props.date).toLocaleString(DateTime.DATETIME_MED)}
-          </p>
-        </CrossFade>
-        <CrossFade show={showSearchField()}>
-          <TextField.Root class={"h-full w-full px-2"} aria-label="Search fundraisers" onChange={setSearchTerm}>
-            <TextField.Input
-              autofocus
-              placeholder="Search fundraisers..."
-              class={"w-full bg-black/5 text-xs text-center placeholder-black/60 rounded-full px-3 border border-black/10 outline-none focus-visible:ring-2 focus-visible:ring-black/20 focus-visible:bg-black/10 transition"}
-            />
-          </TextField.Root>
-        </CrossFade>
-      </div>
-
-      {/* spacer to keep center content visually centered when icon is present on the left */}
-      <div class={"shrink-0 h-6 w-6"}/>
-    </div>
-  );
 }

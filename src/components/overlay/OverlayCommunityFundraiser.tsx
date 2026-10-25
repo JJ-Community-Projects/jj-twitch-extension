@@ -66,7 +66,7 @@ export const OverlayCommunityFundraiser: Component = (props) => {
 const Live = () => {
   return (
     <div class={'relative flex h-3 items-center justify-center'}>
-      <p class={'bg-twitch-500 rounded p-0.5 text-[8px] text-white'}>LIVE</p>
+      <p class={'bg-twitch-500 rounded p-0.5 text-xxxs text-white'}>LIVE</p>
     </div>
   )
 }

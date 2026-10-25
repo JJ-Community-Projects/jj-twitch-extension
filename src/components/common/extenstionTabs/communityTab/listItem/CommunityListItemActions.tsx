@@ -2,12 +2,13 @@ import {type Component, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
 import {FaBrandsTwitch} from "solid-icons/fa";
 import {useCommunityListItem} from "./CommunityListItemProvider.tsx";
+import {CommunityListItemCause} from "./CommunityListItemCause.tsx";
 
 export const CommunityListItemActions: Component = () => {
   const {twitchUrl, twitchButtonColor, isLive} = useCommunityListItem()
 
   return (
-    <div class={"flex gap-2 px-2 pb-2"}>
+    <div class={"flex gap-2 px-2 pb-2 pt-1 justify-between items-end"}>
       <Show when={twitchUrl()}>
         <a
           target={"_blank"}
@@ -34,6 +35,7 @@ export const CommunityListItemActions: Component = () => {
           <FaBrandsTwitch size={12}/>
         </a>
       </Show>
+      <CommunityListItemCause/>
     </div>
   )
 }
