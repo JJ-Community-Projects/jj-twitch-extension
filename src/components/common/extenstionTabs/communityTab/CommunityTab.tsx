@@ -11,6 +11,7 @@ import {CharityOverviewCollapsable} from "../charityTab/CharityOverviewCollapsab
 import {CommunitySearchProvider, useCommunitySearch} from "./CommunitySearchProvider.tsx";
 import {Key} from "@solid-primitives/keyed";
 import {CommunityBottom} from "./CommunityBottom.tsx";
+import {HeadlinerUpNext} from "./HeadlinerUpNext.tsx";
 
 export const CommunityTab: Component = () => {
   const {config} = useBackend()
@@ -81,6 +82,7 @@ const FundraiserBody: Component = () => {
   return (
     <>
       <CharityOverviewCollapsable/>
+      <HeadlinerUpNext/>
       <Key
         each={campaigns()}
         by={(c) => `${c.campaign.tiltifyUrl}`}
