@@ -83,9 +83,10 @@ export const Body: Component<BodyProps> = (props) => {
         <div
           class={'h-full flex-1 px-2'}
         >
+          {/* Same single-row bar as YogsTabHeader */}
           <div
-            class={'w-full rounded-2xl shadow-xl hover:shadow-2xl bg-gradient-to-b from-neutral-50 to-neutral-100 flex h-full flex-col items-center justify-center'}>
-            <h3 class={'text-center text-xl'}>{props.schedule.title}</h3>
+            class={'w-full rounded-2xl px-3 py-1.5 shadow-sm ring-1 ring-black/5 bg-gradient-to-b from-neutral-50 to-neutral-100 flex h-full flex-row items-center'}>
+            <h3 class={'min-w-0 truncate text-xs font-bold'}>{props.schedule.title}</h3>
           </div>
         </div>
       </div>
