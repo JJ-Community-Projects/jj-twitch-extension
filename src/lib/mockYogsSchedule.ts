@@ -1,116 +1,54 @@
 import {DateTime} from "luxon";
-import type {Creator, Stream, YogsScheduleSchema, YogsScheduleSchemaDaysInner} from "../api";
+import type {Stream, YogsScheduleSchema, YogsScheduleSchemaDaysInner} from "../api";
+import {yogs2025} from "./mockYogs2025.ts";
 
-// Dev-only dummy Yogs schedule for Jingle Jam 2026, for testing countdowns and slot states.
-// Enabled by opening a dev page with `?mockSchedule` (14 days from 1 Dec 2026, with 4, 5 or 6 slots a day),
-// or `?mockSchedule=today`, where the first day is today with ended, live and upcoming slots around now.
+// Dev-only Yogs schedule for testing countdowns and slot states: last year's real schedule (mockYogs2025.ts).
+// Enabled by opening a dev page with `?mockSchedule` (moved a year on, so 1–14 Dec 2026 at the same London times),
+// or `?mockSchedule=today`, shifted so 1 Dec 15:30 is now: Decorating the Tree ended, Tom & Ben live, the rest upcoming.
+// Only ended slots keep their VODs, so upcoming ones don't show 2025 links.
 // Only loaded behind `import.meta.env.DEV`, so it never ships in a build.
 
 export const mockZone = 'Europe/London'
-const twitchUrl = 'https://www.twitch.tv/yogscast'
 
-const creators: Creator[] = [
-  {id: 'mock-holly', name: 'Holly', color: '#3584BF', url: twitchUrl},
-  {id: 'mock-ivy', name: 'Ivy', color: '#2E7D32', url: twitchUrl},
-  {id: 'mock-noel', name: 'Noel', color: '#C62828', url: ''},
-  {id: 'mock-carol', name: 'Carol', color: '#FBC02D', url: twitchUrl},
-  {id: 'mock-jasper', name: 'Jasper', color: '#6A1B9A', url: ''},
-  {id: 'mock-rudy', name: 'Rudy', color: '#EF6C00', url: twitchUrl},
-  {id: 'mock-clove', name: 'Clove', color: '#00838F', url: ''},
-  {id: 'mock-nutmeg', name: 'Nutmeg', color: '#5D4037', url: twitchUrl},
-  {id: 'mock-pip', name: 'Pip', color: '#F8BBD0', url: ''},
-  {id: 'mock-tinsel', name: 'Tinsel Twinkletoes the Third', color: '#90A4AE', url: twitchUrl},
-]
-
-const shows = [
-  'Snow Fort Showdown', 'Mince Pie Bake-Off', 'Gift Wrap Speedrun', 'Late Night Lounge',
-  'Board Game Bash', 'Sleigh Racing', 'Pub Quiz', 'Build Battle', 'Karaoke Night',
-  'Retro Arcade', 'Tabletop Tales', 'Cosy Crafting', 'Puzzle Party', 'Morning Cuppa',
-]
-
-// Includes light colours (yellow, pink) to check text contrast in the time block and dialog header.
-const colors = ['#3584BF', '#C62828', '#2E7D32', '#FBC02D', '#6A1B9A', '#EF6C00', '#00838F', '#F8BBD0']
-
-// Creator counts cycle through none, a pair, a group and a full grid.
-const groupSizes = [0, 2, 4, 10, 3]
-
-// Per-day slot layouts as [start hour, end hour] in London time, cycled by day,
-// so 4, 5 and 6 slots a day are all covered.
-const slotLayouts: [number, number][][] = [
-  [[11, 14], [14, 17], [17, 20], [20, 23]],
-  [[10, 12], [12, 14], [14, 17], [17, 20], [20, 23]],
-  [[10, 12], [12, 14], [14, 16], [16, 18], [18, 20], [20, 23]],
-]
-
-const subtitleFor = (group: Creator[]) => {
-  if (group.length === 0) return undefined
-  if (group.length > 3) return `${group.slice(0, 3).map(c => c.name).join(', ')} & Friends`
-  return group.map(c => c.name).join(' & ')
-}
-
-export type MockSlot = (start: DateTime, end: DateTime) => Stream
-
-// Returns a slot builder that cycles through titles, colours, group sizes and descriptions.
-// Shared with the dummy user schedule.
-export const createMockSlot = (now: DateTime): MockSlot => {
-  let index = 0
-  return (start, end) => {
-    const i = index++
-    const size = groupSizes[i % groupSizes.length]
-    const group = Array.from({length: size}, (_, k) => creators[(i + k) % creators.length])
-    return {
-      title: shows[i % shows.length],
-      subtitle: subtitleFor(group),
-      description: i % 3 === 0 ? 'Dummy slot for testing. Join the team for a festive stream raising money for charity.' : undefined,
-      start: start.toJSDate(),
-      end: end.toJSDate(),
-      creators: group,
-      // Every other ended slot has a VOD, so both the VOD and the no-VOD state are covered.
-      vods: end < now && i % 2 === 0 ? [{label: 'Twitch', link: twitchUrl}] : [],
-      color: colors[i % colors.length],
-    }
-  }
-}
-
-const day = (streams: Stream[], date: DateTime): YogsScheduleSchemaDaysInner => ({
-  start: date.startOf('day').toJSDate(),
-  end: date.endOf('day').toJSDate(),
-  streams,
-})
-
-const fixedDay = (slot: MockSlot, date: DateTime, dayIndex: number) => day(
-  slotLayouts[dayIndex % slotLayouts.length].map(([from, to]) => slot(date.set({hour: from}), date.set({hour: to}))),
-  date,
-)
-
-// Slots placed relative to now: two ended, one live, then upcoming ones under a day away.
-const todayDay = (slot: MockSlot, now: DateTime) => {
-  const base = now.startOf('hour')
-  const offsets: [number, number][] = [[-5, -3], [-3, -1], [-1, 1], [1, 2], [2, 4]]
-  return day(offsets.map(([from, to]) => slot(base.plus({hours: from}), base.plus({hours: to}))), now)
-}
+const todayAnchor = DateTime.fromObject({year: 2025, month: 12, day: 1, hour: 15, minute: 30}, {zone: mockZone})
 
 export const mockYogsSchedule = (startToday: boolean): YogsScheduleSchema => {
-  const now = DateTime.now().setZone(mockZone)
-  const slot = createMockSlot(now)
-  const firstDay = startToday ? now.startOf('day') : DateTime.fromObject({year: 2026, month: 12, day: 1}, {zone: mockZone})
+  const now = DateTime.now()
+  const shift = startToday
+    ? (date: Date) => DateTime.fromJSDate(date).plus(now.diff(todayAnchor)).toJSDate()
+    : (date: Date) => DateTime.fromJSDate(date, {zone: mockZone}).plus({years: 1}).toJSDate()
 
-  const days = Array.from({length: 14}, (_, i) => {
-    const date = firstDay.plus({days: i})
-    return startToday && i === 0 ? todayDay(slot, now) : fixedDay(slot, date, i)
+  const streams: Stream[] = yogs2025.map(s => {
+    const end = shift(s.end)
+    return {...s, start: shift(s.start), end, vods: end < now.toJSDate() ? s.vods : []}
+  })
+
+  // Grouped by the London day of the original start, like the backend's schedule days.
+  const days: YogsScheduleSchemaDaysInner[] = []
+  yogs2025.forEach((original, i) => {
+    const key = DateTime.fromJSDate(original.start, {zone: mockZone}).toISODate()
+    const previous = yogs2025[i - 1]
+    const sameDay = previous && DateTime.fromJSDate(previous.start, {zone: mockZone}).toISODate() === key
+    if (sameDay) {
+      const day = days[days.length - 1]
+      day.streams.push(streams[i])
+      if (streams[i].end > day.end) day.end = streams[i].end
+    } else {
+      days.push({start: streams[i].start, end: streams[i].end, streams: [streams[i]]})
+    }
   })
 
   return {
-    title: 'Jingle Jam 2026 (dummy)',
-    start: days[0].start,
+    title: startToday ? 'Yogscast Jingle Jam 2025 (shifted to now)' : 'Yogscast Jingle Jam 2025 (moved to 2026)',
+    start: streams[0].start,
     end: days[days.length - 1].end,
     initialDayIndex: 0,
     days,
-    streams: days.flatMap(d => d.streams),
+    streams,
   }
 }
 
-// Returns the dummy schedule when the page was opened with `?mockSchedule` in dev, otherwise undefined.
+// Returns the 2025 schedule when the page was opened with `?mockSchedule` in dev, otherwise undefined.
 export const devMockYogsSchedule = (): YogsScheduleSchema | undefined => {
   const flag = new URLSearchParams(window.location.search).get('mockSchedule')
   if (flag === null) return undefined
