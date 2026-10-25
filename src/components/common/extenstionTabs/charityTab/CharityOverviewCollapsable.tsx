@@ -25,7 +25,7 @@ export const CharityOverviewCollapsable: Component = () => {
     if (theme() === 'dark') {
       return "bg-gradient-to-b from-white/30 to-white/10 ring-1 ring-white/10 text-white backdrop-blur-sm";
     }
-    return "bg-gradient-to-b from-neutral-50 to-neutral-100"
+    return "bg-gradient-to-b from-neutral-50 to-neutral-100 ring-1 ring-black/5"
   }
 
   const [open, setOpen] = createSignal<string[]>([])
@@ -47,77 +47,72 @@ export const CharityOverviewCollapsable: Component = () => {
   return (
     <Show when={overview.data}>
       {(overview) => (
-        <div class={"text-center text-xs"}>
-          <div class={twMerge("flex h-full w-full flex-col gap-1 rounded-2xl shadow-xl p-1", bgColor())}>
-            <Accordion.Root collapsible value={open()} onChange={setOpen}>
-              <Accordion.Item value="overview">
-                {/* Header: whole header acts as trigger, with left chevron and right currency toggle */}
-                <Accordion.Header class="hover:brightness-105 relative h-12 w-full select-none p-1">
-                  <Accordion.Trigger
-                    class={twMerge(
-                      "hover:brightness-105 group absolute inset-0 flex items-center justify-center rounded-2xl transition-colors",
-                      theme() === "dark" ? "text-white hover:bg-white/10" : "text-gray-700 hover:scale-101"
-                    )}
-                    aria-label="Toggle charity overview"
-                  >
-                    {/* Left chevron icon */}
-                    <div class="absolute left-0 top-0 m-2 flex h-8 w-8 items-center justify-center">
-                      <FaSolidChevronDown class={twMerge(
-                        "h-4 w-4 transition-transform rounded-full",
-                        "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0",
-                        chevronHoverColor()
-                      )}/>
-                    </div>
-
-                    <div class={'left-0 top-1 absolute w-full h-full p-1'}>
-                      <CrossFade show={isOpen()}>
-                        <BigCurrency
-                          values={overview().raised.total}
-                          text={`Raised in ${DateTime.fromJSDate(overview().date).year}`}
-                          // text={`Raised in 2024`}
-                        />
-                      </CrossFade>
-                      <CrossFade show={!isOpen()}>
-                        <OverviewChanger overview={overview()}/>
-                      </CrossFade>
-                    </div>
-                  </Accordion.Trigger>
-
-                  {/* Keep currency toggle outside trigger so it's still clickable without toggling */}
-                  <div id={"div2"} class={"absolute right-0 top-0 z-10 p-1"}>
-                    <CurrencyToggleDropdown/>
+        <div class={twMerge("w-full rounded-2xl p-2 text-xs shadow-sm transition-all duration-200 hover:brightness-105", bgColor())}>
+          <Accordion.Root collapsible value={open()} onChange={setOpen}>
+            <Accordion.Item value="overview">
+              {/* Header: whole row is the trigger with the chevron on the right edge, matching the list items */}
+              <Accordion.Header class="relative w-full select-none">
+                <Accordion.Trigger
+                  class={twMerge(
+                    "group flex w-full flex-row items-center gap-2 text-left",
+                    theme() === "dark" ? "text-white" : "text-gray-700"
+                  )}
+                  aria-label="Toggle charity overview"
+                >
+                  {/* pr-16 keeps the rotating text clear of the currency toggle */}
+                  <div class={"relative h-8 min-w-0 flex-1 pr-16"}>
+                    <CrossFade show={isOpen()}>
+                      <BigCurrency
+                        values={overview().raised.total}
+                        text={`Raised in ${DateTime.fromJSDate(overview().date).year}`}
+                        // text={`Raised in 2024`}
+                      />
+                    </CrossFade>
+                    <CrossFade show={!isOpen()}>
+                      <OverviewChanger overview={overview()}/>
+                    </CrossFade>
                   </div>
-                </Accordion.Header>
+                  <FaSolidChevronDown class={twMerge(
+                    "h-3 w-3 shrink-0 transition-transform",
+                    "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0",
+                    chevronHoverColor()
+                  )}/>
+                </Accordion.Trigger>
 
-                {/* Body: animated open/close */}
-                <Accordion.Content
-                  class="jj-accordion__content">
-                  <div class="overflow-hidden">
-                    <div class={"grid grid-cols-2 gap-1 gap-y-2 pt-1"}>
-                      <Show when={overview().raised.yogscast}>
-                        {
-                          (c) => {
-                            return <SmallCurrency values={c()} text={"Raised by the Yogscast"}/>
+                {/* Keep currency toggle outside trigger so it's still clickable without toggling */}
+                <div class={"absolute right-5 top-1/2 z-10 -translate-y-1/2"}>
+                  <CurrencyToggleDropdown/>
+                </div>
+              </Accordion.Header>
 
-                          }
+              {/* Body: animated open/close */}
+              <Accordion.Content
+                class="jj-accordion__content">
+                <div class="overflow-hidden">
+                  <div class={"grid grid-cols-2 gap-2 pt-2"}>
+                    <Show when={overview().raised.yogscast}>
+                      {
+                        (c) => {
+                          return <SmallCurrency values={c()} text={"Raised by the Yogscast"}/>
+
                         }
-                      </Show>
-                      <Show when={overview().raised.fundraisers}>
-                        {
-                          (c) => {
-                            return <SmallCurrency values={c()} text={"Raised by Fundraisers"}/>
-                          }
+                      }
+                    </Show>
+                    <Show when={overview().raised.fundraisers}>
+                      {
+                        (c) => {
+                          return <SmallCurrency values={c()} text={"Raised by Fundraisers"}/>
                         }
-                      </Show>
-                      <SmallValue value={overview().collections.redeemed} text={'Collections'}/>
-                      <SmallValue value={overview().collections.total - overview().collections.redeemed}
-                                  text={'Collections Available'}/>
-                    </div>
-                    <div class={"flex flex-1 items-end justify-center pt-2"}>
-                      <p class={twMerge("text-xxs text-center", darkText())}>
-                        Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
-                      </p>
-                    </div>
+                      }
+                    </Show>
+                    <SmallValue value={overview().collections.redeemed} text={'Collections'}/>
+                    <SmallValue value={overview().collections.total - overview().collections.redeemed}
+                                text={'Collections Available'}/>
+                  </div>
+                  <div class={twMerge("flex flex-row items-center justify-between gap-2 pt-2 text-xxs opacity-80", darkText())}>
+                    <p>
+                      Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
+                    </p>
                     <Show when={config.data}>
                       {
                         (config) => {
@@ -125,9 +120,7 @@ export const CharityOverviewCollapsable: Component = () => {
                             {
                               (url) => {
                                 return (
-                                  <div class={twMerge("flex flex-1 items-end justify-center", darkText())}>
-                                    <a class={'underline'} href={url()} target={'_blank'}>Live Donation Tracker</a>
-                                  </div>
+                                  <a class={'shrink-0 underline'} href={url()} target={'_blank'}>Live Donation Tracker</a>
                                 )
                               }
                             }
@@ -136,10 +129,10 @@ export const CharityOverviewCollapsable: Component = () => {
                       }
                     </Show>
                   </div>
-                </Accordion.Content>
-              </Accordion.Item>
-            </Accordion.Root>
-          </div>
+                </div>
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion.Root>
         </div>)}
     </Show>
   );
@@ -159,78 +152,71 @@ export const OverlayCharityOverviewCollapsable: Component = () => {
   return (
     <Show when={overview.data}>
       {(overview) => (
-        <div class={"text-center text-xs"}>
-          <div class={twMerge("flex h-full w-full flex-col gap-1 rounded-2xl shadow-xl p-1", bgColor())}>
-            <Accordion.Root collapsible value={open()} onChange={setOpen}>
-              <Accordion.Item value="overview">
-                {/* Header: whole header acts as trigger, with left chevron and right currency toggle */}
-                <Accordion.Header class="relative h-12 w-full select-none p-1">
-                  <Accordion.Trigger
-                    class={twMerge(
-                      "group absolute inset-0 flex items-center justify-center rounded-2xl transition-colors",
-                      theme() === "dark" ? "text-white hover:bg-white/10" : "text-gray-700 hover:bg-black/5 hover:scale-101"
-                    )}
-                    aria-label="Toggle charity overview"
-                  >
-                    {/* Left chevron icon */}
-                    <div class="absolute left-0 top-0 m-2 flex h-8 w-8 items-center justify-center">
-                      <FaSolidChevronDown class={twMerge(
-                        "h-4 w-4 transition-transform rounded-full",
-                        "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0"
-                      )}/>
-                    </div>
-
-                    <div class={'left-0 top-1 absolute w-full h-full p-1'}>
-                      <CrossFade show={isOpen()}>
-                        <BigCurrency values={overview().raised.total}
-                                     text={`Raised in ${DateTime.fromJSDate(overview().date).year}`}/>
-                      </CrossFade>
-                      <CrossFade show={!isOpen()}>
-                        <OverviewChanger overview={overview()}/>
-                      </CrossFade>
-                    </div>
-                  </Accordion.Trigger>
-
-                  {/* Keep currency toggle outside trigger so it's still clickable without toggling */}
-                  <div id={"div2"} class={"absolute right-0 top-0 z-10 p-1"}>
-                    <CurrencyToggleDropdown/>
+        <div class={twMerge("w-full rounded-2xl p-2 text-xs shadow-sm", bgColor())}>
+          <Accordion.Root collapsible value={open()} onChange={setOpen}>
+            <Accordion.Item value="overview">
+              {/* Header: whole row is the trigger with the chevron on the right edge, matching the list items */}
+              <Accordion.Header class="relative w-full select-none">
+                <Accordion.Trigger
+                  class={twMerge(
+                    "group flex w-full flex-row items-center gap-2 text-left",
+                    theme() === "dark" ? "text-white" : "text-gray-700"
+                  )}
+                  aria-label="Toggle charity overview"
+                >
+                  {/* pr-16 keeps the rotating text clear of the currency toggle */}
+                  <div class={"relative h-8 min-w-0 flex-1 pr-16"}>
+                    <CrossFade show={isOpen()}>
+                      <BigCurrency values={overview().raised.total}
+                                   text={`Raised in ${DateTime.fromJSDate(overview().date).year}`}/>
+                    </CrossFade>
+                    <CrossFade show={!isOpen()}>
+                      <OverviewChanger overview={overview()}/>
+                    </CrossFade>
                   </div>
-                </Accordion.Header>
+                  <FaSolidChevronDown class={twMerge(
+                    "h-3 w-3 shrink-0 transition-transform",
+                    "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0"
+                  )}/>
+                </Accordion.Trigger>
 
-                {/* Body: animated open/close */}
-                <Accordion.Content
-                  class="jj-accordion__content">
-                  <div class="overflow-hidden">
-                    <div class={"grid grid-cols-2 gap-1 gap-y-2 pt-1"}>
-                      <Show when={overview().raised.yogscast}>
-                        {
-                          (c) => {
-                            return <SmallCurrency values={c()} text={"Raised by the Yogscast"}/>
+                {/* Keep currency toggle outside trigger so it's still clickable without toggling */}
+                <div class={"absolute right-5 top-1/2 z-10 -translate-y-1/2"}>
+                  <CurrencyToggleDropdown/>
+                </div>
+              </Accordion.Header>
 
-                          }
+              {/* Body: animated open/close */}
+              <Accordion.Content
+                class="jj-accordion__content">
+                <div class="overflow-hidden">
+                  <div class={"grid grid-cols-2 gap-2 pt-2"}>
+                    <Show when={overview().raised.yogscast}>
+                      {
+                        (c) => {
+                          return <SmallCurrency values={c()} text={"Raised by the Yogscast"}/>
+
                         }
-                      </Show>
-                      <Show when={overview().raised.fundraisers}>
-                        {
-                          (c) => {
-                            return <SmallCurrency values={c()} text={"Raised by Fundraisers"}/>
-                          }
+                      }
+                    </Show>
+                    <Show when={overview().raised.fundraisers}>
+                      {
+                        (c) => {
+                          return <SmallCurrency values={c()} text={"Raised by Fundraisers"}/>
                         }
-                      </Show>
-                      <SmallValue value={overview().collections.redeemed} text={'Collections'}/>
-                      <SmallValue value={overview().collections.total - overview().collections.redeemed}
-                                  text={'Collections Available'}/>
-                    </div>
-                    <div class={"flex flex-1 items-end justify-center pt-1"}>
-                      <p class={twMerge("text-xxs text-center", darkText())}>
-                        Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
-                      </p>
-                    </div>
+                      }
+                    </Show>
+                    <SmallValue value={overview().collections.redeemed} text={'Collections'}/>
+                    <SmallValue value={overview().collections.total - overview().collections.redeemed}
+                                text={'Collections Available'}/>
                   </div>
-                </Accordion.Content>
-              </Accordion.Item>
-            </Accordion.Root>
-          </div>
+                  <p class={twMerge("pt-2 text-xxs opacity-80", darkText())}>
+                    Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
+                  </p>
+                </div>
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion.Root>
         </div>)}
     </Show>
   );
@@ -298,11 +284,11 @@ const BigCurrency: Component<{ values: CurrenciesSchema, text: string }> = (prop
   const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimaryDark());
   const darkText = () => (theme() === "dark" ? "text-white" : "");
   return (
-    <div class="flex flex-col items-center justify-center">
-      <p class={twMerge("relative text-base font-bold", raisedTextColor())}>
+    <div class="flex flex-col items-start justify-center">
+      <p class={twMerge("relative text-sm font-bold", raisedTextColor())}>
         <Currency values={props.values}/>
       </p>
-      <p class={twMerge("text-xs", darkText())}>
+      <p class={twMerge("text-xxs opacity-80", darkText())}>
         {props.text}
       </p>
     </div>
@@ -318,7 +304,7 @@ const SmallCurrency: Component<{ values: CurrenciesSchema, text: string }> = (pr
       <p class={twMerge("text-xs font-bold", raisedTextColor())}>
         <Currency values={props.values}/>
       </p>
-      <p class={twMerge("text-xxs", darkText())}>
+      <p class={twMerge("text-xxs opacity-80", darkText())}>
         {props.text}
       </p>
     </div>
@@ -330,11 +316,11 @@ const BigValue: Component<{ value: number, text: string }> = (props) => {
   const raisedTextColor = () => (theme() === "dark" ? "text-white" : tailwindTextPrimaryDark());
   const darkText = () => (theme() === "dark" ? "text-white" : "");
   return (
-    <div class="flex flex-col items-center justify-center">
-      <p class={twMerge("relative text-base font-bold", raisedTextColor())}>
+    <div class="flex flex-col items-start justify-center">
+      <p class={twMerge("relative text-sm font-bold", raisedTextColor())}>
         <Numeric value={props.value} numberStyle={"decimal"}/>
       </p>
-      <p class={twMerge("text-xs", darkText())}>
+      <p class={twMerge("text-xxs opacity-80", darkText())}>
         {props.text}
       </p>
     </div>
@@ -350,7 +336,7 @@ const SmallValue: Component<{ value: number, text: string }> = (props) => {
       <p class={twMerge("text-xs font-bold", raisedTextColor())}>
         <Numeric value={props.value} numberStyle={"decimal"}/>
       </p>
-      <p class={twMerge("text-xxs", darkText())}>{props.text}</p>
+      <p class={twMerge("text-xxs opacity-80", darkText())}>{props.text}</p>
     </div>
   )
 }

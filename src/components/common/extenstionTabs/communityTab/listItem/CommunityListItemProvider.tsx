@@ -14,7 +14,7 @@ const useCommunityListItemHook = (props: FundraiserItemProps) => {
   const {eur, usd} = useCurrency()
 
   const donoMatch = () => {
-    return props.campaign.hasActiveDonationMatch
+    return props.i ===0; props.campaign.hasActiveDonationMatch
   }
 
   const gradient = [
@@ -55,6 +55,15 @@ const useCommunityListItemHook = (props: FundraiserItemProps) => {
       return "bg-primary-600";
     }
     return 'bg-transparent'
+  }
+
+  // Replaces campaignSurface while a donation match is active, so the whole card reads as highlighted.
+  // The white ring keeps the filled card separated from the similarly coloured extension background.
+  const donoMatchSurface = () => {
+    if (theme() === "dark") return "bg-gradient-to-b from-primary-500 to-primary-700 ring-2 ring-white text-white";
+    if (theme() === "rainbow") return "bg-black ring-2 ring-white text-white";
+    if (theme() === "blue") return "bg-accent-600 ring-2 ring-white text-white";
+    return "bg-primary-600 ring-2 ring-white text-white";
   }
 
   const twitchUrl = () => props.campaign.twitch?.url;
@@ -124,6 +133,7 @@ const useCommunityListItemHook = (props: FundraiserItemProps) => {
     twitchButtonColor,
     isLive,
     headerBackground,
+    donoMatchSurface,
     donoMatch,
     goalRatio,
     goalPercent,

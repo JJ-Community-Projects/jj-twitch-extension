@@ -68,7 +68,7 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
         campaignSurface(i)
       )}
     >
-      <Accordion.Root collapsible class={"h-full w-full p-2.5"}>
+      <Accordion.Root collapsible class={"h-full w-full p-2"}>
         <Accordion.Item value="charity">
           <Accordion.Header>
             <Accordion.Trigger
@@ -89,7 +89,7 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
                   {name()}
                 </p>
               </div>
-              <div class={twMerge("flex flex-row items-center gap-1.5", raisedColor())}>
+              <div class={twMerge("flex flex-row items-center gap-2", raisedColor())}>
                 <div class={"flex flex-col items-end text-xxs font-bold transition-all duration-200 group-data-[expanded]:text-xs"}>
                   <p>Raised</p>
                   <Numeric value={value()} numberStyle="currency" currency={currency()}/>
