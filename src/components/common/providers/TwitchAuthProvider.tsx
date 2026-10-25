@@ -2,94 +2,6 @@ import {createContext, createSignal, onMount, type ParentComponent, useContext} 
 import {createStore} from "solid-js/store";
 
 
-const debugDataMap = {
-  'ostof': {
-    channelId: "96860795",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'ostofbot': {
-    channelId: "960814823",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'hrry': {
-    channelId: "27063689",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'martyn': {
-    channelId: "12131870",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'brionykay': {
-    channelId: "79911474",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'mousie': {
-    channelId: "46969360",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'shadowatnoon': {
-    channelId: "68525019",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'yogscast': {
-    channelId: "20786541",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'mudkipninja': {
-    channelId: "96202541",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'chasedbyvoices': {
-    channelId: "675328467",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'a': {
-    channelId: "333",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-  'dawnfire': {
-    channelId: "75214953",
-    clientId: "333",
-    token: "test-123",
-    userId: "333",
-    helixToken: "333"
-  },
-}
-const debugChannel = 'yogscast'
-const debugData = debugDataMap[debugChannel]
 type ChannelsResponse = {
   data: Array<ChannelInfo>;
 };
@@ -143,6 +55,13 @@ const useTwitchAuthHook = () => {
 
   const [channelName, setChannelName] = createSignal<string>();
   const twitch = window?.Twitch?.ext;
+
+  // Outside Twitch in dev: the channel is picked with `?user=<name>` (see lib/devAuth.ts).
+  const applyDevAuth = async () => {
+    const {devAuth, devUserName} = await import("../../../lib/devAuth.ts")
+    setChannelName(devUserName())
+    setAuth(devAuth())
+  }
   onMount(() => {
     if (twitch) {
       twitch.onAuthorized((auth) => {
@@ -161,13 +80,11 @@ const useTwitchAuthHook = () => {
 
       if (import.meta.env.DEV) {
         console.log("Twitch Auth debug")
-        setChannelName(debugChannel)
-        setAuth(debugData)
+        applyDevAuth()
       }
     } else {
       if (import.meta.env.DEV) {
-        setChannelName(debugChannel)
-        setAuth(debugData)
+        applyDevAuth()
       }
       console.error("Twitch not available")
     }

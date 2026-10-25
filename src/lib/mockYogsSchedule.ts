@@ -2,11 +2,11 @@ import {DateTime} from "luxon";
 import type {Creator, Stream, YogsScheduleSchema, YogsScheduleSchemaDaysInner} from "../api";
 
 // Dev-only dummy Yogs schedule for Jingle Jam 2026, for testing countdowns and slot states.
-// Enabled by opening a dev page with `?mockSchedule` (14 days from 1 Dec 2026),
+// Enabled by opening a dev page with `?mockSchedule` (14 days from 1 Dec 2026, with 4, 5 or 6 slots a day),
 // or `?mockSchedule=today`, where the first day is today with ended, live and upcoming slots around now.
 // Only loaded behind `import.meta.env.DEV`, so it never ships in a build.
 
-const zone = 'Europe/London'
+export const mockZone = 'Europe/London'
 const twitchUrl = 'https://www.twitch.tv/yogscast'
 
 const creators: Creator[] = [
@@ -34,10 +34,13 @@ const colors = ['#3584BF', '#C62828', '#2E7D32', '#FBC02D', '#6A1B9A', '#EF6C00'
 // Creator counts cycle through none, a pair, a group and a full grid.
 const groupSizes = [0, 2, 4, 10, 3]
 
-// [start hour, end hour] in London time.
-const slotHours: [number, number][] = [[11, 14], [14, 17], [17, 20], [20, 23]]
-
-let slotIndex = 0
+// Per-day slot layouts as [start hour, end hour] in London time, cycled by day,
+// so 4, 5 and 6 slots a day are all covered.
+const slotLayouts: [number, number][][] = [
+  [[11, 14], [14, 17], [17, 20], [20, 23]],
+  [[10, 12], [12, 14], [14, 17], [17, 20], [20, 23]],
+  [[10, 12], [12, 14], [14, 16], [16, 18], [18, 20], [20, 23]],
+]
 
 const subtitleFor = (group: Creator[]) => {
   if (group.length === 0) return undefined
@@ -45,20 +48,27 @@ const subtitleFor = (group: Creator[]) => {
   return group.map(c => c.name).join(' & ')
 }
 
-const slot = (start: DateTime, end: DateTime, now: DateTime): Stream => {
-  const i = slotIndex++
-  const size = groupSizes[i % groupSizes.length]
-  const group = Array.from({length: size}, (_, k) => creators[(i + k) % creators.length])
-  return {
-    title: shows[i % shows.length],
-    subtitle: subtitleFor(group),
-    description: i % 3 === 0 ? 'Dummy slot for testing. Join the team for a festive stream raising money for charity.' : undefined,
-    start: start.toJSDate(),
-    end: end.toJSDate(),
-    creators: group,
-    // Every other ended slot has a VOD, so both the VOD and the no-VOD state are covered.
-    vods: end < now && i % 2 === 0 ? [{label: 'Twitch', link: twitchUrl}] : [],
-    color: colors[i % colors.length],
+export type MockSlot = (start: DateTime, end: DateTime) => Stream
+
+// Returns a slot builder that cycles through titles, colours, group sizes and descriptions.
+// Shared with the dummy user schedule.
+export const createMockSlot = (now: DateTime): MockSlot => {
+  let index = 0
+  return (start, end) => {
+    const i = index++
+    const size = groupSizes[i % groupSizes.length]
+    const group = Array.from({length: size}, (_, k) => creators[(i + k) % creators.length])
+    return {
+      title: shows[i % shows.length],
+      subtitle: subtitleFor(group),
+      description: i % 3 === 0 ? 'Dummy slot for testing. Join the team for a festive stream raising money for charity.' : undefined,
+      start: start.toJSDate(),
+      end: end.toJSDate(),
+      creators: group,
+      // Every other ended slot has a VOD, so both the VOD and the no-VOD state are covered.
+      vods: end < now && i % 2 === 0 ? [{label: 'Twitch', link: twitchUrl}] : [],
+      color: colors[i % colors.length],
+    }
   }
 }
 
@@ -68,26 +78,26 @@ const day = (streams: Stream[], date: DateTime): YogsScheduleSchemaDaysInner => 
   streams,
 })
 
-const fixedDay = (date: DateTime, now: DateTime) => day(
-  slotHours.map(([from, to]) => slot(date.set({hour: from}), date.set({hour: to}), now)),
+const fixedDay = (slot: MockSlot, date: DateTime, dayIndex: number) => day(
+  slotLayouts[dayIndex % slotLayouts.length].map(([from, to]) => slot(date.set({hour: from}), date.set({hour: to}))),
   date,
 )
 
 // Slots placed relative to now: two ended, one live, then upcoming ones under a day away.
-const todayDay = (now: DateTime) => {
+const todayDay = (slot: MockSlot, now: DateTime) => {
   const base = now.startOf('hour')
   const offsets: [number, number][] = [[-5, -3], [-3, -1], [-1, 1], [1, 2], [2, 4]]
-  return day(offsets.map(([from, to]) => slot(base.plus({hours: from}), base.plus({hours: to}), now)), now)
+  return day(offsets.map(([from, to]) => slot(base.plus({hours: from}), base.plus({hours: to}))), now)
 }
 
 export const mockYogsSchedule = (startToday: boolean): YogsScheduleSchema => {
-  slotIndex = 0
-  const now = DateTime.now().setZone(zone)
-  const firstDay = startToday ? now.startOf('day') : DateTime.fromObject({year: 2026, month: 12, day: 1}, {zone})
+  const now = DateTime.now().setZone(mockZone)
+  const slot = createMockSlot(now)
+  const firstDay = startToday ? now.startOf('day') : DateTime.fromObject({year: 2026, month: 12, day: 1}, {zone: mockZone})
 
   const days = Array.from({length: 14}, (_, i) => {
     const date = firstDay.plus({days: i})
-    return startToday && i === 0 ? todayDay(now) : fixedDay(date, now)
+    return startToday && i === 0 ? todayDay(slot, now) : fixedDay(slot, date, i)
   })
 
   return {

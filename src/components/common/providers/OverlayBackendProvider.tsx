@@ -33,7 +33,14 @@ const useBackendHook = () => {
 
   const configQuery = useQuery(() => ({
       queryKey: ['config', channelId(), userId()],
-      queryFn: () => api.getExtensionConfig(requestAuth()),
+      queryFn: async () => {
+        const config = await api.getExtensionConfig(requestAuth())
+        if (import.meta.env.DEV) {
+          const {devMockExtensionConfig} = await import("../../../lib/mockUserSchedule.ts")
+          return devMockExtensionConfig(config)
+        }
+        return config
+      },
       enabled: isAuthInit(),
       staleTime: 60_000,
       refetchInterval: 60_000 * 10,
@@ -45,7 +52,14 @@ const useBackendHook = () => {
 
   const userConfigQuery = useQuery(() => ({
     queryKey: ['user-config', channelId(), userId()],
-    queryFn: () => api.getUserExtensionConfig(requestAuth()),
+    queryFn: async () => {
+      const config = await api.getUserExtensionConfig(requestAuth())
+      if (import.meta.env.DEV) {
+        const {devMockUserConfig} = await import("../../../lib/mockUserSchedule.ts")
+        return devMockUserConfig(config)
+      }
+      return config
+    },
     enabled: isAuthInit(),
     staleTime: 60_000,
     refetchInterval: 60_000 * 10,
@@ -141,7 +155,14 @@ const useBackendHook = () => {
 
   const userScheduleQuery = useQuery(() => ({
     queryKey: ['user-schedule', channelId(), userId()],
-    queryFn: () => api.getUserSchedule(requestAuth()),
+    queryFn: async () => {
+      if (import.meta.env.DEV) {
+        const {devMockUserSchedule} = await import("../../../lib/mockUserSchedule.ts")
+        const mock = devMockUserSchedule()
+        if (mock) return mock
+      }
+      return api.getUserSchedule(requestAuth())
+    },
     enabled: enableUserScheduleQuery(),
     staleTime: 60_000,
     refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 15,
@@ -158,7 +179,14 @@ const useBackendHook = () => {
 
   const yogsScheduleQuery = useQuery(() => ({
     queryKey: ['yogs-schedule', channelId(), userId()],
-    queryFn: () => api.getYogsSchedule(requestAuth()),
+    queryFn: async () => {
+      if (import.meta.env.DEV) {
+        const {devMockYogsSchedule} = await import("../../../lib/mockYogsSchedule.ts")
+        const mock = devMockYogsSchedule()
+        if (mock) return mock
+      }
+      return api.getYogsSchedule(requestAuth())
+    },
     enabled: enableYogsScheduleQuery(),
     staleTime: 60_000 * 5,
     refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 10,
