@@ -3,7 +3,8 @@ import {useScheduleState} from "../providers/ScheduleStateProvider.tsx";
 import {ScheduleSlot} from "./ScheduleSlotDialog.tsx";
 import {useCreatorFilter} from "../providers/CreatorFilterProvider.tsx";
 import {useBackend} from "../providers/BackendProvider.tsx";
-import {DateTime} from "luxon";
+import {ScheduleLastFetchedPill} from "./ScheduleLastFetchedPill.tsx";
+import {ScheduleDayGroups} from "./ScheduleDayGroups.tsx";
 
 
 export const ScheduleStreams: Component = () => {
@@ -24,39 +25,23 @@ export const ScheduleStreams: Component = () => {
         </For>
       </Show>
       <Show when={!isEmpty()}>
-        <For each={filteredStreams()}>
+        <ScheduleDayGroups streams={filteredStreams()}>
           {stream => (
-            <ScheduleSlot stream={stream} showCountdown={true} showDate={true} class={'flex-1'}/>
+            <ScheduleSlot stream={stream} showCountdown={true} class={'flex-1'}/>
           )}
-        </For>
+        </ScheduleDayGroups>
       </Show>
       <ScheduleLastFetched/>
     </div>
   );
 }
 
-// Sits directly below the last slot; sticky, so it stays visible at the bottom when the list scrolls.
-// Also names the viewer's time zone, since the slot items show local times without one.
 const ScheduleLastFetched: Component = () => {
   const {yogsSchedule} = useBackend()
 
-  const date = () => {
-    if (yogsSchedule.status !== 'success') {
-      return undefined
-    }
-    return DateTime.fromMillis(yogsSchedule.dataUpdatedAt)
-  }
-
   return (
-    <Show when={date()}>
-      {
-        date => (
-          <div class={'sticky bottom-0 flex flex-row justify-between gap-2 rounded-2xl bg-white px-3 py-1 text-xxs font-semibold text-black shadow-sm'}>
-            <p class={'min-w-0 truncate'}>Last fetched {date().toLocaleString(DateTime.DATETIME_SHORT)}</p>
-            <p class={'shrink-0'}>All times in {DateTime.local().offsetNameShort}</p>
-          </div>
-        )
-      }
+    <Show when={yogsSchedule.status === 'success'}>
+      <ScheduleLastFetchedPill updatedAt={yogsSchedule.dataUpdatedAt}/>
     </Show>
   );
 }

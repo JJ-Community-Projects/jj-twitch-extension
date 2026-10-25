@@ -11,6 +11,8 @@ import "./CharityOverviewCollapsable.css";
 interface CharityListItemAltProps {
   charity: JJCause;
   i: number;
+  // When false, renders the compact row only: no chevron, no description (used in the overlay).
+  collapsible?: boolean;
 }
 
 // Alternative charity list item with subtle surface treatment and clear link affordances
@@ -60,52 +62,67 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
 
   const name = () => (charity.name.length > 48 ? charity.name.substring(0, 48) + "…" : charity.name);
 
+  const row = (chevron: boolean) => (
+    <>
+      <img
+        class={twMerge(
+          "size-6 rounded-lg ring-1 ring-black/10 dark:ring-white/10 transition-all duration-200",
+          "group-data-[expanded]:size-8"
+        )}
+        alt={charity.name}
+        src={charity.logo}
+        loading={"lazy"}
+      />
+      <div class={"min-w-0 flex-1"}>
+        <p class={"truncate text-ellipsis text-xs font-semibold transition-all duration-200 group-data-[expanded]:text-sm"}>
+          {name()}
+        </p>
+      </div>
+      <div class={twMerge("flex flex-row items-center gap-2", raisedColor())}>
+        <div class={"flex flex-col items-end text-xxs font-bold transition-all duration-200 group-data-[expanded]:text-xs"}>
+          <p>Raised</p>
+          <Numeric value={value()} numberStyle="currency" currency={currency()}/>
+        </div>
+        <Show when={chevron}>
+          <FaSolidChevronDown class={twMerge(
+            "h-3 w-3 shrink-0 transition-transform",
+            "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0"
+          )}/>
+        </Show>
+      </div>
+    </>
+  );
+
+  const collapsible = () => props.collapsible ?? true;
+
   return (
     <div
       class={twMerge(
-        "w-full self-start rounded-2xl shadow-sm hover:shadow-md transition-all duration-200",
-        "hover:brightness-105 hover:scale-101 active:brightness-[0.98] hover:shadow-lg",
+        "w-full self-start rounded-2xl shadow-sm transition-all duration-200",
+        collapsible() && "hover:brightness-105 hover:scale-101 active:brightness-[0.98] hover:shadow-lg",
         campaignSurface(i)
       )}
     >
-      <Accordion.Root collapsible class={"h-full w-full p-2"}>
-        <Accordion.Item value="charity">
-          <Accordion.Header>
-            <Accordion.Trigger
-              class={"group flex w-full flex-row items-center gap-2 text-left"}
-              aria-label={`Toggle ${charity.name} details`}
-            >
-              <img
-                class={twMerge(
-                  "size-6 rounded-lg ring-1 ring-black/10 dark:ring-white/10 transition-all duration-200",
-                  "group-data-[expanded]:size-8"
-                )}
-                alt={charity.name}
-                src={charity.logo}
-                loading={"lazy"}
-              />
-              <div class={"min-w-0 flex-1"}>
-                <p class={"truncate text-ellipsis text-xs font-semibold transition-all duration-200 group-data-[expanded]:text-sm"}>
-                  {name()}
-                </p>
-              </div>
-              <div class={twMerge("flex flex-row items-center gap-2", raisedColor())}>
-                <div class={"flex flex-col items-end text-xxs font-bold transition-all duration-200 group-data-[expanded]:text-xs"}>
-                  <p>Raised</p>
-                  <Numeric value={value()} numberStyle="currency" currency={currency()}/>
-                </div>
-                <FaSolidChevronDown class={twMerge(
-                  "h-3 w-3 shrink-0 transition-transform",
-                  "group-data-[expanded]:-rotate-180 group-data-[closed]:-rotate-0"
-                )}/>
-              </div>
-            </Accordion.Trigger>
-          </Accordion.Header>
-          <Accordion.Content class="jj-accordion__content">
-            <p class={"line-clamp-3 pt-2 text-xxs opacity-90"}>{charity.description}</p>
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion.Root>
+      <Show
+        when={collapsible()}
+        fallback={<div class={"flex w-full flex-row items-center gap-2 p-2"}>{row(false)}</div>}
+      >
+        <Accordion.Root collapsible class={"h-full w-full p-2"}>
+          <Accordion.Item value="charity">
+            <Accordion.Header>
+              <Accordion.Trigger
+                class={"group flex w-full flex-row items-center gap-2 text-left"}
+                aria-label={`Toggle ${charity.name} details`}
+              >
+                {row(true)}
+              </Accordion.Trigger>
+            </Accordion.Header>
+            <Accordion.Content class="jj-accordion__content">
+              <p class={"line-clamp-3 pt-2 text-xxs opacity-90"}>{charity.description}</p>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion.Root>
+      </Show>
     </div>
   );
 };

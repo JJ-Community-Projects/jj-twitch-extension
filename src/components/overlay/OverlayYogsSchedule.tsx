@@ -1,21 +1,22 @@
-import {type Component, For, Show} from "solid-js";
-import {useNow} from "../../lib/useNow.ts";
-import {DateTime} from "luxon";
-import {getTextColor} from "../../lib/textColors.ts";
-import {Button} from "@kobalte/core/button";
+import {type Component, Show} from "solid-js";
 import {useOverlay} from "../common/providers/OverlayProvider.tsx";
-import {useCurrentStream, useFutureStreams} from "../../lib/overlayYogScheduleHooks.ts";
 import {ColoredScrollbar} from "../common/ColoredScrollbar.tsx";
 import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {twMerge} from "tailwind-merge";
 import {OverlayHeader} from "./OverlayHeader.tsx";
 import {FaSolidArrowUpRightFromSquare} from "solid-icons/fa";
-import type {Stream} from "../../api/index.ts";
 import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
+import {useAnalytics} from "../common/providers/AnalyticsProvider.tsx";
+import {ScheduleSlotListItem} from "../common/schedule/ScheduleSlotListItem.tsx";
+import {ScheduleLastFetchedPill} from "../common/schedule/ScheduleLastFetchedPill.tsx";
+import {ScheduleDayGroups} from "../common/schedule/ScheduleDayGroups.tsx";
 
+// The whole Yogs schedule as one list of slots split into days, with the last-fetched pill at the bottom.
 export const OverlayYogsSchedule: Component = () => {
-
   const {theme} = useTheme()
+  const {yogsSchedule} = useOverlayBackend()
+  const {setStream} = useOverlay()
+  const {logSlotClick} = useAnalytics()
 
   const backgroundColor = () => {
     switch (theme()) {
@@ -33,206 +34,47 @@ export const OverlayYogsSchedule: Component = () => {
     <div
       class={twMerge('h-full w-full flex flex-col gap-2 p-2 rounded-2xl overflow-hidden overscroll-none', backgroundColor())}>
       <OverlayHeader/>
-      <Header/>
-      <ColoredScrollbar>
-        <div class={'flex flex-col gap-2 px-2'}>
-          <CurrentStream/>
-          <UpcomingStream/>
-        </div>
-      </ColoredScrollbar>
-      <div class={'flex-1'}/>
-      <CurrentYogsTime/>
-    </div>
-  );
-}
-
-const Header: Component = () => {
-  const {yogsSchedule} = useOverlayBackend()
-  return (
-    <Show when={yogsSchedule.data}>
-      {
-        (schedule) => {
-          return (
-            <a
-              class={'hover:scale-101 hover:brightness-105 transition-all'}
-              target={'_blank'}
-              href={'https://jinglejam.ostof.dev/yogs'}
-            >
-              <div class={'w-full px-2'}>
-                <div class={'bg-white rounded-2xl p-2 text-center flex flex-row items-center justify-between'}>
-                  <h1 class={'~text-base/xl'}>{schedule().title}</h1>
-                  <FaSolidArrowUpRightFromSquare class={'~text-base/xl'}/>
-                </div>
+      <Show when={yogsSchedule.data}>
+        {schedule => (
+          <>
+            <Header title={schedule().title}/>
+            <ColoredScrollbar>
+              <div class={'flex min-h-full flex-col gap-2 px-2'}>
+                <ScheduleDayGroups streams={schedule().days.flatMap(d => d.streams)}>
+                  {stream => (
+                    <ScheduleSlotListItem
+                      stream={stream}
+                      showCountdown={true}
+                      onClick={() => {
+                        logSlotClick(stream)
+                        setStream(stream)
+                      }}
+                    />
+                  )}
+                </ScheduleDayGroups>
+                <ScheduleLastFetchedPill updatedAt={yogsSchedule.dataUpdatedAt}/>
               </div>
-            </a>
-          )
-        }
-      }
-    </Show>
-  );
-}
-
-const CurrentYogsTime: Component = () => {
-  const now = useNow()
-  return (
-    <div class={'bg-white rounded-2xl p-2 text-center'}>
-      <p class={'font-mono ~text-xs/base'}>{now().setZone('Europe/London').toLocaleString({
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        weekday: 'long',
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      })} UK Time</p>
-    </div>
-  );
-}
-
-const CurrentStream: Component = () => {
-  const stream = useCurrentStream()
-  return (
-    <Show when={stream()}>
-      <div class={'flex flex-col gap-1'}>
-        <div class={'bg-white rounded-2xl px-2 text-center'}>
-          <h2 class={'~text-base/xl'}>Current Streams</h2>
-        </div>
-        <SingleStreamCard stream={stream()!}/>
-      </div>
-    </Show>
-  )
-}
-
-const SingleStreamCard: Component<{ stream: Stream }> = (props) => {
-  const {setStream} = useOverlay()
-  const stream = props.stream
-
-  const start = () => {
-    return DateTime.fromJSDate(stream.start, {
-      zone: 'Europe/London'
-    }).toLocal().toFormat('HH:mm')
-  }
-
-  const end = () => {
-    return DateTime.fromJSDate(stream.end, {
-      zone: 'Europe/London'
-    }).toLocal().toFormat('HH:mm')
-  }
-
-  return (
-    <Button
-      class={'w-full ~h-24/32 rounded-2xl p-2 flex flex-col items-center justify-center gap-1 hover:brightness-105'}
-      style={{
-        'background-color': props.stream.color,
-        color: getTextColor(props.stream.color),
-      }}
-      onClick={() => {
-        setStream(stream)
-      }}
-    >
-      <p class={'~text-md/2xl'}> {stream.title}</p>
-      <p class={'~text-xs/base'}>{start()} - {end()}</p>
-    </Button>
-  );
-}
-
-const UpcomingStreamsHeader: Component = () => {
-  return (
-    <div class={'bg-white rounded-2xl ~p-1/2 text-center'}>
-      <h2 class={'~text-base/xl'}>Upcoming Streams</h2>
-    </div>
-  );
-}
-
-const UpcomingStream: Component = () => {
-  return <div class={'flex flex-col gap-1'}>
-    <UpcomingStreamsHeader/>
-    <div class={'flex-1 hidden xl:grid w-full h-full grid-cols-3 gap-2'}>
-      <UpcomingStreamList i={6}/>
-    </div>
-    <div class={'flex-1 grid xl:hidden grid-cols-2 gap-2'}>
-      <UpcomingStreamList i={4}/>
-    </div>
-  </div>
-}
-
-const UpcomingStreamList: Component<{
-  i: number
-}> = (props) => {
-  const streams = useFutureStreams(props.i)
-  return (
-    <For each={streams()}>
-      {stream => <StreamCard stream={stream}/>}
-    </For>
-  );
-}
-
-
-interface StreamCardProps {
-  stream: Stream
-}
-
-const StreamCard: Component<StreamCardProps> = (props) => {
-  const {stream} = props
-
-  const {setStream} = useOverlay()
-
-  const now = useNow()
-
-  const start = DateTime.fromJSDate(stream.start, {
-    zone: 'Europe/London'
-  })
-
-  const startFormatted = () => start.toLocal().toLocal().toLocaleString({
-    hour: 'numeric',
-    minute: 'numeric',
-    weekday: 'short',
-    day: '2-digit',
-  })
-
-  const startHourFormatted = () => start.toLocal().toLocal().toLocaleString({
-    hour: 'numeric',
-    minute: 'numeric',
-  })
-
-  const countdown = () => {
-    const diff = start.diff(now())
-    if (diff.as('days') > 1) {
-      return diff.toFormat("dd'd' hh'h' mm'm' ss's'")
-    }
-    return diff.toFormat("hh'h' mm'm' ss's'")
-  }
-
-  const isBefore = () => {
-    return now() < start
-  }
-
-  const isToday = () => {
-    return start.toLocal().hasSame(now(), 'day')
-  }
-
-  return (
-    <Button
-      class={'flex-1 rounded-2xl p-2 shadow-2xl flex flex-col items-center justify-center hover:brightness-105'}
-      style={{
-        'background-color': props.stream.color,
-        color: getTextColor(props.stream.color),
-      }}
-      onClick={() => {
-        setStream(stream)
-      }}
-    >
-      <h3 class={'~text-base/2xl'}>{stream.title}</h3>
-      <h3 class={'~text-xs/md'}>{stream.subtitle}</h3>
-      <Show when={isToday()}>
-        <p class={'~text-xxs/base xl:visible'}>{startHourFormatted()}</p>
+            </ColoredScrollbar>
+          </>
+        )}
       </Show>
-      <Show when={!isToday()}>
-        <p class={'~text-xxs/base xl:visible'}>{startFormatted()}</p>
-      </Show>
-      <Show when={isBefore()}>
-        <p class={'font-mono ~text-xxs/base xl:visible'}>{countdown()}</p>
-      </Show>
-    </Button>
+    </div>
+  );
+}
+
+// Same compact card as the panel's schedule header; links to the full schedule on the community page.
+const Header: Component<{ title: string }> = (props) => {
+  return (
+    <div class={'w-full px-2'}>
+      <a
+        class={'flex w-full flex-row items-center justify-between gap-2 rounded-2xl bg-gradient-to-b from-neutral-50 to-neutral-100 px-3 py-1.5 shadow-sm ring-1 ring-black/5 transition-all hover:brightness-105'}
+        target={'_blank'}
+        rel={'noopener noreferrer'}
+        href={'https://jinglejam.ostof.dev/yogs'}
+      >
+        <h3 class={'min-w-0 truncate text-xs font-bold'}>{props.title}</h3>
+        <FaSolidArrowUpRightFromSquare class={'h-3 w-3 shrink-0 opacity-80'}/>
+      </a>
+    </div>
   );
 }

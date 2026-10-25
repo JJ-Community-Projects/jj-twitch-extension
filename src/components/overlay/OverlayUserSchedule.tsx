@@ -1,4 +1,4 @@
-import { type Component, For, Show } from "solid-js";
+import { type Component, Show } from "solid-js";
 import { twMerge } from "tailwind-merge";
 import { useTheme } from "../common/providers/ThemeProvider.tsx";
 import { ColoredScrollbar } from "../common/ColoredScrollbar.tsx";
@@ -11,6 +11,8 @@ import { useOverlayBackend } from "../common/providers/OverlayBackendProvider.ts
 import { useOverlay } from "../common/providers/OverlayProvider.tsx";
 import { useAnalytics } from "../common/providers/AnalyticsProvider.tsx";
 import { ScheduleSlotListItem } from "../common/schedule/ScheduleSlotListItem.tsx";
+import { ScheduleDayGroups } from "../common/schedule/ScheduleDayGroups.tsx";
+import { ScheduleLastFetchedPill } from "../common/schedule/ScheduleLastFetchedPill.tsx";
 
 export const OverlayUserSchedule: Component = () => {
   const { theme } = useTheme();
@@ -44,25 +46,28 @@ interface BodyProps {
 const Body: Component<BodyProps> = (props) => {
   const { setStream } = useOverlay();
   const { logSlotClick } = useAnalytics();
+  const { userSchedule } = useOverlayBackend();
 
   return (
     <>
       <Header title={props.schedule.title} />
       <ColoredScrollbar>
-        <div class={"flex min-h-full flex-col gap-2 px-2 pb-2"}>
-          <For each={props.schedule.streams}>
+        <div class={"flex min-h-full flex-col gap-2 px-2"}>
+          <ScheduleDayGroups streams={props.schedule.streams}>
             {(stream) => (
               <ScheduleSlotListItem
                 stream={stream}
                 showCountdown={true}
-                showDate={true}
                 onClick={() => {
                   logSlotClick(stream);
                   setStream(stream);
                 }}
               />
             )}
-          </For>
+          </ScheduleDayGroups>
+          <Show when={userSchedule.isSuccess}>
+            <ScheduleLastFetchedPill updatedAt={userSchedule.dataUpdatedAt} />
+          </Show>
         </div>
       </ColoredScrollbar>
     </>

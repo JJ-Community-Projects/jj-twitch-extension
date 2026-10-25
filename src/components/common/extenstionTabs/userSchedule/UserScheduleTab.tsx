@@ -1,4 +1,6 @@
-import {type Component, For, Show} from "solid-js";
+import {type Component, Show} from "solid-js";
+import {ScheduleDayGroups} from "../../schedule/ScheduleDayGroups.tsx";
+import {ScheduleLastFetchedPill} from "../../schedule/ScheduleLastFetchedPill.tsx";
 import {useBackend} from "../../providers/BackendProvider.tsx";
 import type {UserScheduleSchema} from "../../../../api";
 import {useTheme} from "../../providers/ThemeProvider.tsx";
@@ -58,6 +60,7 @@ interface BodyProps {
 export const Body: Component<BodyProps> = (props) => {
 
   const {theme} = useTheme()
+  const {userSchedule} = useBackend()
   const scrollbar = () => {
     switch (theme()) {
       case 'blue':
@@ -88,11 +91,14 @@ export const Body: Component<BodyProps> = (props) => {
       </div>
       <div class={twMerge(scroll, scrollbar())}>
         <div class={'flex min-h-full flex-col gap-2 px-2'}>
-          <For each={props.schedule.streams}>
+          <ScheduleDayGroups streams={props.schedule.streams}>
             {stream => (
-              <ScheduleSlot stream={stream} showCountdown={true} showDate={true}/>
+              <ScheduleSlot stream={stream} showCountdown={true}/>
             )}
-          </For>
+          </ScheduleDayGroups>
+          <Show when={userSchedule.isSuccess}>
+            <ScheduleLastFetchedPill updatedAt={userSchedule.dataUpdatedAt}/>
+          </Show>
         </div>
       </div>
     </div>
