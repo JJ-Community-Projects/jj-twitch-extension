@@ -5,6 +5,7 @@ import { AiOutlineCheck } from "solid-icons/ai";
 import { useCurrency } from "./providers/CurrencyProvider.tsx";
 import { useTheme } from "./providers/ThemeProvider.tsx";
 import {FaSolidChevronDown} from "solid-icons/fa";
+import {usePortalMount} from "./PreviewFrame.tsx";
 
 // Refactored to use Kobalte's Select component with compact styling.
 export const CurrencyToggleDropdown: Component = () => {
@@ -68,7 +69,7 @@ export const CurrencyToggleDropdown: Component = () => {
           <FaSolidChevronDown/>
         </Select.Icon>
       </Select.Trigger>
-      <Select.Portal>
+      <Select.Portal mount={usePortalMount()}>
         <Select.Content class="z-[60] rounded-md bg-black/80 shadow-lg backdrop-blur">
           <Select.Listbox class="flex min-w-[90px] flex-col gap-0.5 py-1" />
         </Select.Content>

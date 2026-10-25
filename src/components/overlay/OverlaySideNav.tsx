@@ -10,6 +10,7 @@ import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {JJIcon} from "../common/icons/JJIcons.tsx";
 import {useTwitchAuth} from "../common/providers/TwitchAuthProvider.tsx";
 import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
+import {usePortalMount} from "../common/PreviewFrame.tsx";
 
 export const OverlaySideNav: Component = () => {
 
@@ -122,7 +123,7 @@ export const OverlaySideNav: Component = () => {
           }>
           <JJIcon class={'text-white'} size={24}/>
         </Tooltip.Trigger>
-        <Tooltip.Portal>
+        <Tooltip.Portal mount={usePortalMount()}>
           <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
             <Tooltip.Arrow/>
             <p class={'text-white'}>The Jingle Jam</p>
@@ -142,7 +143,7 @@ export const OverlaySideNav: Component = () => {
           }>
           <FaSolidHeart class={'text-white'} size={24}/>
         </Tooltip.Trigger>
-        <Tooltip.Portal>
+        <Tooltip.Portal mount={usePortalMount()}>
           <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
             <Tooltip.Arrow/>
             <p class={'text-white'}>The Charities</p>
@@ -163,7 +164,7 @@ export const OverlaySideNav: Component = () => {
             }>
             <FaSolidPeopleGroup class={'text-white'} size={24}/>
           </Tooltip.Trigger>
-          <Tooltip.Portal>
+          <Tooltip.Portal mount={usePortalMount()}>
             <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
               <Tooltip.Arrow/>
               <p class={'text-white'}>The Community Fundraisers</p>
@@ -186,7 +187,7 @@ export const OverlaySideNav: Component = () => {
           >
             <YogsIcon size={24}/>
           </Tooltip.Trigger>
-          <Tooltip.Portal>
+          <Tooltip.Portal mount={usePortalMount()}>
             <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
               <Tooltip.Arrow/>
               <p class={'text-white'}>The Yogscast Jingle Jam Schedule</p>
@@ -208,7 +209,7 @@ export const OverlaySideNav: Component = () => {
           >
             <FaSolidCalendarWeek class={'text-white'} size={24}/>
           </Tooltip.Trigger>
-          <Tooltip.Portal>
+          <Tooltip.Portal mount={usePortalMount()}>
             <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
               <Tooltip.Arrow/>
               <p class={'text-white'}>Schedule</p>
@@ -230,7 +231,7 @@ export const OverlaySideNav: Component = () => {
           }>
           <FaSolidInfo class={'text-white'} size={18}/>
         </Tooltip.Trigger>
-        <Tooltip.Portal>
+        <Tooltip.Portal mount={usePortalMount()}>
           <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
             <Tooltip.Arrow/>
             <p class={'text-white'}>About</p>

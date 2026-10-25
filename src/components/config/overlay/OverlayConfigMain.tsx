@@ -13,8 +13,10 @@ import {CgClose} from "solid-icons/cg";
 import {SleepProvider} from "../../common/providers/SleepProvider.tsx";
 import {OverlayProvider} from "../../common/providers/OverlayProvider.tsx";
 import {LocalStorageProvider} from "../../common/providers/LocalStorageProvider.tsx";
-import {OverlaySideNav} from "../../overlay/OverlaySideNav.tsx";
-import {OverlayBody} from "../../overlay/OverlayBody.tsx";
+import {OverlayBackendProvider} from "../../common/providers/OverlayBackendProvider.tsx";
+import {CurrencyProvider} from "../../common/providers/CurrencyProvider.tsx";
+import {OverlayMain} from "../../overlay/OverlayMain.tsx";
+import {PreviewFrame} from "../../common/PreviewFrame.tsx";
 import {Select} from "@kobalte/core/select";
 import {AiOutlineCheck} from "solid-icons/ai";
 import {OverlayCharityBanner} from "../../overlay/OverlayCharityBanner.tsx";
@@ -43,31 +45,23 @@ export const OverlayConfigMain: Component = () => {
 }
 
 
+// Renders like OverlayRoot, on a 16:9 stand-in for the video player. Config, theme and auth come from
+// OverlayConfigRoot, so the preview shows the unsaved config.
 const Preview = () => {
   return (
-    <div class={'aspect-video bg-gray-700 py-[5rem] pr-[7rmm]'}>
-      <div class={'w-full h-full'}>
-        <LocalStorageProvider>
-          <SleepProvider>
-            <OverlayProvider>
-              <div class={'h-full w-full relative'}>
-                <div
-                  class={twMerge(
-                    'h-full w-full absolute top-0 left-0',
-                  )}
-                >
-                  <div class={'h-full flex flex-row pl-2 pr-28'}>
-                    <OverlaySideNav/>
-                    <OverlayBody/>
-                  </div>
-                </div>
-                {/**<OverlayBanner/>**/}
-              </div>
-            </OverlayProvider>
-          </SleepProvider>
-        </LocalStorageProvider>
-      </div>
-    </div>
+    <PreviewFrame class={'block w-full aspect-video bg-gray-700'} bodyClass={'overlay-viewport'}>
+      <LocalStorageProvider>
+        <OverlayProvider>
+          <OverlayBackendProvider>
+            <SleepProvider>
+              <CurrencyProvider>
+                <OverlayMain/>
+              </CurrencyProvider>
+            </SleepProvider>
+          </OverlayBackendProvider>
+        </OverlayProvider>
+      </LocalStorageProvider>
+    </PreviewFrame>
   )
 }
 
@@ -133,10 +127,6 @@ const OverlayConfigBody: Component<{ saveButtonBackground: () => string }> = (pr
                 </li>
                 <li class={'text-white'}>
                   This years Fundraisers and Charities will be available shortly after the Jingle Jam has started.
-                </li>
-                <li class={'text-white'}>
-                  The preview may not represent the final visuals 100%. You might have to switch between tabs in the
-                  preview to make data load.
                 </li>
               </ul>
               <p class={'text-sm text-gray-50 opacity-80'}>

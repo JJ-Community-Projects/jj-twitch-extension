@@ -7,6 +7,7 @@ import {useNow} from "../../../lib/useNow.ts";
 import {getTextColor} from "../../../lib/textColors.ts";
 import type {Creator, Stream, StreamVodsInner} from "../../../api";
 import {FaBrandsTwitch} from "solid-icons/fa";
+import {usePortalMount} from "../PreviewFrame.tsx";
 
 interface YogsScheduleDetailDialogProps {
   stream: Stream
@@ -23,7 +24,7 @@ export const StreamDialog: Component<YogsScheduleDetailDialogProps> = (props) =>
 
   return (
     <Dialog.Root open={props.isOpen} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal mount={usePortalMount()}>
 
         <Dialog.Overlay class={'fixed inset-0 z-50 bg-black bg-opacity-20'}/>
         <div class={'h-full w-full'}>

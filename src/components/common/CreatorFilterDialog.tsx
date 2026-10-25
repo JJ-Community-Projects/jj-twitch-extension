@@ -6,6 +6,7 @@ import {CgClose} from "solid-icons/cg";
 import {twMerge} from "tailwind-merge";
 import {FaRegularSquare, FaSolidSquareCheck} from "solid-icons/fa";
 import {useAnalytics} from "./providers/AnalyticsProvider.tsx";
+import {usePortalMount} from "./PreviewFrame.tsx";
 
 interface FilterDialogProps {
   modalSignal: ModalSignal
@@ -16,7 +17,7 @@ export const FilterDialog: Component<FilterDialogProps> = props => {
 
   return (
     <Dialog.Root open={modalSignal.isOpen()} onOpenChange={modalSignal.setOpen}>
-      <Dialog.Portal>
+      <Dialog.Portal mount={usePortalMount()}>
         <Dialog.Overlay class={'fixed inset-0 z-50 bg-black bg-opacity-20'}/>
         <div class={'fixed inset-0 z-50 flex items-center justify-center'}>
           <Dialog.Content class={'h-full w-full max-w-[500px] p-2 lg:w-[min(calc(100vw_-_16px),_500px)] lg:p-16'}>

@@ -1,6 +1,7 @@
 ---
 interface Props {
     title?: string;
+    bodyClass?: string;
 }
 
 const title = Astro.props.title || 'Jingle Jam Twitch Extension';
@@ -23,7 +24,7 @@ const title = Astro.props.title || 'Jingle Jam Twitch Extension';
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-1CHB10CPZB"/>
     <script is:inline src="./overlay_analytics.js" type="module"/>
 </head>
-<body>
+<body class={Astro.props.bodyClass}>
 <slot/>
 </body>
 </html>

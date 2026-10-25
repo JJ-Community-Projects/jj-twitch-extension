@@ -6,6 +6,7 @@ import {ScheduleDayGroups} from "../../schedule/ScheduleDayGroups.tsx";
 import {ScheduleSlot} from "../../schedule/ScheduleSlotDialog.tsx";
 import {YogsStreamUtils} from "../../../../lib/YogsStreamUtils.ts";
 import type {Stream} from "../../../../api";
+import {usePortalMount} from "../../PreviewFrame.tsx";
 
 interface HeadlinerScheduleDialogProps {
   streams: Stream[]
@@ -19,7 +20,7 @@ interface HeadlinerScheduleDialogProps {
 export const HeadlinerScheduleDialog: Component<HeadlinerScheduleDialogProps> = (props) => {
   return (
     <Dialog.Root open={props.isOpen} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal mount={usePortalMount()}>
         <Dialog.Overlay class={"fixed inset-0 z-50 bg-black/40"}/>
         <div class={"pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-3"}>
           <Dialog.Content

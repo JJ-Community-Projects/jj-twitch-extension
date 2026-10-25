@@ -1,5 +1,6 @@
 import { useIntelligentTimer } from "./useIntelligentTimer";
 import {createEffect, createSignal} from "solid-js";
+import {usePreviewDocument} from "../../components/common/PreviewFrame.tsx";
 
 // Hide the cursor after 5s of inactivity
 const timeout = 5_000;
@@ -7,6 +8,8 @@ export const useHiddenCursor = () => {
   // Hide the cursor if the user is inactive on the whole page
   const [startTimer] = useIntelligentTimer();
   const [hidden, setHidden] = createSignal(false);
+  // In the config page preview the overlay lives in an iframe with its own document
+  const doc = usePreviewDocument() ?? document;
 
   // Show the cursor for x milliseconds
   const show = (time: number) => {
@@ -20,19 +23,19 @@ export const useHiddenCursor = () => {
   createEffect(() => {
     const callback = () => show(timeout);
 
-    document.addEventListener("mouseenter", callback);
-    document.addEventListener("mousemove", callback);
+    doc.addEventListener("mouseenter", callback);
+    doc.addEventListener("mousemove", callback);
 
     return () => {
-      document.removeEventListener("mouseenter", callback);
-      document.removeEventListener("mousemove", callback);
+      doc.removeEventListener("mouseenter", callback);
+      doc.removeEventListener("mousemove", callback);
     };
   });
 
   // Hide the cursor when inactive (not sleeping, as that happens on mouse exit)
   createEffect(() => {
-    if (hidden()) document.documentElement.style.cursor = "none";
-    else document.documentElement.style.removeProperty("cursor");
+    if (hidden()) doc.documentElement.style.cursor = "none";
+    else doc.documentElement.style.removeProperty("cursor");
   });
 
   // Expose the state and the active function

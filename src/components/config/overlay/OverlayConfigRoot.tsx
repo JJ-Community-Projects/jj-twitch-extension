@@ -9,11 +9,6 @@ import {OverlayConfigMain} from "./OverlayConfigMain.tsx";
 import {AnalyticsProvider} from "../../common/providers/AnalyticsProvider.tsx";
 import {BackendProvider} from "../../common/providers/BackendProvider.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/solid-query";
-import {LocalStorageProvider} from "../../common/providers/LocalStorageProvider.tsx";
-import {OverlayProvider} from "../../common/providers/OverlayProvider.tsx";
-import {OverlayBackendProvider} from "../../common/providers/OverlayBackendProvider.tsx";
-import {SleepProvider} from "../../common/providers/SleepProvider.tsx";
-import {CurrencyProvider} from "../../common/providers/CurrencyProvider.tsx";
 import {OverlayMain} from "../../overlay/OverlayMain.tsx";
 
 
@@ -21,31 +16,21 @@ export const OverlayConfigRoot: Component = () => {
   const i18n = createI18n({language: useLocale().locale()})
   return (
     <QueryClientProvider client={new QueryClient()}>
-      <LocalStorageProvider>
-        <I18nProvider i18n={i18n}>
-          <TwitchAuthProvider>
-            <OverlayProvider>
-              <OverlayBackendProvider>
-                <TwitchOverlayConfigProvider>
-                  <AnalyticsProvider>
-                    <OverlayThemeProvider>
-                      <SleepProvider>
-                        <CurrencyProvider>
-                          <Background>
-                            <div class="max-h-[700px] overflow-y-auto">
-                              <OverlayConfigMain/>
-                            </div>
-                          </Background>
-                        </CurrencyProvider>
-                      </SleepProvider>
-                    </OverlayThemeProvider>
-                  </AnalyticsProvider>
-                </TwitchOverlayConfigProvider>
-              </OverlayBackendProvider>
-            </OverlayProvider>
-          </TwitchAuthProvider>
-        </I18nProvider>
-      </LocalStorageProvider>
+      <I18nProvider i18n={i18n}>
+        <TwitchAuthProvider>
+          <TwitchOverlayConfigProvider>
+            <AnalyticsProvider>
+              <OverlayThemeProvider>
+                <Background>
+                  <div class="max-h-[700px] overflow-y-auto">
+                    <OverlayConfigMain/>
+                  </div>
+                </Background>
+              </OverlayThemeProvider>
+            </AnalyticsProvider>
+          </TwitchOverlayConfigProvider>
+        </TwitchAuthProvider>
+      </I18nProvider>
     </QueryClientProvider>
   );
   /*

@@ -7,6 +7,7 @@ import {OverlayBody} from "./OverlayBody.tsx";
 import {OverlayCharityBanner} from "./OverlayCharityBanner.tsx";
 import {useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {OverlayCharitySideBanner} from "./OverlayCharitySideBanner.tsx";
+import './OverlayMain.css'
 
 const timeout = 5_000;
 

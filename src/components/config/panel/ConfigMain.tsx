@@ -1,27 +1,22 @@
 import {type Component, createEffect, createMemo, createSignal, on, type ParentComponent, Show} from "solid-js";
-import {
-  TwitchPanelConfigProvider,
-  useTwitchPanelConfig,
-  useTwitchPanelConfigEdit
-} from "../../common/providers/PanelConfigProvider.tsx";
+import {useTwitchPanelConfig, useTwitchPanelConfigEdit} from "../../common/providers/PanelConfigProvider.tsx";
 import {createModalSignal} from "../../../lib/createModalSignal.ts";
 import {ThemeSelection} from "./ThemeSelection.tsx";
 import {AlertDialog} from "@kobalte/core/alert-dialog";
 import {CgClose} from "solid-icons/cg";
 import {Button} from "@kobalte/core/button";
-import {createI18n, I18nProvider} from "solid-i18n";
-import {useLocale} from "@kobalte/core";
 import {QueryClient, QueryClientProvider} from "@tanstack/solid-query";
 import {TwitchAuthProvider, useTwitchAuth} from "../../common/providers/TwitchAuthProvider.tsx";
 import {TabsProvider} from "../../common/providers/TabsProvider.tsx";
-import {BackendProvider, useBackend} from "../../common/providers/BackendProvider.tsx";
+import {BackendProvider} from "../../common/providers/BackendProvider.tsx";
 import {AnalyticsProvider} from "../../common/providers/AnalyticsProvider.tsx";
-import {ThemeProvider} from "../../common/providers/ThemeProvider.tsx";
 import {CurrencyProvider} from "../../common/providers/CurrencyProvider.tsx";
 import {Select} from "@kobalte/core/select";
 import {AiOutlineCheck} from "solid-icons/ai";
 import {PanelMain} from "../../panel/PanelMain.tsx";
 import {Background} from "../../common/Background.tsx";
+import {IsMobileProvider} from "../../common/MobileProvider.tsx";
+import {PreviewFrame} from "../../common/PreviewFrame.tsx";
 import {useIsJJ, useJJStartCountdown} from "../../../lib/useJJDates.ts";
 
 export const ConfigMain: Component = () => {
@@ -87,11 +82,6 @@ export const ConfigMain: Component = () => {
               <li class={'text-white'}>
                 This years Fundraisers and Charities will be available shortly after the Jingle Jam has started.
               </li>
-              <li class={'text-white'}>
-                The preview may not represent the final visuals 100%. You might have to switch between tabs in the
-                preview
-                to make data load.
-              </li>
             </ul>
             <p class={'text-sm text-gray-50 opacity-80'}>
               The Jingle Jam Extension and jinglejam.ostof.dev are community projects and is not associated with the
@@ -128,7 +118,6 @@ export const ConfigMain: Component = () => {
 const PreviewSelection: Component = () => {
 
   const {setPreviewAuth} = useTwitchAuth()
-  const {refetchAll, userConfig, config} = useBackend()
   type PreviewKey = 'yogscast' | 'yogs-member' | 'ostofbot' | 'yours'
 
   const [selected, setSelected] = createSignal<PreviewKey>('yours')
@@ -170,6 +159,7 @@ const PreviewSelection: Component = () => {
 
   const auth = () => selected() === 'yours' ? undefined : authByKey()[selected()]
 
+  // Deferred, as "Yours" is already the starting state. The queries refetch on their own, the auth is in their keys.
   createEffect(on(auth, (a) => {
     if (a) {
       // When selecting a specific preview (e.g., Yogscast/Yogs Member), override auth
@@ -184,10 +174,7 @@ const PreviewSelection: Component = () => {
         helixToken: "",
       })
     }
-    refetchAll()
-  }))
-
-  const hasConfig = () => !config.isLoading && !userConfig.isLoading
+  }, {defer: true}))
 
   return (
     <div class={'pt-2 px-1'}>
@@ -243,45 +230,36 @@ const PreviewSelection: Component = () => {
             </Select>
           </div>
         </div>
-        <div class={'from-primary-300 to-primary-700 overflow-hidden bg-gradient-to-b'}
-             style={{
-               height: '496px',
-               width: '316px'
-             }}
-        >
-          <Background>
-            <Show when={hasConfig()} fallback={<div class={'h-full w-full text-white'}>Loading...</div>}>
+        {/* Twitch panels are 318px wide; the height is the one set for the panel in the developer console */}
+        <PreviewFrame class={'block'} style={{width: '318px', height: '496px'}}>
+          <IsMobileProvider isMobile={false}>
+            <Background>
               <PanelMain/>
-            </Show>
-          </Background>
-        </div>
+            </Background>
+          </IsMobileProvider>
+        </PreviewFrame>
       </div>
     </div>
   );
 }
 
 
+// The providers of PanelExtensionProviders, minus the panel config and theme: those come from ConfigRoot,
+// so the preview shows the unsaved config.
 const Preview: ParentComponent<{}> = () => {
-  const i18n = createI18n({language: useLocale().locale()})
   return (
     <QueryClientProvider client={new QueryClient()}>
-      <I18nProvider i18n={i18n}>
-        <TwitchAuthProvider>
-          <TabsProvider>
-            <BackendProvider useConfigPlaceholderData={false}>
-              <TwitchPanelConfigProvider>
-                <AnalyticsProvider>
-                  <ThemeProvider>
-                    <CurrencyProvider>
-                      <PreviewSelection/>
-                    </CurrencyProvider>
-                  </ThemeProvider>
-                </AnalyticsProvider>
-              </TwitchPanelConfigProvider>
-            </BackendProvider>
-          </TabsProvider>
-        </TwitchAuthProvider>
-      </I18nProvider>
+      <TwitchAuthProvider>
+        <TabsProvider>
+          <BackendProvider useConfigPlaceholderData={false}>
+            <AnalyticsProvider>
+              <CurrencyProvider>
+                <PreviewSelection/>
+              </CurrencyProvider>
+            </AnalyticsProvider>
+          </BackendProvider>
+        </TabsProvider>
+      </TwitchAuthProvider>
     </QueryClientProvider>
   );
 }

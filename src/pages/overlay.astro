@@ -16,19 +16,6 @@ import OverlayLayout from "../layouts/OverlayLayout.astro";
         @apply visible z-50;
     }
 
-    :root {
-        --twitch-vertical-padding: 5rem;
-        --twitch-right-padding: 7rem;
-        --twitch-left-padding: 0rem;
-    }
-
-    body {
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-        padding: var(--twitch-vertical-padding) var(--twitch-right-padding) var(--twitch-vertical-padding) var(--twitch-left-padding);
-    }
-
     .progress-bar {
         width: 0; /* Start with 0% width */
         height: 100%; /* Full height of the container */
@@ -50,6 +37,7 @@ import OverlayLayout from "../layouts/OverlayLayout.astro";
 </style>
 <OverlayLayout
   title="Jingle Jam Twitch Overlay Extension"
+  bodyClass="overlay-viewport"
 >
     <OverlayRoot client:only="solid-js"/>
 </OverlayLayout>

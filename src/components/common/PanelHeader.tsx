@@ -25,6 +25,7 @@ import type {CurrenciesSchema, GetUserData200Response, JJCampaign, JJCause} from
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "./providers/CurrencyProvider.tsx";
 import {CrossFade} from "./CrossFade.tsx";
+import {usePortalMount} from "./PreviewFrame.tsx";
 
 export const PanelHeader: Component = () => {
 
@@ -318,7 +319,7 @@ interface AboutDialogProps {
 const AboutDialog: Component<AboutDialogProps> = (props) => {
   return (
     <Dialog.Root open={props.isOpen} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal mount={usePortalMount()}>
         <Dialog.Overlay class={'fixed inset-0 z-50 bg-black bg-opacity-20'}/>
         <Dialog.Content
           class={'fixed inset-0 z-50 h-fit flex flex-col items-center justify-center bg-white text-black m-2 rounded-2xl shadow-xl'}>

@@ -1,0 +1,13 @@
+/* The overlay page's body (and the overlay-config preview's), keeping clear of the Twitch player controls */
+:root {
+    --twitch-vertical-padding: 5rem;
+    --twitch-right-padding: 7rem;
+    --twitch-left-padding: 0rem;
+}
+
+.overlay-viewport {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    padding: var(--twitch-vertical-padding) var(--twitch-right-padding) var(--twitch-vertical-padding) var(--twitch-left-padding);
+}
