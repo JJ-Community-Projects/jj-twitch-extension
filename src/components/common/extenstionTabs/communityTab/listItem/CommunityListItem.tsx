@@ -56,11 +56,19 @@ const Body: Component = () => {
         />
         <div class={"min-w-0 flex-1"}>
           <p class={"truncate text-ellipsis text-xs font-semibold"}>{name()}</p>
-          <Show when={twitchUrl()}>
-            <p class={"truncate text-ellipsis text-xxxs opacity-80"}>{isLive() ? "Watch Live" : "Visit Twitch"}</p>
-          </Show>
-          <Show when={donoMatch()}>
-            <p class={"truncate text-ellipsis text-xxs font-bold"}>Dono Matching</p>
+          {/* One subline for both, so a dono-matching card stays as tall as the others */}
+          <Show when={twitchUrl() || donoMatch()}>
+            <p class={"truncate text-ellipsis text-xxxs"}>
+              <Show when={twitchUrl()}>
+                <span class={"opacity-80"}>{isLive() ? "Watch Live" : "Visit Twitch"}</span>
+              </Show>
+              <Show when={twitchUrl() && donoMatch()}>
+                <span class={"opacity-80"}> · </span>
+              </Show>
+              <Show when={donoMatch()}>
+                <span class={"font-bold"}>Dono Matching</span>
+              </Show>
+            </p>
           </Show>
         </div>
         {/* Not twMerge: it doesn't know the custom text-xxs size and drops it in favour of the text colour */}
