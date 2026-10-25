@@ -35,7 +35,8 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
         const config = await api.getExtensionConfig(requestAuth())
         if (import.meta.env.DEV) {
           const {devMockExtensionConfig} = await import("../../../lib/mockUserSchedule.ts")
-          return devMockExtensionConfig(config)
+          const {devMockHeadlinerConfig} = await import("../../../lib/mockHeadlinerSchedule.ts")
+          return devMockHeadlinerConfig(devMockExtensionConfig(config))
         }
         return config
       },
@@ -196,6 +197,29 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     placeholderData: (prev) => prev
   }))
 
+  const enableHeadlinerScheduleQuery = () => {
+    return isAuthInit() && configQuery.data !== undefined
+      && configQuery.data.showHeadlinerSchedule
+      && currentTab() === 'fundraisers'
+  }
+
+  const headlinerScheduleQuery = useQuery(() => ({
+    queryKey: ['headliner-schedule', channelId(), userId()],
+    queryFn: async () => {
+      if (import.meta.env.DEV) {
+        const {devMockHeadlinerSchedule} = await import("../../../lib/mockHeadlinerSchedule.ts")
+        const mock = devMockHeadlinerSchedule()
+        if (mock) return mock
+      }
+      return api.getHeadlinerSchedule(requestAuth())
+    },
+    enabled: enableHeadlinerScheduleQuery(),
+    staleTime: 60_000,
+    refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 5,
+    refetchOnWindowFocus: true,
+    refetchIntervalInBackground: false,
+    placeholderData: (prev) => prev
+  }))
 
   createEffect(on(() => userConfigQuery.data, (config) => {
     if (currentTab() === '' && config) {
@@ -230,6 +254,7 @@ const useBackendHook = (useConfigPlaceholderData = true) => {
     */
     userSchedule: userScheduleQuery,
     yogsSchedule: yogsScheduleQuery,
+    headlinerSchedule: headlinerScheduleQuery,
     refetchAll,
   }
 }
