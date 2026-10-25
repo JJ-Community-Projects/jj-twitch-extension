@@ -64,6 +64,11 @@ export interface GetExtensionConfigRequest {
     userId: string;
 }
 
+export interface GetHeadlinerScheduleRequest {
+    channelId: string;
+    userId: string;
+}
+
 export interface GetOverviewRequest {
     channelId: string;
     userId: string;
@@ -239,6 +244,56 @@ export class TwitchExtensionApi extends runtime.BaseAPI {
      */
     async getExtensionConfig(requestParameters: GetExtensionConfigRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtensionConfig> {
         const response = await this.getExtensionConfigRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get the headliner schedule
+     * Get the headliner schedule
+     */
+    async getHeadlinerScheduleRaw(requestParameters: GetHeadlinerScheduleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<YogsScheduleSchema>> {
+        if (requestParameters['channelId'] == null) {
+            throw new runtime.RequiredError(
+                'channelId',
+                'Required parameter "channelId" was null or undefined when calling getHeadlinerSchedule().'
+            );
+        }
+
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling getHeadlinerSchedule().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['channelId'] != null) {
+            queryParameters['channelId'] = requestParameters['channelId'];
+        }
+
+        if (requestParameters['userId'] != null) {
+            queryParameters['userId'] = requestParameters['userId'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/twitch-extension/headliner-schedule`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => YogsScheduleSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get the headliner schedule
+     * Get the headliner schedule
+     */
+    async getHeadlinerSchedule(requestParameters: GetHeadlinerScheduleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<YogsScheduleSchema> {
+        const response = await this.getHeadlinerScheduleRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

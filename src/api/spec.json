@@ -326,6 +326,9 @@
           "showYogsSchedule": {
             "type": "boolean"
           },
+          "showHeadlinerSchedule": {
+            "type": "boolean"
+          },
           "showCharities": {
             "type": "boolean"
           },
@@ -386,6 +389,7 @@
         "required": [
           "year",
           "showYogsSchedule",
+          "showHeadlinerSchedule",
           "showCharities",
           "showFundraisers",
           "showUserFundraiser",
@@ -413,7 +417,8 @@
                 "yogs",
                 "charities",
                 "fundraisers"
-              ]
+              ],
+              "type": "string"
             }
           }
         },
@@ -931,6 +936,50 @@
         "responses": {
           "200": {
             "description": "Yogs schedule retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/YogsScheduleSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitch-extension/headliner-schedule": {
+      "get": {
+        "operationId": "getHeadlinerSchedule",
+        "summary": "Get the headliner schedule",
+        "description": "Get the headliner schedule",
+        "tags": [
+          "twitch-extension"
+        ],
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Headliner schedule retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {

@@ -49,6 +49,12 @@ export interface ExtensionConfig {
      * @type {boolean}
      * @memberof ExtensionConfig
      */
+    showHeadlinerSchedule: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ExtensionConfig
+     */
     showCharities: boolean;
     /**
      * 
@@ -100,6 +106,7 @@ export interface ExtensionConfig {
 export function instanceOfExtensionConfig(value: object): value is ExtensionConfig {
     if (!('year' in value) || value['year'] === undefined) return false;
     if (!('showYogsSchedule' in value) || value['showYogsSchedule'] === undefined) return false;
+    if (!('showHeadlinerSchedule' in value) || value['showHeadlinerSchedule'] === undefined) return false;
     if (!('showCharities' in value) || value['showCharities'] === undefined) return false;
     if (!('showFundraisers' in value) || value['showFundraisers'] === undefined) return false;
     if (!('showUserFundraiser' in value) || value['showUserFundraiser'] === undefined) return false;
@@ -123,6 +130,7 @@ export function ExtensionConfigFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'year': json['year'],
         'showYogsSchedule': json['showYogsSchedule'],
+        'showHeadlinerSchedule': json['showHeadlinerSchedule'],
         'showCharities': json['showCharities'],
         'showFundraisers': json['showFundraisers'],
         'showUserFundraiser': json['showUserFundraiser'],
@@ -142,6 +150,7 @@ export function ExtensionConfigToJSON(value?: ExtensionConfig | null): any {
         
         'year': value['year'],
         'showYogsSchedule': value['showYogsSchedule'],
+        'showHeadlinerSchedule': value['showHeadlinerSchedule'],
         'showCharities': value['showCharities'],
         'showFundraisers': value['showFundraisers'],
         'showUserFundraiser': value['showUserFundraiser'],
