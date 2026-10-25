@@ -1,4 +1,4 @@
-import {type Component, createSignal, Show} from "solid-js";
+import {type Component, createSignal, onCleanup, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
 
 import red from '../../assets/JingleJam_Red.png'
@@ -21,7 +21,7 @@ import {useTheme} from "./providers/ThemeProvider.tsx";
 import {twLinkBGHoverColor, twLinkHoverColor} from "../../lib/colorUtil.ts";
 import {BiRegularInfoCircle} from "solid-icons/bi";
 import {useBackend} from "./providers/BackendProvider.tsx";
-import type {CurrenciesSchema, GetUserData200Response, JJCampaign, JJCause} from "../../api";
+import type {CurrenciesSchema, GetUserData200Response} from "../../api";
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "./providers/CurrencyProvider.tsx";
 import {CrossFade} from "./CrossFade.tsx";
@@ -65,10 +65,24 @@ export const PanelHeader: Component = () => {
   );
 }
 
-const NoUserCampaignHeader: Component = () => {
+// Same card surface as the redesigned list items, so the header reads as part of the same family.
+const useHeaderStyle = () => {
   const {theme} = useTheme()
 
-  const image = () => {
+  const surface = () => {
+    if (theme() === 'dark') {
+      return 'bg-gradient-to-b from-white/30 to-white/10 ring-1 ring-white/10 text-white backdrop-blur-sm'
+    }
+    return 'bg-gradient-to-b from-neutral-50 to-neutral-100 ring-1 ring-black/5'
+  }
+
+  const raisedColor = () => {
+    if (theme() === 'dark') return 'text-white'
+    if (theme() === 'blue' || theme() === 'blue_light') return 'text-accent-600'
+    return 'text-primary-600'
+  }
+
+  const logo = () => {
     switch (theme()) {
       case 'blue':
       case 'blue_light':
@@ -80,69 +94,57 @@ const NoUserCampaignHeader: Component = () => {
     }
   }
 
+  return {surface, raisedColor, logo}
+}
+
+// Logo row shared by both headers: About on the left, logo centred, an empty slot on the right to balance it.
+const LogoRow: Component = () => {
+  const {logo} = useHeaderStyle()
+  return (
+    <div class={'flex h-7 w-full flex-row items-center'}>
+      <div class={'flex h-full flex-1 flex-row items-center justify-start'}>
+        <About/>
+      </div>
+      <img src={logo()} class={'h-full'} alt={'JJ Logo'}/>
+      <div class={'flex-1'}/>
+    </div>
+  )
+}
+
+const NoUserCampaignHeader: Component = () => {
+  const {surface} = useHeaderStyle()
+
   return (
     <div class={'px-2'}>
-      <div class={'h-8 flex flex-row bg-gradient-to-b from-neutral-50 to bg-neutral-100 shadow rounded-2xl items-center p-1'}>
-        <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
-          <About/>
-        </div>
-        <img src={image()} class={'h-full'} alt={'JJ Logo'}/>
-        <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
-        </div>
+      <div class={twMerge('rounded-2xl p-1.5 shadow-sm', surface())}>
+        <LogoRow/>
       </div>
     </div>
   );
 }
 
+// Logo on top, then a single row in the CommunityListItem layout: avatar, name + campaign, "Raised" over the amount.
 const UserCampaignHeader: Component<{
   userData: GetUserData200Response
 }> = (props) => {
-
-  const {theme, tailwindTextPrimary} = useTheme()
-
-  const image = () => {
-    switch (theme()) {
-      case 'blue':
-      case 'blue_light':
-        return blue.src
-      case 'dark':
-        return black.src
-      default:
-        return red.src
-    }
-  }
-
-  const raisedTextColor = () => {
-    if (theme() === 'dark') return 'text-white'
-    return tailwindTextPrimary()
-  }
-
-  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
+  const {surface, raisedColor} = useHeaderStyle()
 
   return (
     <div class={'px-2'}>
-      <div class={'flex flex-col bg-gradient-to-b from-neutral-50 to bg-neutral-100  shadow rounded-2xl items-start p-1 gap-1'}>
-        <div class={'w-full h-8 flex flex-row items-center p-1'}>
-          <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
-            <About/>
-          </div>
-          <img src={image()} class={'h-full'} alt={'JJ Logo'}/>
-          <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
-          </div>
-        </div>
-        <div class={'w-full px-1 pb-1'}>
-          <div class={twMerge('w-full h-full flex flex-row items-start gap-2')}>
-            <img src={props.userData.campaign.twitch?.avatar ?? props.userData.campaign.avatar} alt={'Campaign Avatar'}
-                 class={'~w-8/12 ~h-8/12 rounded-xl object-cover'}/>
-
-            <UserHeaderTexts userData={props.userData}/>
-
-            <div class={'h-full flex flex-col items-end justify-start'}>
-              <p class={twMerge('text-xs font-bold', raisedTextColor())}>
-                <CurrencyAmount values={props.userData.campaign.raised}/>
-              </p>
-              <p class={twMerge('text-[10px]', darkText())}>Raised</p>
-            </div>
+      <div class={twMerge('flex flex-col gap-1 rounded-2xl p-1.5 shadow-sm', surface())}>
+        <LogoRow/>
+        <div class={'flex w-full flex-row items-center gap-2 px-0.5 pb-0.5'}>
+          <img
+            src={props.userData.campaign.twitch?.avatar ?? props.userData.campaign.avatar}
+            alt={'Campaign Avatar'}
+            class={'size-8 rounded-lg object-cover ring-1 ring-white'}
+          />
+          <UserHeaderTexts userData={props.userData}/>
+          <div class={twMerge('flex shrink-0 flex-col items-end font-bold', raisedColor())}>
+            <p class={'text-xxs'}>Raised</p>
+            <p class={'text-xs'}>
+              <CurrencyAmount values={props.userData.campaign.raised}/>
+            </p>
           </div>
         </div>
       </div>
@@ -151,82 +153,38 @@ const UserCampaignHeader: Component<{
 }
 
 const UserHeaderTexts: Component<{ userData: GetUserData200Response }> = (props) => {
-
   const [showCampaign, setShowCampaign] = createSignal<boolean>(true)
 
-
-  const intervall = setInterval(() => {
+  const interval = setInterval(() => {
     setShowCampaign(v => !v)
   }, 10000)
 
-  return (
+  onCleanup(() => clearInterval(interval))
 
-    <div class={'relative min-w-0 flex-1 flex flex-col leading-tight'}>
+  const name = () => props.userData.campaign.twitch?.name ?? props.userData.campaign.tiltifyName
+
+  // Only the subtitle rotates between campaign name and cause; the name stays put.
+  return (
+    <div class={'min-w-0 flex-1'}>
+      <p class={'truncate text-xs font-semibold'}>{name()}</p>
       <Show
         when={props.userData.cause}
-        fallback={<UserCampaignTexts campaign={props.userData.campaign}/>}
+        fallback={<p class={'truncate text-xxs opacity-80'}>{props.userData.campaign.campaignName}</p>}
       >
         {
-          (cause) => {
-            return (
-              <>
-                <CrossFade show={showCampaign()}>
-                  <UserCampaignTexts campaign={props.userData.campaign}/>
-                </CrossFade>
-                <CrossFade show={!showCampaign()}>
-                  <UserCauseTexts campaign={props.userData.campaign} cause={cause()}/>
-                </CrossFade>
-              </>
-            )
-          }
+          (cause) => (
+            <div class={'relative h-3'}>
+              <CrossFade show={showCampaign()}>
+                <p class={'truncate text-xxs opacity-80'}>{props.userData.campaign.campaignName}</p>
+              </CrossFade>
+              <CrossFade show={!showCampaign()}>
+                <p class={'truncate text-xxs opacity-80'}>Raising for {cause().name}</p>
+              </CrossFade>
+            </div>
+          )
         }
       </Show>
     </div>
-  )
-}
-
-const UserCampaignTexts: Component<{ campaign: JJCampaign }> = (props) => {
-
-  const {theme, tailwindTextPrimary} = useTheme()
-  const raisedTextColor = () => {
-    if (theme() === 'dark') return 'text-white'
-    return tailwindTextPrimary()
-  }
-
-  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
-
-  const platformName = () => {
-    const t = props.campaign.twitch
-    return t?.name ?? props.campaign.tiltifyName
-  }
-
-  return (
-    <>
-      <p class={twMerge('text-xs font-bold truncate', raisedTextColor())}>{platformName()}</p>
-      <p class={twMerge('text-[10px] truncate', darkText())}>{props.campaign.campaignName}</p>
-    </>
-  )
-}
-
-const UserCauseTexts: Component<{ campaign: JJCampaign, cause: JJCause }> = (props) => {
-  const {theme, tailwindTextPrimary} = useTheme()
-  const raisedTextColor = () => {
-    if (theme() === 'dark') return 'text-white'
-    return tailwindTextPrimary()
-  }
-
-  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
-
-  const platformName = () => {
-    const t = props.campaign.twitch
-    return t?.name ?? props.campaign.tiltifyName
-  }
-
-  return (
-    <>
-      <p class={twMerge('text-xs font-bold truncate', raisedTextColor())}>{platformName()}</p>
-      <p class={twMerge('text-[10px] truncate', darkText())}>Raising for {props.cause.name}</p>
-    </>
   )
 }
 
@@ -236,11 +194,12 @@ const About = () => {
     <>
       <button
         class={twMerge(
-          'group h-full group inline-flex items-center justify-center cursor-pointer',
-          'rounded-full shadow',
+          'group h-6 group inline-flex items-center justify-center cursor-pointer',
+          'rounded-full shadow-sm',
           'transition-all duration-300',
           'bg-gray-700'
         )}
+        aria-label={'About'}
         onClick={() => {
           modalSignal.open()
         }}
