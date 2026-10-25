@@ -6,6 +6,16 @@ export default {
     theme: {
         screens,
         extend: {
+            // A gentler animate-pulse: dips to 80% opacity instead of 50%.
+            keyframes: {
+                'pulse-soft': {
+                    '0%, 100%': {opacity: '1'},
+                    '50%': {opacity: '.8'},
+                },
+            },
+            animation: {
+                'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
             fontFamily: {
                 poppins: ['Poppins'],
                 babas: ['Bebas'],
