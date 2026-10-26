@@ -1,6 +1,8 @@
 import type {ExtensionConfig, UserExtensionConfig, UserExtensionConfigTabsEnum} from "../api";
+import type {Theme} from "./model/TwitchConfig.ts";
 
 // Dev-only layout switches, for arranging the extension for screenshots (e.g. the Twitch promo images).
+// `?theme=blue` shows a theme without changing the broadcaster config (red, blue, dark, red_light, blue_light, rainbow).
 // `?header` (or `?header=1`) shows the user header with the channel's fundraiser, `?header=0` the plain logo header.
 // The user header needs a channel with a campaign, e.g. `?user=hrry&header`.
 // `?tabs=fundraisers,charities,yogs,user-schedule` shows exactly these tabs in this order; the first one opens.
@@ -11,7 +13,18 @@ import type {ExtensionConfig, UserExtensionConfig, UserExtensionConfigTabsEnum} 
 
 const allTabs: UserExtensionConfigTabsEnum[] = ['user-schedule', 'yogs', 'charities', 'fundraisers']
 
+const allThemes: Theme[] = ['red', 'blue', 'dark', 'red_light', 'blue_light', 'rainbow']
+
 const params = () => new URLSearchParams(window.location.search)
+
+// The requested theme, or undefined to keep the broadcaster's.
+export const devLayoutTheme = (): Theme | undefined => {
+  const value = params().get('theme')
+  if (value === null) return undefined
+  if (allThemes.includes(value as Theme)) return value as Theme
+  console.warn(`Unknown dev theme "${value}" ignored. Known themes: ${allThemes.join(', ')}`)
+  return undefined
+}
 
 // true / false when `?header` is set, undefined to keep the backend's choice.
 const headerFlag = (): boolean | undefined => {

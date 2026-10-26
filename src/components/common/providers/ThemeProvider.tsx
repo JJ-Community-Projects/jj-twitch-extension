@@ -1,12 +1,21 @@
-import {createContext, type ParentComponent, useContext} from "solid-js";
+import {createContext, createSignal, type ParentComponent, useContext} from "solid-js";
 import {hasTwitchPanelConfig, useTwitchPanelConfig} from "./PanelConfigProvider.tsx";
 import type {Theme} from "../../../lib/model/TwitchConfig.ts";
 import {hasTwitchOverlayConfig, useTwitchOverlayConfig} from "./OverlayConfigProvider.tsx";
 
+// Dev only: `?theme=<name>` overrides the broadcaster's theme (see lib/devLayout.ts).
+const [devTheme, setDevTheme] = createSignal<Theme>()
+if (import.meta.env.DEV) {
+  import("../../../lib/devLayout.ts").then(({devLayoutTheme}) => setDevTheme(devLayoutTheme()))
+}
 
 const useThemeHook = () => {
 
   const theme = (): Theme => {
+    const override = devTheme()
+    if (override) {
+      return override
+    }
     if (hasTwitchOverlayConfig()) {
       const config = useTwitchOverlayConfig()
       return config.theme
@@ -143,7 +152,7 @@ const useOverlayThemeHook = () => {
   const config = useTwitchOverlayConfig()
 
   const theme = (): Theme => {
-    return config.theme
+    return devTheme() ?? config.theme
   }
 
   const tailwindBGAccent = () => {
