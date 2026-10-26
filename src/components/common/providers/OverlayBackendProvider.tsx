@@ -37,7 +37,8 @@ const useBackendHook = () => {
         const config = await api.getExtensionConfig(requestAuth())
         if (import.meta.env.DEV) {
           const {devMockExtensionConfig} = await import("../../../lib/mockUserSchedule.ts")
-          return devMockExtensionConfig(config)
+          const {devLayoutConfig} = await import("../../../lib/devLayout.ts")
+          return devLayoutConfig(devMockExtensionConfig(config))
         }
         return config
       },
@@ -56,7 +57,8 @@ const useBackendHook = () => {
       const config = await api.getUserExtensionConfig(requestAuth())
       if (import.meta.env.DEV) {
         const {devMockUserConfig} = await import("../../../lib/mockUserSchedule.ts")
-        return devMockUserConfig(config)
+        const {devLayoutUserConfig} = await import("../../../lib/devLayout.ts")
+        return devLayoutUserConfig(devMockUserConfig(config))
       }
       return config
     },
