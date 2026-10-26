@@ -1,5 +1,6 @@
-import {type Component, Show} from "solid-js";
+import {type Component, For, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
+import type {DateTime} from "luxon";
 import {useNow} from "../../../lib/useNow.ts";
 import {getTextColor} from "../../../lib/textColors.ts";
 import {YogsStreamUtils} from "../../../lib/YogsStreamUtils.ts";
@@ -74,9 +75,7 @@ export const ScheduleSlotListItem: Component<ScheduleSlotListItemProps> = (props
             {start().toLocaleString({day: 'numeric', month: 'short'})}
           </span>
         </Show>
-        <span class={"whitespace-nowrap text-xs font-bold leading-4 tabular-nums"}>
-          {start().toLocaleString({hour: 'numeric', minute: 'numeric'})}
-        </span>
+        <StartTime time={start()}/>
         {/* Inverted colours (slot colour on the readable text colour) so it stands out inside the block */}
         <Show when={isLive()}>
           <span
@@ -116,3 +115,29 @@ export const ScheduleSlotListItem: Component<ScheduleSlotListItemProps> = (props
   )
 }
 
+// Start time for the time block. A 12-hour time ("10:25 PM") is too wide for the block at full size,
+// so its digits shrink and the AM/PM gets smaller still; 24-hour times keep the full size.
+// The parts keep the locale's order, as some put the day period first.
+const StartTime: Component<{ time: DateTime }> = (props) => {
+  const parts = () => props.time.toLocaleParts({hour: 'numeric', minute: 'numeric'})
+  const hasDayPeriod = () => parts().some(p => p.type === 'dayPeriod')
+  // The space around the day period is replaced by a 1px margin to save width.
+  const visibleParts = () => parts().filter(p => !(p.type === 'literal' && p.value.trim() === ''))
+
+  return (
+    <span
+      class={twMerge(
+        "whitespace-nowrap text-xs font-bold leading-4 tabular-nums",
+        hasDayPeriod() && "text-[10px]"
+      )}
+    >
+      <For each={visibleParts()}>
+        {(part) => (
+          <Show when={part.type === 'dayPeriod'} fallback={part.value}>
+            <span class={"mx-px text-[8px]"}>{part.value}</span>
+          </Show>
+        )}
+      </For>
+    </span>
+  )
+}
