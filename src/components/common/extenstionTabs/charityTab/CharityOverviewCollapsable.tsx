@@ -109,7 +109,7 @@ export const CharityOverviewCollapsable: Component = () => {
                     <SmallValue value={overview().collections.total - overview().collections.redeemed}
                                 text={'Collections Available'}/>
                   </div>
-                  <div class={twMerge("flex flex-row items-center justify-between gap-2 pt-2 text-xxs opacity-80", darkText())}>
+                  <div class={twMerge("flex flex-col items-start gap-0.5 pt-2 text-xxs opacity-80", darkText())}>
                     <p>
                       Last update, {DateTime.fromJSDate(overview().date).toLocaleString(DateTime.DATETIME_MED)}
                     </p>
@@ -120,7 +120,7 @@ export const CharityOverviewCollapsable: Component = () => {
                             {
                               (url) => {
                                 return (
-                                  <a class={'shrink-0 underline'} href={url()} target={'_blank'}>Live Donation Tracker</a>
+                                  <a class={'underline'} href={url()} target={'_blank'}>Live Donation Tracker</a>
                                 )
                               }
                             }
