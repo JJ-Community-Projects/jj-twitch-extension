@@ -13,6 +13,7 @@ import {ErrorPage} from "../common/Error.tsx";
 
 export const PanelMain: Component = () => {
   const {userConfig, config} = useBackend();
+  const {currentTab, setCurrentTab} = useTabs();
   const ready = () => Boolean(userConfig.data && config.data);
 
   const showError = () => Boolean(userConfig.error || config.error);
@@ -26,7 +27,7 @@ export const PanelMain: Component = () => {
         <ErrorPage message={'Failed to load config'}/>
       </CrossFade>
       <CrossFade show={ready()}>
-        <Tabs class={"h-screen flex-1 flex flex-col gap-2 py-2"}>
+        <Tabs class={"h-screen flex-1 flex flex-col gap-2 py-2"} value={currentTab()} onChange={setCurrentTab}>
           <PanelHeader/>
           <NavBarAlt/>
           <ExtensionTabs/>
