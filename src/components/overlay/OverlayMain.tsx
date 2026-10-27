@@ -7,6 +7,7 @@ import {OverlayBody} from "./OverlayBody.tsx";
 import {OverlayCharityBanner} from "./OverlayCharityBanner.tsx";
 import {useTwitchOverlayConfig} from "../common/providers/OverlayConfigProvider.tsx";
 import {OverlayCharitySideBanner} from "./OverlayCharitySideBanner.tsx";
+import {pausePollingWhileHidden} from "../../lib/pausePollingWhileHidden.ts";
 import './OverlayMain.css'
 
 const timeout = 5_000;
@@ -43,6 +44,9 @@ export const OverlayMain: Component = () => {
     }
     return sleeping()
   }
+
+  // The open window stays mounted while the overlay is faded out; don't poll for it until the viewer is back.
+  pausePollingWhileHidden(() => !isHiding())
 
   return (
     <div class={'h-full w-full'}>

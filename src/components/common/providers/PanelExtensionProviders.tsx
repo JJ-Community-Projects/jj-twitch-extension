@@ -9,9 +9,12 @@ import {BackendProvider} from "./BackendProvider.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/solid-query";
 import {CurrencyProvider} from "./CurrencyProvider.tsx";
 import {TabsProvider} from "./TabsProvider.tsx";
+import {pausePollingWhileHidden} from "../../../lib/pausePollingWhileHidden.ts";
 
 export const PanelExtensionProviders: ParentComponent = (props) => {
   const i18n = createI18n({language: useLocale().locale()})
+  // Panels sit below the player and most viewers never scroll to them.
+  pausePollingWhileHidden()
   return (
     <QueryClientProvider client={new QueryClient()}>
       <I18nProvider i18n={i18n}>

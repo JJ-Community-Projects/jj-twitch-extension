@@ -45,7 +45,7 @@ const useBackendHook = () => {
       enabled: isAuthInit(),
       staleTime: 60_000,
       refetchInterval: 60_000 * 10,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
       refetchIntervalInBackground: false,
       placeholderData: (prev) => prev
     })
@@ -65,7 +65,7 @@ const useBackendHook = () => {
     enabled: isAuthInit(),
     staleTime: 60_000,
     refetchInterval: 60_000 * 10,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -80,7 +80,7 @@ const useBackendHook = () => {
     enabled: enableOverviewQuery(),
     staleTime: 60_000,
     refetchInterval: 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -97,7 +97,7 @@ const useBackendHook = () => {
     enabled: enableCampaignsQuery(),
     staleTime: 60_000,
     refetchInterval: () => configQuery.data?.refreshInterval.fundraisers ?? 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -115,7 +115,7 @@ const useBackendHook = () => {
     enabled: enableCausesQuery(),
     staleTime: 60_000,
     refetchInterval: () => configQuery.data?.refreshInterval.charities ?? 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -130,7 +130,7 @@ const useBackendHook = () => {
     enabled: enableUserDataQuery(),
     staleTime: 60_000,
     refetchInterval: 60_000,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -155,7 +155,7 @@ const useBackendHook = () => {
     enabled: enableUserScheduleQuery(),
     staleTime: 60_000,
     refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 15,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
@@ -179,7 +179,7 @@ const useBackendHook = () => {
     enabled: enableYogsScheduleQuery(),
     staleTime: 60_000 * 5,
     refetchInterval: () => configQuery.data?.refreshInterval.yogsSchedule ?? 60_000 * 10,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchIntervalInBackground: false,
     placeholderData: (prev) => prev
   }))
