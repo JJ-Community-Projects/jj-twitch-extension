@@ -37,7 +37,6 @@ export const OverlayJJCharities: Component = () => {
         <ColoredScrollbar>
           <div class={twMerge(
             'h-full w-full gap-2',
-            'lg:grid lg:grid-cols-2 lg:content-start',
             'flex flex-col px-2'
           )}>
             <Show when={causes.data}>{

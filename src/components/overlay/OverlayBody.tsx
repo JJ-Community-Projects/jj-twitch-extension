@@ -33,7 +33,7 @@ export const OverlayBody: Component = () => {
         <CrossFade show={charities()}>
           <div
             class={twMerge(
-              "absolute inset-0 h-full w-[50vw] transition-opacity duration-500",
+              "absolute inset-0 h-full w-[30vw] transition-opacity duration-500",
             )}
           >
             <OverlayJJCharities/>
@@ -44,7 +44,7 @@ export const OverlayBody: Component = () => {
         <CrossFade show={community()}>
           <div
             class={twMerge(
-              "absolute inset-0 h-full w-[50vw] transition-opacity duration-500",
+              "absolute inset-0 h-full w-[30vw] transition-opacity duration-500",
             )}
           >
             <OverlayCommunityFundraiser/>
@@ -55,7 +55,7 @@ export const OverlayBody: Component = () => {
         <CrossFade show={yogsSchedule()}>
           <div
             class={twMerge(
-              "absolute inset-0 h-full w-[50vw] transition-opacity duration-500",
+              "absolute inset-0 h-full w-[30vw] transition-opacity duration-500",
             )}
           >
             <OverlayYogsSchedule/>
@@ -64,7 +64,7 @@ export const OverlayBody: Component = () => {
         <CrossFade show={userSchedule()}>
           <div
             class={twMerge(
-              "absolute inset-0 h-full w-[50vw] transition-opacity duration-500",
+              "absolute inset-0 h-full w-[30vw] transition-opacity duration-500",
             )}
           >
             <OverlayUserSchedule/>
@@ -82,7 +82,7 @@ export const OverlayBody: Component = () => {
         <CrossFade show={showStream()}>
           <div
             class={twMerge(
-              "absolute inset-0 h-full w-[50vw] transition-opacity duration-500",
+              "absolute inset-0 h-full w-[30vw] transition-opacity duration-500",
             )}
           >
             <OverlayScheduleSlotDialog/>
