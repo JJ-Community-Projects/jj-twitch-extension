@@ -11,7 +11,7 @@ import "./CharityOverviewCollapsable.css";
 interface CharityListItemAltProps {
   charity: JJCause;
   i: number;
-  // When false, renders the compact row only: no chevron, no description (used in the overlay).
+  // When false, renders the expanded look permanently: no chevron, description always shown (used in the overlay).
   collapsible?: boolean;
 }
 
@@ -102,6 +102,8 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
     </>
   );
 
+  const description = () => <p class={"line-clamp-3 pt-2 text-xxs opacity-90"}>{charity.description}</p>;
+
   const collapsible = () => props.collapsible ?? true;
 
   return (
@@ -114,7 +116,13 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
     >
       <Show
         when={collapsible()}
-        fallback={<div class={"flex w-full flex-row items-center gap-2 p-2"}>{row(false)}</div>}
+        fallback={
+          // data-expanded drives the same group-data-[expanded] sizing the accordion trigger gets when open
+          <div class={"group w-full p-2"} data-expanded="">
+            <div class={"flex w-full flex-row items-center gap-2"}>{row(false)}</div>
+            {description()}
+          </div>
+        }
       >
         <Accordion.Root collapsible class={"h-full w-full p-2"}>
           <Accordion.Item value="charity">
@@ -127,7 +135,7 @@ export const CharityListItemAlt: Component<CharityListItemAltProps> = (props) =>
               </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.Content class="jj-accordion__content">
-              <p class={"line-clamp-3 pt-2 text-xxs opacity-90"}>{charity.description}</p>
+              {description()}
             </Accordion.Content>
           </Accordion.Item>
         </Accordion.Root>

@@ -9,6 +9,7 @@ import type {Theme} from "./model/TwitchConfig.ts";
 // The tabs' extension-wide switches are turned on with them. `user-schedule` needs a channel with a schedule,
 // or `?mockUserSchedule` for the dummy one.
 // Both override the backend configs and the other mock flags.
+// `?force-open` keeps the overlay visible instead of showing it on hover only (read in OverlayMain.tsx).
 // Only loaded behind `import.meta.env.DEV`, so it never ships in a build.
 
 const allTabs: UserExtensionConfigTabsEnum[] = ['user-schedule', 'yogs', 'charities', 'fundraisers']

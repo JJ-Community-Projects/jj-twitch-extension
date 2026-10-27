@@ -34,11 +34,11 @@ export const OverlayMain: Component = () => {
     };
   });
 
-  const debug = false
-
+  // Dev only: `?force-open` keeps the overlay visible instead of showing it on hover only, e.g. for browser tests.
+  const forceOpen = import.meta.env.DEV && new URLSearchParams(window.location.search).has('force-open')
 
   const isHiding = () => {
-    if (debug) {
+    if (forceOpen) {
       return false
     }
     return sleeping()
