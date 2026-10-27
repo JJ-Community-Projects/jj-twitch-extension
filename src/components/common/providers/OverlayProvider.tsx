@@ -1,9 +1,11 @@
-import {createContext, createEffect, createSignal, type ParentComponent, useContext} from "solid-js";
+import {createContext, createEffect, createSignal, type ParentComponent, untrack, useContext} from "solid-js";
 import type {Stream} from "../../../api";
 
 const useOverlayHook = () => {
   const [window, setWindow] = createSignal<string>('none')
   const [stream, setStream] = createSignal<Stream | undefined>(undefined)
+  // Window the stream was opened from, so closing the stream goes back to it.
+  const [streamOrigin, setStreamOrigin] = createSignal<string>('none')
 
   const showAboutJJ = () => {
     setWindow('jj')
@@ -67,6 +69,11 @@ const useOverlayHook = () => {
     setWindow('none')
   }
 
+  const closeStream = () => {
+    setStream(undefined)
+    setWindow(streamOrigin())
+  }
+
   const jj = () => window() === 'jj'
   const charities = () => window() === 'charities'
   const community = () => window() === 'community'
@@ -80,6 +87,7 @@ const useOverlayHook = () => {
 
   createEffect(() => {
     if (stream()) {
+      setStreamOrigin(untrack(window))
       setWindow('none')
     }
   })
@@ -94,6 +102,7 @@ const useOverlayHook = () => {
     toggleUserSchedule,
     toggleAbout,
     hide,
+    closeStream,
     window,
     jj,
     charities,

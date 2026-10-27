@@ -4,7 +4,7 @@ import {ScheduleSlotDetails} from "../common/schedule/ScheduleSlotDetails.tsx";
 
 // Overlay window for the selected schedule slot. Fills the overlay height.
 export const OverlayScheduleSlotDialog: Component = () => {
-  const {stream, setStream, hide} = useOverlay()
+  const {stream, closeStream} = useOverlay()
 
   return (
     <div class={"flex h-full w-full"}>
@@ -12,10 +12,7 @@ export const OverlayScheduleSlotDialog: Component = () => {
         {stream => (
           <ScheduleSlotDetails
             stream={stream()}
-            onClose={() => {
-              setStream(undefined)
-              hide()
-            }}
+            onClose={closeStream}
           />
         )}
       </Show>
