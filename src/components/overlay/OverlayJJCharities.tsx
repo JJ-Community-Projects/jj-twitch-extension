@@ -20,11 +20,11 @@ export const OverlayJJCharities: Component = () => {
     switch (theme()) {
       case 'blue':
       case 'blue_light':
-        return 'bg-accent-500/30'
+        return 'bg-accent-500/60'
       case 'dark':
-        return 'bg-gray-800/30'
+        return 'bg-gray-800/60'
       default:
-        return 'bg-primary-500/30'
+        return 'bg-primary-500/60'
     }
   }
   return (
