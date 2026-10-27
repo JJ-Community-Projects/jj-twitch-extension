@@ -135,19 +135,6 @@ const useBackendHook = () => {
     placeholderData: (prev) => prev
   }))
 
-  const userRelatedScheduleQuery = useQuery(() => ({
-    queryKey: ['user-related-schedule', channelId(), userId()],
-    queryFn: () => api.getUserRelatedSchedule(requestAuth()),
-    enabled: false, // isAuthInit()
-  }))
-
-  const userRelationsQuery = useQuery(() => ({
-    queryKey: ['user-relations', channelId(), userId()],
-    queryFn: () => api.getUserRelations(requestAuth()),
-    enabled: false, // isAuthInit(),
-    placeholderData: (prev) => prev
-  }))
-
   const enableUserScheduleQuery = () => {
     // Fetch when auth is initialized and user has a schedule configured.
     // We intentionally do not gate this behind a specific overlay window
@@ -197,20 +184,6 @@ const useBackendHook = () => {
     placeholderData: (prev) => prev
   }))
 
-
-
-  const refetchAll = () => {
-    configQuery.refetch()
-    userConfigQuery.refetch()
-    /*
-    campaignsQuery.refetch()
-    causesQuery.refetch()
-    overviewQuery.refetch()
-    userDataQuery.refetch()
-    userScheduleQuery.refetch()
-    yogsScheduleQuery.refetch()*/
-  }
-
   return {
     config: configQuery,
     userConfig: userConfigQuery,
@@ -218,11 +191,8 @@ const useBackendHook = () => {
     causes: causesQuery,
     overview: overviewQuery,
     userData: userDataQuery,
-    userRelatedSchedule: userRelatedScheduleQuery,
-    userRelations: userRelationsQuery,
     userSchedule: userScheduleQuery,
     yogsSchedule: yogsScheduleQuery,
-    refetchAll,
   }
 }
 
