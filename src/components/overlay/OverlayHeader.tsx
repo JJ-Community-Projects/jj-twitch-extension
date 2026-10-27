@@ -1,4 +1,4 @@
-import {type Component, Show} from "solid-js";
+import {type Component, createSignal, onCleanup, Show} from "solid-js";
 import {twMerge} from "tailwind-merge";
 
 import red from '../../assets/JingleJam_Red.png'
@@ -9,16 +9,57 @@ import {useTheme} from "../common/providers/ThemeProvider.tsx";
 import {BiRegularInfoCircle} from "solid-icons/bi";
 import {useOverlay} from "../common/providers/OverlayProvider.tsx";
 import {useOverlayBackend} from "../common/providers/OverlayBackendProvider.tsx";
-import type {CurrenciesSchema, GetUserData200Response, JJCampaign} from "../../api";
+import type {CurrenciesSchema, GetUserData200Response} from "../../api";
 import {Numeric} from "solid-i18n";
 import {useCurrency} from "../common/providers/CurrencyProvider.tsx";
+import {CrossFade} from "../common/CrossFade.tsx";
 
 
 export const OverlayHeader: Component = () => {
-  const {theme} = useTheme()
   const {userConfig, userData, config} = useOverlayBackend()
 
-  const image = () => {
+  return (
+    <Show when={config.data}>
+      {
+        (config) => (
+          <Show when={userConfig.data} fallback={<NoUserCampaignHeader/>}>
+            {
+              (userConfig) => (
+                <Show
+                  when={userConfig().hasCampaign && config().showUserFundraiser}
+                  fallback={<NoUserCampaignHeader/>}
+                >
+                  <Show when={userData.data} fallback={<NoUserCampaignHeader/>}>
+                    {(userData) => <UserCampaignHeader userData={userData()}/>}
+                  </Show>
+                </Show>
+              )
+            }
+          </Show>
+        )
+      }
+    </Show>
+  );
+}
+
+// Same card surface as the panel header, so both extensions read as one family.
+const useHeaderStyle = () => {
+  const {theme} = useTheme()
+
+  const surface = () => {
+    if (theme() === 'dark') {
+      return 'bg-gradient-to-b from-white/30 to-white/10 ring-1 ring-white/10 text-white backdrop-blur-sm'
+    }
+    return 'bg-gradient-to-b from-neutral-50 to-neutral-100 ring-1 ring-black/5'
+  }
+
+  const raisedColor = () => {
+    if (theme() === 'dark') return 'text-white'
+    if (theme() === 'blue' || theme() === 'blue_light') return 'text-accent-600'
+    return 'text-primary-600'
+  }
+
+  const logo = () => {
     switch (theme()) {
       case 'blue':
       case 'blue_light':
@@ -30,105 +71,94 @@ export const OverlayHeader: Component = () => {
     }
   }
 
+  return {surface, raisedColor, logo}
+}
+
+// About on the left, logo centred, an empty slot on the right to balance it.
+const LogoRow: Component = () => {
+  const {logo} = useHeaderStyle()
+  return (
+    <div class={'flex h-7 w-full flex-row items-center'}>
+      <div class={'flex h-full flex-1 flex-row items-center justify-start'}>
+        <About/>
+      </div>
+      <img src={logo()} class={'h-full'} alt={'JJ Logo'}/>
+      <div class={'flex-1'}/>
+    </div>
+  )
+}
+
+const NoUserCampaignHeader: Component = () => {
+  const {surface} = useHeaderStyle()
+
   return (
     <div class={'px-2'}>
-      <div class={'flex flex-col bg-white shadow rounded-2xl items-start p-1 gap-1'}>
-        <Show when={config.data}>
-          {
-            (config) => {
-              return (
-                <Show when={userConfig.data}
-                      fallback={<NoUserCampaignHeader image={image()}/>}
-                >
-                  {(userConfig) => (
-                    <Show when={userConfig().hasCampaign && config().showUserFundraiser}
-                          fallback={<NoUserCampaignHeader image={image()}/>}
-                    >
-                      <Show when={userData.data}>
-                        {(ud) => <UserCampaignHeader image={image()} userData={ud()}/>}
-                      </Show>
-                    </Show>
-                  )}
-                </Show>
-              )
-            }
-          }
-        </Show>
+      <div class={twMerge('rounded-2xl p-1.5 shadow-sm', surface())}>
+        <LogoRow/>
       </div>
     </div>
   );
 }
 
-const NoUserCampaignHeader: Component<{ image: string }> = (props) => {
+// Logo on top, then avatar, name + campaign, "Raised" over the amount.
+const UserCampaignHeader: Component<{ userData: GetUserData200Response }> = (props) => {
+  const {surface, raisedColor} = useHeaderStyle()
+
   return (
-    <div class={'w-full h-8 flex flex-row items-center p-1'}>
-      <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
-        <About/>
-      </div>
-      <img src={props.image} class={'h-full'} alt={'JJ Logo'}/>
-      <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
+    <div class={'px-2'}>
+      <div class={twMerge('flex flex-col gap-1 rounded-2xl p-1.5 shadow-sm', surface())}>
+        <LogoRow/>
+        <div class={'flex w-full flex-row items-center gap-2 px-0.5 pb-0.5'}>
+          <img
+            src={props.userData.campaign.twitch?.avatar ?? props.userData.campaign.avatar}
+            alt={'Campaign Avatar'}
+            class={'size-8 rounded-lg object-cover ring-1 ring-white'}
+          />
+          <UserHeaderTexts userData={props.userData}/>
+          <div class={twMerge('flex shrink-0 flex-col items-end font-bold', raisedColor())}>
+            <p class={'text-xxs'}>Raised</p>
+            <p class={'text-xs'}>
+              <CurrencyAmount values={props.userData.campaign.raised}/>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
-const UserCampaignHeader: Component<{ image: string, userData: GetUserData200Response }> = (props) => {
-  const {theme, tailwindTextPrimary} = useTheme()
+const UserHeaderTexts: Component<{ userData: GetUserData200Response }> = (props) => {
+  const [showCampaign, setShowCampaign] = createSignal<boolean>(true)
 
-  const raisedTextColor = () => {
-    if (theme() === 'dark') return 'text-white'
-    return tailwindTextPrimary()
-  }
+  const interval = setInterval(() => {
+    setShowCampaign(v => !v)
+  }, 10000)
 
-  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
+  onCleanup(() => clearInterval(interval))
 
+  const name = () => props.userData.campaign.twitch?.name ?? props.userData.campaign.tiltifyName
+
+  // Only the subtitle rotates between campaign name and cause; the name stays put.
   return (
-    <>
-      <div class={'w-full h-8 flex flex-row items-center p-1'}>
-        <div class={'flex-1 flex flex-row items-center justify-start h-full'}>
-          <About/>
-        </div>
-        <img src={props.image} class={'h-full'} alt={'JJ Logo'}/>
-        <div class={'flex-1 flex flex-row items-center justify-end h-full'}>
-        </div>
-      </div>
-      <div class={'w-full px-1 pb-1'}>
-        <div class={twMerge('w-full h-full flex flex-row items-start gap-2')}>
-          <img src={props.userData.campaign.twitch?.avatar ?? props.userData.campaign.avatar} alt={'Campaign Avatar'}
-               class={'~w-8/12 ~h-8/12 rounded-xl object-cover'}/>
-
-          <UserCampaignTexts campaign={props.userData.campaign}/>
-
-          <div class={'h-full flex flex-col items-end justify-start'}>
-            <p class={twMerge('text-xs font-bold', raisedTextColor())}>
-              <CurrencyAmount values={props.userData.campaign.raised}/>
-            </p>
-            <p class={twMerge('text-[10px]', darkText())}>Raised</p>
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
-
-const UserCampaignTexts: Component<{ campaign: JJCampaign }> = (props) => {
-  const {theme, tailwindTextPrimary} = useTheme()
-  const raisedTextColor = () => {
-    if (theme() === 'dark') return 'text-white'
-    return tailwindTextPrimary()
-  }
-
-  const darkText = () => (theme() === 'dark' ? 'text-white' : '')
-
-  const platformName = () => {
-    const t = props.campaign.twitch
-    return t?.name ?? props.campaign.tiltifyName
-  }
-
-  return (
-    <div class={'relative min-w-0 flex-1 flex flex-col leading-tight'}>
-      <p class={twMerge('text-xs font-bold truncate', raisedTextColor())}>{platformName()}</p>
-      <p class={twMerge('text-[10px] truncate', darkText())}>{props.campaign.campaignName}</p>
+    <div class={'min-w-0 flex-1'}>
+      <p class={'truncate text-xs font-semibold'}>{name()}</p>
+      <Show
+        when={props.userData.cause}
+        fallback={<p class={'truncate text-xxs opacity-80'}>{props.userData.campaign.campaignName}</p>}
+      >
+        {
+          (cause) => (
+            <div class={'relative h-3'}>
+              <CrossFade show={showCampaign()}>
+                <p class={'truncate text-xxs opacity-80'}>{props.userData.campaign.campaignName}</p>
+              </CrossFade>
+              <CrossFade show={!showCampaign()}>
+                <p class={'truncate text-xxs opacity-80'}>Raising for {cause().name}</p>
+              </CrossFade>
+            </div>
+          )
+        }
+      </Show>
     </div>
   )
 }
@@ -136,31 +166,30 @@ const UserCampaignTexts: Component<{ campaign: JJCampaign }> = (props) => {
 const About = () => {
   const {showAboutJJ} = useOverlay()
   return (
-    <>
-      <button
+    <button
+      class={twMerge(
+        'group h-6 group inline-flex items-center justify-center cursor-pointer',
+        'rounded-full shadow-sm',
+        'transition-all duration-300',
+        'bg-gray-700'
+      )}
+      aria-label={'About'}
+      onClick={() => {
+        showAboutJJ()
+      }}
+    >
+      <BiRegularInfoCircle class={'text-white size-6'} size={24}/>
+      <p
         class={twMerge(
-          'group h-full group inline-flex items-center justify-center gap-1 cursor-pointer',
-          'rounded-full shadow',
-          'transition-all duration-300',
-          'bg-white hover:bg-gray-500'
+          'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
+          'text-white text-xs text-center',
+          'transition-all duration-300 ease-in-out',
+          'group-hover:max-w-xs group-hover:opacity-100 group-hover:pl-1 group-hover:pr-2'
         )}
-        onClick={() => {
-          showAboutJJ()
-        }}
       >
-        <BiRegularInfoCircle class={'text-black group-hover:text-white size-6'} size={24}/>
-        <p
-          class={twMerge(
-            'overflow-hidden max-w-0 opacity-0 whitespace-nowrap',
-            'text-white text-xs text-center',
-            'transition-all duration-300 ease-in-out',
-            'group-hover:max-w-xs group-hover:opacity-100 group-hover:pr-2'
-          )}
-        >
-          About
-        </p>
-      </button>
-    </>
+        About
+      </p>
+    </button>
   )
 }
 
