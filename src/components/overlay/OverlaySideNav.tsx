@@ -126,7 +126,7 @@ export const OverlaySideNav: Component = () => {
         <Tooltip.Portal mount={usePortalMount()}>
           <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
             <Tooltip.Arrow/>
-            <p class={'text-white'}>The Jingle Jam</p>
+            <p class={'text-white'}>Jingle Jam</p>
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip>
@@ -146,7 +146,7 @@ export const OverlaySideNav: Component = () => {
         <Tooltip.Portal mount={usePortalMount()}>
           <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
             <Tooltip.Arrow/>
-            <p class={'text-white'}>The Charities</p>
+            <p class={'text-white'}>Charities</p>
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip>
@@ -167,7 +167,7 @@ export const OverlaySideNav: Component = () => {
           <Tooltip.Portal mount={usePortalMount()}>
             <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
               <Tooltip.Arrow/>
-              <p class={'text-white'}>The Community Fundraisers</p>
+              <p class={'text-white'}>Community Fundraisers</p>
             </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip>
@@ -190,7 +190,7 @@ export const OverlaySideNav: Component = () => {
           <Tooltip.Portal mount={usePortalMount()}>
             <Tooltip.Content class="tooltip__content flex flex-row bg-accent-500 text-white p-2 rounded">
               <Tooltip.Arrow/>
-              <p class={'text-white'}>The Yogscast Jingle Jam Schedule</p>
+              <p class={'text-white'}>Yogscast Jingle Jam Schedule</p>
             </Tooltip.Content>
           </Tooltip.Portal>
         </Tooltip>
