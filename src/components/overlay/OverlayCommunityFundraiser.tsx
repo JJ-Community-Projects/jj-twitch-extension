@@ -45,7 +45,8 @@ export const OverlayCommunityFundraiser: Component = (props) => {
         <ColoredScrollbar>
           <div class={twMerge(
             'h-full w-full gap-2',
-            'flex flex-col px-2'
+            // py-1: room for the dono-matching ring (drawn outside the card) so the scroller doesn't clip it
+            'flex flex-col px-2 py-1'
           )}>
             <For each={campaigns.data?.campaigns}>
               {(d, i) => {
